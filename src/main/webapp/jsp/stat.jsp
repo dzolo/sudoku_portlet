@@ -16,13 +16,13 @@
     // after document is loaded
     $(document).ready(function ()
     {
-        $('#sudoku-game_statistics-game-avg-rating').raty({
+        $('#<c:out value="${wid}"/>_statistics-game-avg-rating').raty({
             readOnly : true,
             start    : 3,
             starOn   : '<c:out value="${app_path}"/>/resources/icons/star-on_small.png',
             starOff  : '<c:out value="${app_path}"/>/resources/icons/star-off_small.png'
         });
-        $('#sudoku-game_statistics-global-avg-rating').raty({
+        $('#<c:out value="${wid}"/>_statistics-global-avg-rating').raty({
             readOnly : true,
             start    : 4,
             starOn   : '<c:out value="${app_path}"/>/resources/icons/star-on_small.png',
@@ -32,7 +32,7 @@
    
 --></script>
 
-<div id="sudoku-game_statistics" class="sudoku-game_statistics">
+<div id="<c:out value="${wid}"/>_statistics" class="sudoku-game_statistics">
     <div class="sudoku-game_statistics-item">
         <div class="sudoku-game_statistics-item-header">
             <img alt="Stat icon" src="<c:out value="${app_path}"/>/resources/icons/stats_12x12.png" />
@@ -74,7 +74,7 @@
             </table>
             <strong>Statistics of the game</strong>
             <ul>
-                <li>The average rating is <span id="sudoku-game_statistics-game-avg-rating"></span></li>
+                <li>The average rating is <span id="<c:out value="${wid}"/>_statistics-game-avg-rating"></span></li>
                 <li><b>9</b> solvers are playing right now</li>
                 <li>Played by <b>3</b> solvers</li>
                 <li>The average solution time is <b>28:10</b></li>
@@ -128,7 +128,7 @@
             </table>
             <strong>Statistics of all games</strong>
             <ul>
-                <li>The average rating is <span id="sudoku-game_statistics-global-avg-rating"></span></li>
+                <li>The average rating is <span id="<c:out value="${wid}"/>_statistics-global-avg-rating"></span></li>
                 <li><b>16</b> solvers are playing <b>4</b> games right now</li>
                 <li><b>423</b> games was already played by <b>78</b> players</li>
                 <li>The average solution time is <b>24:07</b></li>

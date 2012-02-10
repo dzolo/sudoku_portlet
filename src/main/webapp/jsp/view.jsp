@@ -19,48 +19,67 @@
         /* Game board */
         
         // activate input check on fields
-        $('#sudoku-game_board input').keypress(sudoku_game__digit_only)
+        $('#<c:out value="${wid}"/>_board input').keypress(sudoku_game__digit_only)
         // movement on fields with arrows
-        $('#sudoku-game_board input').keyup(sudoku_game__arrow_movement);
+        $('#<c:out value="${wid}"/>_board input').keyup(sudoku_game__arrow_movement);
         // change size of board
-        sudoku_game__board_resizer();
+        sudoku_game__board_resizer('<c:out value="${wid}"/>');
         // focus on first field
-        $('#sudoku-game_board input[name="board_field[0]"]').focus();
+        $('#<c:out value="${wid}"/>_board input[name="board_field[0]"]').focus();
         
         /* Timer */
         
         // only if not already started
-        if (window['sudoku_game__timeout_id'] == undefined)
+        if (window['<c:out value="${wid}"/>__timeout_id'] == undefined)
         {
             // init timeout id var
-            sudoku_game__timeout_id = null;
+            window['<c:out value="${wid}"/>__timeout_id'] = null;
             // start timer
-            if (window['sudoku_game__timeout'])
-                sudoku_game__timer(sudoku_game__timeout);
+            if (window['<c:out value="${wid}"/>__timeout'])
+            {
+                // More portlet on same page portlet reload fix, a scenario:
+                //
+                // 1) In the first portlet the game is paused.
+                //    In the second portlet the game is running.
+                // 2) The second portlet is set to maximized state.
+                // 3) The second portlet is set to normal state.
+                // 
+                // This scenario implicates starting the game in the first portlet.
+                if (window['<c:out value="${wid}"/>__timeout_paused'] == undefined)
+                {
+                    sudoku_game__timer('<c:out value="${wid}"/>', window['<c:out value="${wid}"/>__timeout']);
+                }
+                else
+                {
+                    sudoku_game__set_timer_to_el('<c:out value="${wid}"/>', window['<c:out value="${wid}"/>__timeout']);
+                }
+            }
             else
-                sudoku_game__timer();
+            {
+                sudoku_game__timer('<c:out value="${wid}"/>');
+            }
         }
         
         // pause timer event
-        $('#sudoku-game_footer-pause').click(function ()
+        $('#<c:out value="${wid}"/>_footer-pause').click(function ()
         {
-            sudoku_game__pause_game();
+            sudoku_game__pause_game('<c:out value="${wid}"/>');
             return false;
         });
         
         /* Statistics */
         
         // switching to statistics in normal state of portlet
-        $('#sudoku-game_footer-statistics').click(function ()
+        $('#<c:out value="${wid}"/>_footer-statistics').click(function ()
         {
-            sudoku_game__show_stats();
+            sudoku_game__show_stats('<c:out value="${wid}"/>');
             return false;
         });
         
         // switching to game from statistics in normal state of portlet
-        $('#sudoku-game_footer-show-game').click(function ()
+        $('#<c:out value="${wid}"/>_footer-show-game').click(function ()
         {
-            sudoku_game__hide_stats();
+            sudoku_game__hide_stats('<c:out value="${wid}"/>');
             return false;
         });
         
@@ -106,7 +125,7 @@
     </div>
 
     <div class="sudoku-game_body<c:if test="${renderRequest.windowState eq 'maximized'}"> sudoku-game_state-maximized</c:if>">
-        <div class="sudoku-game_board" id="sudoku-game_board">
+        <div class="sudoku-game_board" id="<c:out value="${wid}"/>_board">
             <table>
                 <c:forEach items="${game}" var="row" varStatus="row_status">
                     <c:set var="border_bottom" value="${((row_status.count mod 3) eq 0) and (not row_status.first) and (not row_status.last)}" />
@@ -121,17 +140,17 @@
                     </tr>
                 </c:forEach>
             </table>
-            <div id="sudoku-game_board-locker" class="sudoku-game_board-locker"></div>
+            <div id="<c:out value="${wid}"/>_board-locker" class="sudoku-game_board-locker"></div>
         </div>
         <c:import url="stat.jsp" />
     </div>
 
     <div class="sudoku-game_footer">
-        <span id="sudoku-game_footer-timer" class="sudoku-game_footer-timer">x:x</span>
-        <a href="#" id="sudoku-game_footer-pause" class="sudoku-game_button sudoku-game_footer-pause" title="Pause the game">Pause</a>
+        <span id="<c:out value="${wid}"/>_footer-timer" class="sudoku-game_footer-timer">x:x</span>
+        <a href="#" id="<c:out value="${wid}"/>_footer-pause" class="sudoku-game_button sudoku-game_footer-pause" title="Pause the game">Pause</a>
         <c:if test="${renderRequest.windowState ne 'maximized'}">
-            <a href="#" id="sudoku-game_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
-            <a href="#" id="sudoku-game_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>
+            <a href="#" id="<c:out value="${wid}"/>_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
+            <a href="#" id="<c:out value="${wid}"/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>
         </c:if>
         <div class="sudoku-game_cleared"></div>
     </div>

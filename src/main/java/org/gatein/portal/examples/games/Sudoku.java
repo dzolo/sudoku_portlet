@@ -38,6 +38,7 @@ public class Sudoku extends GenericPortlet
     {
         response.setContentType("text/html");
         request.setAttribute("game", game);
+        request.setAttribute("wid", request.getWindowID());
         PortletRequestDispatcher dispatcher =
                 getPortletContext().getRequestDispatcher("/jsp/view.jsp");
         dispatcher.include(request, response);

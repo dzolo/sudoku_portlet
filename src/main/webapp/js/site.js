@@ -7,11 +7,13 @@
 
 /**
  * Resizes fields on the game board to calculated width and height.
+ * 
+ * @param wid       Window ID
  */
-function sudoku_game__board_resizer()
+function sudoku_game__board_resizer(wid)
 {
-    var $board_table = $('#sudoku-game_board table');
-    var $board_locker = $('#sudoku-game_board-locker');
+    var $board_table = $('#' + wid + '_board table');
+    var $board_locker = $('#' + wid + '_board-locker');
     
     if ($board_table)
     {
@@ -122,95 +124,116 @@ function sudoku_game__arrow_movement(e)
             index -= 81;
         }
         
-        $('#sudoku-game_board input[name="board_field[' + index + ']"]').focus();
+        $this.parent().parent().parent().find('input[name="board_field[' + index + ']"]').focus();
     }    
 }
 
 /**
  * Timer function.
+ * 
+ * @param wid       Window ID
  * @param time      Time in seconds
  */
-function sudoku_game__timer(time)
+function sudoku_game__timer(wid, time)
 {
-    var $timer = $('#sudoku-game_footer-timer');
+    if (!time || time < 0)
+        time = 0;
+
+    sudoku_game__set_timer_to_el(wid, time);
+
+    var fnc = 'sudoku_game__timer("' + wid + '", ' + (time + 1) + ')';
+
+    window[wid + '__timeout_paused'] = undefined;
+    window[wid + '__timeout'] = time;
+    window[wid + '__timeout_id'] = setTimeout(fnc, 1000);
+}
+
+/**
+ * Set time to HTML element function.
+ * 
+ * @param wid       Window ID
+ * @param time      Time in seconds
+ */
+function sudoku_game__set_timer_to_el(wid, time)
+{
+    var $timer = $('#' + wid + '_footer-timer');
     
     if ($timer)
     {
-        if (!time || time < 0)
-            time = 0;
-        
         var min = Math.floor(time / 60);
         var sec = time % 60;
-        
+
         if (sec <= 9)
             sec = '0' + sec;
-        
-        $timer.text(min + ':' + sec);
 
-        sudoku_game__timeout = time;
-        sudoku_game__timeout_id = setTimeout('sudoku_game__timer(' + (time + 1) + ')', 1000);
+        $timer.text(min + ':' + sec);
     }
 }
 
 /**
  * Pauses the game
+ * 
+ * @param wid       Window ID
  */
-function sudoku_game__pause_game()
+function sudoku_game__pause_game(wid)
 {
-    if (sudoku_game__timeout_id)
+    if (window[wid + '__timeout_id'])
     {
         // stop counting
-        clearTimeout(sudoku_game__timeout_id);
-        sudoku_game__timeout_id = undefined;
+        clearTimeout(window[wid + '__timeout_id']);
+        window[wid + '__timeout_id'] = undefined;
+        window[wid + '__timeout_paused'] = true;
         // disable buttons
-        sudoku_game__game_buttons_set_enable(false);
+        sudoku_game__game_buttons_set_enable(wid, false);
         
         // disable play
-        $('#sudoku-game_board-locker').show();
-        $('#sudoku-game_board').css('opacity', 0.5);
-        $('#sudoku-game_board input').attr('disabled', true);
-        $('#sudoku-game_board input').blur();
+        $('#' + wid + '_board-locker').show();
+        $('#' + wid + '_board').css('opacity', 0.5);
+        $('#' + wid + '_board input').attr('disabled', true);
+        $('#' + wid + '_board input').blur();
 
         // change button
-        $('#sudoku-game_footer-pause').unbind('click').text('Continue').attr({
+        $('#' + wid + '_footer-pause').unbind('click').text('Continue').attr({
             'title' : 'Continue the game',
-            'id'    : 'sudoku-game_footer-play',
+            'id'    : wid + '_footer-play',
             'class' : 'sudoku-game_footer-play sudoku-game_button'
         }).click(function ()
         {
-            sudoku_game__continue_game();
+            sudoku_game__continue_game(wid);
             return false;
         });
     }
 }
 
 /**
- * Continues the paused game 
+ * Continues the paused game
+ * 
+ * @param wid       Window ID
  */
-function sudoku_game__continue_game()
+function sudoku_game__continue_game(wid)
 {
-    if (sudoku_game__timeout)
+    if (window[wid + '__timeout'])
     {
         // enable buttons
-        sudoku_game__game_buttons_set_enable(false);
+        sudoku_game__game_buttons_set_enable(wid, false);
         // re-start counting
-        sudoku_game__timer(sudoku_game__timeout);
+        sudoku_game__timer(wid, window[wid + '__timeout']);
         
         // enable play
-        $('#sudoku-game_board-locker').hide();
-        $('#sudoku-game_board').css('opacity', 1.0);
-        $('#sudoku-game_board input').removeAttr('disabled');
-        $('#sudoku-game_board input').unbind('focus');
-        $('#sudoku-game_board input[name="board_field[0]"]').focus();
+        $('#' + wid + '_board-locker').hide();
+        $('#' + wid + '_board').css('opacity', 1.0);
+        $('#' + wid + '_board input').removeAttr('disabled');
+        $('#' + wid + '_board input').unbind('focus');
+        $('#' + wid + '_board input[name="board_field[0]"]').focus();
 
         // change button
-        $('#sudoku-game_footer-play').unbind('click').text('Pause').attr({
+        $('#' + wid + '_footer-play').unbind('click').text('Pause').attr({
             'title' : 'Pause the game',
-            'id'    : 'sudoku-game_footer-pause',
+            'id'    : wid + '_footer-pause',
             'class' : 'sudoku-game_footer-pause sudoku-game_button'
         }).click(function ()
         {
-            sudoku_game__pause_game();
+            sudoku_game__pause_game(wid);
             return false;
         });
     }
@@ -218,19 +241,21 @@ function sudoku_game__continue_game()
 
 /**
  * Event handler for button which show statistics in normal portal state.
+ * 
+ * @param wid       Window ID
  */
-function sudoku_game__show_stats()
+function sudoku_game__show_stats(wid)
 {
-    var $game_board = $('#sudoku-game_board');
-    var $game_stats = $('#sudoku-game_statistics');
-    var $show_statistics_button = $('#sudoku-game_footer-statistics');
-    var $show_game_button = $('#sudoku-game_footer-show-game');
-    var $game_buttons = $('#sudoku-game_footer-pause, #sudoku-game_footer-play');
+    var $game_board = $('#' + wid + '_board');
+    var $game_stats = $('#' + wid + '_statistics');
+    var $show_statistics_button = $('#' + wid + '_footer-statistics');
+    var $show_game_button = $('#' + wid + '_footer-show-game');
+    var $game_buttons = $('#' + wid + '_footer-pause, #' + wid + '_footer-play');
 
     if ($game_board && $game_stats)
     {
         // pause game
-        sudoku_game__pause_game();
+        sudoku_game__pause_game(wid);
         $game_buttons.hide();
         // hide button and board
         $show_statistics_button.hide();
@@ -244,19 +269,21 @@ function sudoku_game__show_stats()
 
 /**
  * Event handler for button which show game from statistics in normal portal state.
+ * 
+ * @param wid       Window ID
  */
-function sudoku_game__hide_stats()
+function sudoku_game__hide_stats(wid)
 {
-    var $game_board = $('#sudoku-game_board');
-    var $game_stats = $('#sudoku-game_statistics');
-    var $show_statistics_button = $('#sudoku-game_footer-statistics');
-    var $show_game_button = $('#sudoku-game_footer-show-game');
-    var $game_buttons = $('#sudoku-game_footer-pause, #sudoku-game_footer-play');
+    var $game_board = $('#' + wid + '_board');
+    var $game_stats = $('#' + wid + '_statistics');
+    var $show_statistics_button = $('#' + wid + '_footer-statistics');
+    var $show_game_button = $('#' + wid + '_footer-show-game');
+    var $game_buttons = $('#' + wid + '_footer-pause, #' + wid + '_footer-play');
 
     if ($game_board && $game_stats)
     {
         // pause game
-        sudoku_game__continue_game();
+        sudoku_game__continue_game(wid);
         $game_buttons.show();
         // hide button and board
         $show_game_button.hide();
@@ -270,9 +297,11 @@ function sudoku_game__hide_stats()
 
 /**
  * Sets enable/disable buttons related to current game
+ * 
+ * @param wid       Window ID
  * @param enable    Enable flag
  */
-function sudoku_game__game_buttons_set_enable(enable)
+function sudoku_game__game_buttons_set_enable(wid, enable)
 {
     
 }
