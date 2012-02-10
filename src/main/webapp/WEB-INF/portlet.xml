@@ -1,0 +1,28 @@
+<!-- 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : portlet.xml
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization: : FIT VUT <http://www.fit.vutbr.cz>
+-->
+
+<?xml version='1.0' encoding='UTF-8' ?>
+<portlet-app xmlns='http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd' version='2.0'>
+	<portlet>
+		<description>Play a Sudoku game</description>
+		<portlet-name>Sudoku</portlet-name>
+		<display-name>Sudoku game</display-name>
+		<portlet-class>org.gatein.portal.examples.games.Sudoku</portlet-class>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+			<portlet-mode>VIEW</portlet-mode>
+			<portlet-mode>EDIT</portlet-mode>
+			<portlet-mode>HELP</portlet-mode>
+		</supports>
+		<resource-bundle>org.gatein.portal.examples.games.messages</resource-bundle>
+		<portlet-info>
+			<title>Sudoku game</title>
+			<short-title>Sudoku game</short-title>
+		</portlet-info>
+	</portlet>
+</portlet-app>

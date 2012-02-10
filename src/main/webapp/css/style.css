@@ -1,0 +1,287 @@
+/* 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : style.css
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization: : FIT VUT <http://www.fit.vutbr.cz>
+*/
+
+/*** VIEW mode ***/
+
+.sudoku-game_container
+{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* VIEW mode - toolbar --> */
+
+.sudoku-game_toolbar
+{
+    padding: 2px;
+    background: url(../resources/layout/toolbar_bg.png);
+    background-repeat: repeat-x;
+}
+
+.sudoku-game_toolbar a
+{
+    display: block;
+    float: left;
+    margin: 2px;
+    padding: 3px;
+}
+
+.sudoku-game_toolbar a img
+{
+    width: 16px;
+    height: 16px;
+    border: none;
+}
+
+.sudoku-game_toolbar a span
+{
+    
+}
+
+/* <-- VIEW mode - toolbar */
+
+/* VIEW mode - body --> */
+
+.sudoku-game_body
+{
+    padding: 2px;
+}
+
+.sudoku-game_board
+{
+    position: relative; /* because of .sudoku-game_board-locker */
+    border: 2px solid #a6a6a6;
+    
+    /* CSS3 - border */
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.sudoku-game_state-maximized .sudoku-game_board
+{
+    width: 49%;
+    float: left;
+}
+
+.sudoku-game_board table td
+{
+    border: 1px solid #ececec;
+    vertical-align: middle;
+}
+
+.sudoku-game_board table td input
+{
+    width: 95%;
+    height: 100%;
+    font-size: 13px;
+    border: none;
+    text-align: center;
+    outline: none;
+}
+
+.sudoku-game_board table td input[disabled="disabled"]
+{
+    background-color: white;
+}
+
+.sudoku-game_board-locker
+{
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: 1;
+    cursor: not-allowed;
+}
+
+.sudoku-game_statistics
+{
+    display: none;
+    border: 2px solid #a6a6a6;
+    
+    /* CSS3 - border */
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.sudoku-game_state-maximized .sudoku-game_statistics
+{
+    display: block;
+    width: 49%;
+    float: right;
+}
+
+.sudoku-game_statistics-item
+{
+    padding: 5px;
+    background: url(../resources/layout/toolbar_bg.png);
+    background-repeat: repeat-x;
+}
+
+.sudoku-game_statistics-item-header
+{
+    padding: 2px 2px 4px 2px;
+    border-bottom: 1px solid #ebebeb;
+    font-weight: bold;
+}
+
+.sudoku-game_statistics-item-body
+{
+    padding: 2px;
+}
+
+.sudoku-game_statistics-item-body table
+{
+    margin: 5px;
+}
+
+.sudoku-game_statistics-item-body table tr th
+{
+    text-align: left;
+    font-size: 90%;
+}
+
+.sudoku-game_statistics-item-body table tr td
+{
+    text-align: left;
+    font-size: 90%;
+}
+
+.sudoku-game_statistics-item-body ul
+{
+    margin: 0.5em 0;
+    padding-left: 22px;
+    font-size: 90%;
+}
+
+.sudoku-game_statistics-item-body strong
+{
+    display: block;
+    margin: 0.8em 0 0.5em 0;
+}
+
+/* <-- VIEW mode - body */
+
+/* VIEW mode - footer --> */
+
+.sudoku-game_footer
+{
+    clear: both;
+    padding: 2px;
+}
+
+span.sudoku-game_footer-timer
+{
+    display: block;
+    height: 16px;
+    float: left;
+    margin: 1px;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 130%;
+    line-height: 16px;
+}
+
+a.sudoku-game_footer-statistics,
+a.sudoku-game_footer-pause,
+a.sudoku-game_footer-play,
+a.sudoku-game_footer-show-game
+{
+    display: block;
+    height: 16px;
+    float: left;
+    margin: 1px;
+    padding: 2px;
+    padding-left: 20px;
+    background-position: 2px center;
+    background-repeat: no-repeat;
+    
+    /* CSS3 - border */
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+a.sudoku-game_footer-pause
+{
+    background-image: url(../resources/icons/pause_16x16.png);
+}
+
+a.sudoku-game_footer-play
+{
+    background-image: url(../resources/icons/play_16x16.png);
+}
+
+a.sudoku-game_footer-statistics
+{
+    float: right;
+    background-image: url(../resources/icons/stats_16x16.png);
+}
+
+a.sudoku-game_footer-show-game
+{
+    display: none; /* displayed by JavaScript on demand */
+    float: right;
+    background-image: url(../resources/icons/game_16x16.png);
+    font-weight: bold;
+}
+
+/* <-- VIEW mode - footer */
+
+/*** EDIT mode ***/
+
+/*** HELP mode ***/
+
+
+/*** for all ***/
+
+.sudoku-game_cleared
+{
+    clear: both;
+}
+
+a.sudoku-game_button
+{
+    border: 1px solid #a6a6a6;
+    color: #363636;
+    background-color: white;
+    
+    /* CSS3 - border */
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+a.sudoku-game_button:hover
+{
+    /* CSS3 - shadow */
+    -webkit-box-shadow: 0 0 1px 1px #ccc;
+    -moz-box-shadow: 0 0 1px 1px #ccc;
+    box-shadow: 0 0 1px 1px #ccc;
+}
+
+noscript div
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: red;
+    opacity: 0.90;
+}
+
+noscript div p
+{
+    position: relative;
+    top: 30%;
+    margin: 0 auto;
+    padding: 15px 35px;
+    font-size: 175%;
+    color: #870119;
+}
