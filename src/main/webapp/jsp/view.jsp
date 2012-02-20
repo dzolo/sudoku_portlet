@@ -19,25 +19,25 @@
         /* Game board */
         
         // activate input check on fields
-        $('#<c:out value="${wid}"/>_board input').keypress(sudoku_game__digit_only)
+        $('#<portlet:namespace/>_board input').keypress(sudoku_game__digit_only)
         // movement on fields with arrows
-        $('#<c:out value="${wid}"/>_board input').keyup(sudoku_game__arrow_movement);
+        $('#<portlet:namespace/>_board input').keyup(sudoku_game__arrow_movement);
         // validator of each field
-        $('#<c:out value="${wid}"/>_board input').blur(sudoku_game__field_validator);
+        $('#<portlet:namespace/>_board input').blur(sudoku_game__field_validator);
         // change size of board
-        sudoku_game__board_resizer('<c:out value="${wid}"/>');
+        sudoku_game__board_resizer('<portlet:namespace/>');
         // focus on first field
-        $('#<c:out value="${wid}"/>_board input[name="board_field[0]"]').focus();
+        $('#<portlet:namespace/>_board input[name="board_field[0]"]').focus();
         
         /* Timer */
         
         // only if not already started
-        if (window['<c:out value="${wid}"/>__timeout_id'] == undefined)
+        if (window['<portlet:namespace/>__timeout_id'] == undefined)
         {
             // init timeout id var
-            window['<c:out value="${wid}"/>__timeout_id'] = null;
+            window['<portlet:namespace/>__timeout_id'] = null;
             // start timer
-            if (window['<c:out value="${wid}"/>__timeout'])
+            if (window['<portlet:namespace/>__timeout'])
             {
                 // More portlet on same page portlet reload fix, a scenario:
                 //
@@ -47,41 +47,41 @@
                 // 3) The second portlet is set to normal state.
                 // 
                 // This scenario implicates starting the game in the first portlet.
-                if (window['<c:out value="${wid}"/>__timeout_paused'] == undefined)
+                if (window['<portlet:namespace/>__timeout_paused'] == undefined)
                 {
-                    sudoku_game__timer('<c:out value="${wid}"/>', window['<c:out value="${wid}"/>__timeout']);
+                    sudoku_game__timer('<portlet:namespace/>', window['<portlet:namespace/>__timeout']);
                 }
                 else
                 {
-                    sudoku_game__set_timer_to_el('<c:out value="${wid}"/>', window['<c:out value="${wid}"/>__timeout']);
+                    sudoku_game__set_timer_to_el('<portlet:namespace/>', window['<portlet:namespace/>__timeout']);
                 }
             }
             else
             {
-                sudoku_game__timer('<c:out value="${wid}"/>');
+                sudoku_game__timer('<portlet:namespace/>');
             }
         }
         
         // pause timer event
-        $('#<c:out value="${wid}"/>_footer-pause').click(function ()
+        $('#<portlet:namespace/>_footer-pause').click(function ()
         {
-            sudoku_game__pause_game('<c:out value="${wid}"/>');
+            sudoku_game__pause_game('<portlet:namespace/>');
             return false;
         });
         
         /* Statistics */
         
         // switching to statistics in normal state of portlet
-        $('#<c:out value="${wid}"/>_footer-statistics').click(function ()
+        $('#<portlet:namespace/>_footer-statistics').click(function ()
         {
-            sudoku_game__show_stats('<c:out value="${wid}"/>');
+            sudoku_game__show_stats('<portlet:namespace/>');
             return false;
         });
         
         // switching to game from statistics in normal state of portlet
-        $('#<c:out value="${wid}"/>_footer-show-game').click(function ()
+        $('#<portlet:namespace/>_footer-show-game').click(function ()
         {
-            sudoku_game__hide_stats('<c:out value="${wid}"/>');
+            sudoku_game__hide_stats('<portlet:namespace/>');
             return false;
         });
         
@@ -127,7 +127,7 @@
     </div>
 
     <div class="sudoku-game_body<c:if test="${renderRequest.windowState eq 'maximized'}"> sudoku-game_state-maximized</c:if>">
-        <div class="sudoku-game_board" id="<c:out value="${wid}"/>_board">
+        <div class="sudoku-game_board" id="<portlet:namespace/>_board">
             <table>
                 <c:forEach items="${game}" var="row" varStatus="row_status">
                     <c:set var="border_bottom" value="${((row_status.count mod 3) eq 0) and (not row_status.first) and (not row_status.last)}" />
@@ -142,17 +142,17 @@
                     </tr>
                 </c:forEach>
             </table>
-            <div id="<c:out value="${wid}"/>_board-locker" class="sudoku-game_board-locker"></div>
+            <div id="<portlet:namespace/>_board-locker" class="sudoku-game_board-locker"></div>
         </div>
         <c:import url="stat.jsp" />
     </div>
 
     <div class="sudoku-game_footer">
-        <span id="<c:out value="${wid}"/>_footer-timer" class="sudoku-game_footer-timer">x:x</span>
-        <a href="#" id="<c:out value="${wid}"/>_footer-pause" class="sudoku-game_button sudoku-game_footer-pause" title="Pause the game">Pause</a>
+        <span id="<portlet:namespace/>_footer-timer" class="sudoku-game_footer-timer">x:x</span>
+        <a href="#" id="<portlet:namespace/>_footer-pause" class="sudoku-game_button sudoku-game_footer-pause" title="Pause the game">Pause</a>
         <c:if test="${renderRequest.windowState ne 'maximized'}">
-            <a href="#" id="<c:out value="${wid}"/>_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
-            <a href="#" id="<c:out value="${wid}"/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>
+            <a href="#" id="<portlet:namespace/>_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
+            <a href="#" id="<portlet:namespace/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>
         </c:if>
         <div class="sudoku-game_cleared"></div>
     </div>
