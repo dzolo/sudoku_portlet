@@ -66,13 +66,49 @@ function sudoku_game__digit_only(e)
         return true;
     }
     // digit
-    else if ((("0123456789").indexOf(String.fromCharCode(key)) > -1))
+    else if ((("123456789").indexOf(String.fromCharCode(key)) > -1))
     {
         // just one digit
         return ($(this).val().length == 0);
     }
     
     return false;
+}
+
+/**
+ * Validates content of field.
+ */
+function sudoku_game__field_validator()
+{
+    var $field = $(this);
+    
+    if ($field)
+    {
+        if ($field.val().length && !$field.val().match(/^[1-9]{1}$/))
+        {
+            sudoku_game__field_add_error($field, false);
+        }
+        else if ($field.parent().hasClass('sudoku-game_field-error'))
+        {
+            $field.parent().removeClass('sudoku-game_field-error');
+        }
+    }
+}
+
+/**
+ * Adds an error to a field.
+ */
+function sudoku_game__field_add_error($field, focus)
+{
+    if (!$field.parent().hasClass('sudoku-game_field-error'))
+    {
+        $field.parent().addClass('sudoku-game_field-error');
+    }
+    
+    if (focus)
+    {
+        $field.focus();
+    }
 }
 
 /**

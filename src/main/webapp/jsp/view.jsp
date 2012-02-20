@@ -22,6 +22,8 @@
         $('#<c:out value="${wid}"/>_board input').keypress(sudoku_game__digit_only)
         // movement on fields with arrows
         $('#<c:out value="${wid}"/>_board input').keyup(sudoku_game__arrow_movement);
+        // validator of each field
+        $('#<c:out value="${wid}"/>_board input').blur(sudoku_game__field_validator);
         // change size of board
         sudoku_game__board_resizer('<c:out value="${wid}"/>');
         // focus on first field
