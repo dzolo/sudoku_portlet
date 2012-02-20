@@ -9,10 +9,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.gatein.portal.examples</groupId>
-  <artifactId>games</artifactId>
+  <groupId>org.gatein.portal.examples.games</groupId>
+  <artifactId>sudoku</artifactId>
   <packaging>war</packaging>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <url>http://maven.apache.org</url>
 
   <dependencies>
@@ -86,4 +86,7 @@
       <name>Repository for library Library[eclipselink]</name>
     </repository>
   </repositories>
+  <properties>
+    <netbeans.hint.deploy.server>JBoss4</netbeans.hint.deploy.server>
+  </properties>
 </project>

@@ -5,7 +5,7 @@
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.entities;
+package org.gatein.portal.examples.games.sudoku.entities;
 
 import java.io.Serializable;
 import java.util.Collection;

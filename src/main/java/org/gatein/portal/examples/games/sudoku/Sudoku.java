@@ -1,11 +1,11 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : stat.jsp
+ * Document      : Sudoku.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games;
+package org.gatein.portal.examples.games.sudoku;
 
 import java.io.IOException;
 import javax.portlet.*;

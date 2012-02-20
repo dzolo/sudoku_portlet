@@ -15,7 +15,7 @@
         <description>Play a Sudoku game</description>
         <portlet-name>Sudoku</portlet-name>
         <display-name>Sudoku game</display-name>
-        <portlet-class>org.gatein.portal.examples.games.Sudoku</portlet-class>
+        <portlet-class>org.gatein.portal.examples.games.sudoku.Sudoku</portlet-class>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
@@ -23,7 +23,7 @@
             <portlet-mode>EDIT</portlet-mode>
             <portlet-mode>HELP</portlet-mode>
         </supports>
-        <resource-bundle>org.gatein.portal.examples.games.messages</resource-bundle>
+        <resource-bundle>org.gatein.portal.examples.games.sudoku.messages</resource-bundle>
         <portlet-info>
             <title>Sudoku game</title>
             <short-title>Sudoku game</short-title>
