@@ -27,7 +27,7 @@
         <portlet-info>
             <title>Sudoku game</title>
             <short-title>Sudoku game</short-title>
-            <keywords>game,entertainment</keywords>
+            <keywords>games</keywords>
         </portlet-info>
     </portlet>
 </portlet-app>
