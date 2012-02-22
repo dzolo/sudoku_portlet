@@ -102,25 +102,25 @@
 
     <div class="sudoku-game_toolbar">
         <a href="#" class="sudoku-game_button" title="Create a new game">
-            <img alt="New icon" src="<c:out value="${app_path}"/>/resources/icons/new_16x16.png" />
+            <img alt="New icon" src="<c:out value="${app_path}"/>/images/icons/new_16x16.png" />
             <span>New</span>
         </a>
         <c:if test="${not empty pageContext.request.remoteUser}">
             <a href="#" class="sudoku-game_button" title="Save the current game">
-                <img alt="Save icon" src="<c:out value="${app_path}"/>/resources/icons/save_16x16.png" />
+                <img alt="Save icon" src="<c:out value="${app_path}"/>/images/icons/save_16x16.png" />
                 <span>Save</span>
             </a>
             <a href="#" class="sudoku-game_button" title="Load a previous played game">
-                <img alt="Load icon" src="<c:out value="${app_path}"/>/resources/icons/load_16x16.png" />
+                <img alt="Load icon" src="<c:out value="${app_path}"/>/images/icons/load_16x16.png" />
                 <span>Load</span>
             </a>
         </c:if>
         <a href="#" class="sudoku-game_button" title="Reset the current game">
-            <img alt="Reset icon" src="<c:out value="${app_path}"/>/resources/icons/reset_16x16.png" />
+            <img alt="Reset icon" src="<c:out value="${app_path}"/>/images/icons/reset_16x16.png" />
             <span>Reset</span>
         </a>
         <a href="#" class="sudoku-game_button" title="Check your solution of the current game">
-            <img alt="Check icon" src="<c:out value="${app_path}"/>/resources/icons/check_16x16.png" />
+            <img alt="Check icon" src="<c:out value="${app_path}"/>/images/icons/check_16x16.png" />
             <span>Check</span>
         </a>
         <div class="sudoku-game_cleared"></div>

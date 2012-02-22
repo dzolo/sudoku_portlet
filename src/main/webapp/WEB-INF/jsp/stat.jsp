@@ -19,14 +19,14 @@
         $('#<portlet:namespace/>_statistics-game-avg-rating').raty({
             readOnly : true,
             start    : 3,
-            starOn   : '<c:out value="${app_path}"/>/resources/icons/star-on_small.png',
-            starOff  : '<c:out value="${app_path}"/>/resources/icons/star-off_small.png'
+            starOn   : '<c:out value="${app_path}"/>/images/icons/star-on_small.png',
+            starOff  : '<c:out value="${app_path}"/>/images/icons/star-off_small.png'
         });
         $('#<portlet:namespace/>_statistics-global-avg-rating').raty({
             readOnly : true,
             start    : 4,
-            starOn   : '<c:out value="${app_path}"/>/resources/icons/star-on_small.png',
-            starOff  : '<c:out value="${app_path}"/>/resources/icons/star-off_small.png'
+            starOn   : '<c:out value="${app_path}"/>/images/icons/star-on_small.png',
+            starOff  : '<c:out value="${app_path}"/>/images/icons/star-off_small.png'
         });
     });
    
@@ -35,7 +35,7 @@
 <div id="<portlet:namespace/>_statistics" class="sudoku-game_statistics">
     <div class="sudoku-game_statistics-item">
         <div class="sudoku-game_statistics-item-header">
-            <img alt="Stat icon" src="<c:out value="${app_path}"/>/resources/icons/stats_12x12.png" />
+            <img alt="Stat icon" src="<c:out value="${app_path}"/>/images/icons/stats_12x12.png" />
             <span>Statistics of this game</span>
         </div>
         <div class="sudoku-game_statistics-item-body">
@@ -83,7 +83,7 @@
     </div>
     <div class="sudoku-game_statistics-item" style="border-top: 1px solid #a6a6a6;">
         <div class="sudoku-game_statistics-item-header">
-            <img alt="Global stat icon" src="<c:out value="${app_path}"/>/resources/icons/global_stats_12x12.png" />
+            <img alt="Global stat icon" src="<c:out value="${app_path}"/>/images/icons/global_stats_12x12.png" />
             <span>Total statistics</span>
         </div>
         <div class="sudoku-game_statistics-item-body">

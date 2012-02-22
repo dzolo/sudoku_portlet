@@ -19,7 +19,7 @@
 .sudoku-game_toolbar
 {
     padding: 2px;
-    background: url(../resources/layout/toolbar_bg.png);
+    background: url(../images/layout/toolbar_bg.png);
     background-repeat: repeat-x;
 }
 
@@ -131,7 +131,7 @@
 .sudoku-game_statistics-item
 {
     padding: 5px;
-    background: url(../resources/layout/toolbar_bg.png);
+    background: url(../images/layout/toolbar_bg.png);
     background-repeat: repeat-x;
 }
 
@@ -220,25 +220,25 @@ a.sudoku-game_footer-show-game
 
 a.sudoku-game_footer-pause
 {
-    background-image: url(../resources/icons/pause_16x16.png);
+    background-image: url(../images/icons/pause_16x16.png);
 }
 
 a.sudoku-game_footer-play
 {
-    background-image: url(../resources/icons/play_16x16.png);
+    background-image: url(../images/icons/play_16x16.png);
 }
 
 a.sudoku-game_footer-statistics
 {
     float: right;
-    background-image: url(../resources/icons/stats_16x16.png);
+    background-image: url(../images/icons/stats_16x16.png);
 }
 
 a.sudoku-game_footer-show-game
 {
     display: none; /* displayed by JavaScript on demand */
     float: right;
-    background-image: url(../resources/icons/game_16x16.png);
+    background-image: url(../images/icons/game_16x16.png);
     font-weight: bold;
 }
 

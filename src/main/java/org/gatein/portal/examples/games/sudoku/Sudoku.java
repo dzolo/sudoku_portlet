@@ -39,7 +39,7 @@ public class Sudoku extends GenericPortlet
         response.setContentType("text/html");
         request.setAttribute("game", game);
         PortletRequestDispatcher dispatcher =
-                getPortletContext().getRequestDispatcher("/jsp/view.jsp");
+                getPortletContext().getRequestDispatcher("/WEB-INF/jsp/view.jsp");
         dispatcher.include(request, response);
     }
 
@@ -49,7 +49,7 @@ public class Sudoku extends GenericPortlet
     {
         response.setContentType("text/html");
         PortletRequestDispatcher dispatcher =
-                getPortletContext().getRequestDispatcher("/jsp/edit.jsp");
+                getPortletContext().getRequestDispatcher("/WEB-INF/jsp/edit.jsp");
         dispatcher.include(request, response);
     }
 
@@ -59,7 +59,7 @@ public class Sudoku extends GenericPortlet
     {
         response.setContentType("text/html");
         PortletRequestDispatcher dispatcher =
-                getPortletContext().getRequestDispatcher("/jsp/help.jsp");
+                getPortletContext().getRequestDispatcher("/WEB-INF/jsp/help.jsp");
         dispatcher.include(request, response);
     }
 
