@@ -1,11 +1,11 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : Games.java
+ * Document      : Game.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.entities;
+package org.gatein.portal.examples.games.sudoku.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Games Entity Class
+ * Game Entity Class
  *
  * @author Ondřej Fibich
  */
@@ -23,13 +23,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "games")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Games.findAll", query = "SELECT g FROM Games g"),
-    @NamedQuery(name = "Games.findById", query = "SELECT g FROM Games g WHERE g.id = :id"),
-    @NamedQuery(name = "Games.findByInitDate", query = "SELECT g FROM Games g WHERE g.initDate = :initDate"),
-    @NamedQuery(name = "Games.findByType", query = "SELECT g FROM Games g WHERE g.type = :type"),
-    @NamedQuery(name = "Games.findByTypeDificulty", query = "SELECT g FROM Games g WHERE g.typeDificulty = :typeDificulty")
+    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
+    @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
+    @NamedQuery(name = "Game.findByInitDate", query = "SELECT g FROM Game g WHERE g.initDate = :initDate"),
+    @NamedQuery(name = "Game.findByType", query = "SELECT g FROM Game g WHERE g.type = :type"),
+    @NamedQuery(name = "Game.findByTypeDificulty", query = "SELECT g FROM Game g WHERE g.typeDificulty = :typeDificulty")
 })
-public class Games implements Serializable
+public class Game implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -58,22 +58,22 @@ public class Games implements Serializable
     private String typeDificulty;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameId")
-    private Collection<GameSolutions> gameSolutionsCollection;
+    private Collection<GameSolution> gameSolutionsCollection;
     
     @JoinColumn(name = "type_service_id", referencedColumnName = "id")
     @ManyToOne
-    private Services typeServiceId;
+    private Service typeServiceId;
 
-    public Games()
+    public Game()
     {
     }
 
-    public Games(Integer id)
+    public Game(Integer id)
     {
         this.id = id;
     }
 
-    public Games(Integer id, Date initDate, String initValues, String type)
+    public Game(Integer id, Date initDate, String initValues, String type)
     {
         this.id = id;
         this.initDate = initDate;
@@ -132,22 +132,22 @@ public class Games implements Serializable
     }
 
     @XmlTransient
-    public Collection<GameSolutions> getGameSolutionsCollection()
+    public Collection<GameSolution> getGameSolutionsCollection()
     {
         return gameSolutionsCollection;
     }
 
-    public void setGameSolutionsCollection(Collection<GameSolutions> gameSolutionsCollection)
+    public void setGameSolutionsCollection(Collection<GameSolution> gameSolutionsCollection)
     {
         this.gameSolutionsCollection = gameSolutionsCollection;
     }
 
-    public Services getTypeServiceId()
+    public Service getTypeServiceId()
     {
         return typeServiceId;
     }
 
-    public void setTypeServiceId(Services typeServiceId)
+    public void setTypeServiceId(Service typeServiceId)
     {
         this.typeServiceId = typeServiceId;
     }
@@ -163,11 +163,12 @@ public class Games implements Serializable
     @Override
     public boolean equals(Object object)
     {
-        if (!(object instanceof Games)) {
+        if (!(object instanceof Game))
+        {
             return false;
         }
         
-        Games other = (Games) object;
+        Game other = (Game) object;
         
         if ((this.id == null && other.id != null) ||
             (this.id != null && !this.id.equals(other.id)))

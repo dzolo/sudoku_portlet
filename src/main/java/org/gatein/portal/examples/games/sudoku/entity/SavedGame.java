@@ -1,18 +1,18 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : SavedGames.java
+ * Document      : SavedGame.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.entities;
+package org.gatein.portal.examples.games.sudoku.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * SavedGames Entity Class
+ * SavedGame Entity Class
  *
  * @author Ondřej Fibich
  */
@@ -20,11 +20,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "saved_games")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SavedGames.findAll", query = "SELECT s FROM SavedGames s"),
-    @NamedQuery(name = "SavedGames.findById", query = "SELECT s FROM SavedGames s WHERE s.id = :id"),
-    @NamedQuery(name = "SavedGames.findByLasting", query = "SELECT s FROM SavedGames s WHERE s.lasting = :lasting")
+    @NamedQuery(name = "SavedGame.findAll", query = "SELECT s FROM SavedGame s"),
+    @NamedQuery(name = "SavedGame.findById", query = "SELECT s FROM SavedGame s WHERE s.id = :id"),
+    @NamedQuery(name = "SavedGame.findByLasting", query = "SELECT s FROM SavedGame s WHERE s.lasting = :lasting")
 })
-public class SavedGames implements Serializable
+public class SavedGame implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -46,18 +46,18 @@ public class SavedGames implements Serializable
     
     @JoinColumn(name = "game_solution_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private GameSolutions gameSolutionId;
+    private GameSolution gameSolutionId;
 
-    public SavedGames()
+    public SavedGame()
     {
     }
 
-    public SavedGames(Integer id)
+    public SavedGame(Integer id)
     {
         this.id = id;
     }
 
-    public SavedGames(Integer id, int lasting, String values)
+    public SavedGame(Integer id, int lasting, String values)
     {
         this.id = id;
         this.lasting = lasting;
@@ -94,12 +94,12 @@ public class SavedGames implements Serializable
         this.values = values;
     }
 
-    public GameSolutions getGameSolutionId()
+    public GameSolution getGameSolutionId()
     {
         return gameSolutionId;
     }
 
-    public void setGameSolutionId(GameSolutions gameSolutionId)
+    public void setGameSolutionId(GameSolution gameSolutionId)
     {
         this.gameSolutionId = gameSolutionId;
     }
@@ -113,11 +113,12 @@ public class SavedGames implements Serializable
     @Override
     public boolean equals(Object object)
     {
-        if (!(object instanceof SavedGames)) {
+        if (!(object instanceof SavedGame))
+        {
             return false;
         }
         
-        SavedGames other = (SavedGames) object;
+        SavedGame other = (SavedGame) object;
         
         if ((this.id == null && other.id != null) ||
             (this.id != null && !this.id.equals(other.id)))

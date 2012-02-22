@@ -1,20 +1,19 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : Services.java
+ * Document      : Service.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.entities;
+package org.gatein.portal.examples.games.sudoku.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 /**
- * Services Entity Class
+ * Service Entity Class
  *
  * @author Ondřej Fibich
  */
@@ -22,13 +21,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "services")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Services.findAll", query = "SELECT s FROM Services s"),
-    @NamedQuery(name = "Services.findById", query = "SELECT s FROM Services s WHERE s.id = :id"),
-    @NamedQuery(name = "Services.findByName", query = "SELECT s FROM Services s WHERE s.name = :name"),
-    @NamedQuery(name = "Services.findByUrl", query = "SELECT s FROM Services s WHERE s.url = :url"),
-    @NamedQuery(name = "Services.findByCheckTime", query = "SELECT s FROM Services s WHERE s.checkTime = :checkTime")
+    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
+    @NamedQuery(name = "Service.findById", query = "SELECT s FROM Service s WHERE s.id = :id"),
+    @NamedQuery(name = "Service.findByName", query = "SELECT s FROM Service s WHERE s.name = :name"),
+    @NamedQuery(name = "Service.findByUrl", query = "SELECT s FROM Service s WHERE s.url = :url"),
+    @NamedQuery(name = "Service.findByCheckTime", query = "SELECT s FROM Service s WHERE s.checkTime = :checkTime")
 })
-public class Services implements Serializable
+public class Service implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -52,18 +51,18 @@ public class Services implements Serializable
     private int checkTime;
     
     @OneToMany(mappedBy = "typeServiceId")
-    private Collection<Games> gamesCollection;
+    private Collection<Game> gamesCollection;
 
-    public Services()
+    public Service()
     {
     }
 
-    public Services(Integer id)
+    public Service(Integer id)
     {
         this.id = id;
     }
 
-    public Services(Integer id, String name, String url, int checkTime)
+    public Service(Integer id, String name, String url, int checkTime)
     {
         this.id = id;
         this.name = name;
@@ -112,12 +111,12 @@ public class Services implements Serializable
     }
 
     @XmlTransient
-    public Collection<Games> getGamesCollection()
+    public Collection<Game> getGamesCollection()
     {
         return gamesCollection;
     }
 
-    public void setGamesCollection(Collection<Games> gamesCollection)
+    public void setGamesCollection(Collection<Game> gamesCollection)
     {
         this.gamesCollection = gamesCollection;
     }
@@ -131,11 +130,12 @@ public class Services implements Serializable
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof Services)) {
+        if (!(o instanceof Service))
+        {
             return false;
         }
         
-        Services other = (Services) o;
+        Service other = (Service) o;
         
         if ((this.id == null && other.id != null) ||
             (this.id != null && !this.id.equals(other.id)))

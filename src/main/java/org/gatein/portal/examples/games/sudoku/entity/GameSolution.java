@@ -1,11 +1,11 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : GameSolutions.java
+ * Document      : GameSolution.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.entities;
+package org.gatein.portal.examples.games.sudoku.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +15,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * GameSolutions Entity Class
+ * GameSolution Entity Class
  *
  * @author Ondřej Fibich
  */
@@ -23,15 +23,15 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "game_solutions")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "GameSolutions.findAll",query = "SELECT g FROM GameSolutions g"),
-    @NamedQuery(name = "GameSolutions.findById", query = "SELECT g FROM GameSolutions g WHERE g.id = :id"),
-    @NamedQuery(name = "GameSolutions.findByUserId", query = "SELECT g FROM GameSolutions g WHERE g.userId = :userId"),
-    @NamedQuery(name = "GameSolutions.findByUserName", query = "SELECT g FROM GameSolutions g WHERE g.userName = :userName"),
-    @NamedQuery(name = "GameSolutions.findByTimeStart", query = "SELECT g FROM GameSolutions g WHERE g.timeStart = :timeStart"),
-    @NamedQuery(name = "GameSolutions.findByLasting", query = "SELECT g FROM GameSolutions g WHERE g.lasting = :lasting"),
-    @NamedQuery(name = "GameSolutions.findByFinished", query = "SELECT g FROM GameSolutions g WHERE g.finished = :finished")
+    @NamedQuery(name = "GameSolution.findAll",query = "SELECT g FROM GameSolution g"),
+    @NamedQuery(name = "GameSolution.findById", query = "SELECT g FROM GameSolution g WHERE g.id = :id"),
+    @NamedQuery(name = "GameSolution.findByUserId", query = "SELECT g FROM GameSolution g WHERE g.userId = :userId"),
+    @NamedQuery(name = "GameSolution.findByUserName", query = "SELECT g FROM GameSolution g WHERE g.userName = :userName"),
+    @NamedQuery(name = "GameSolution.findByTimeStart", query = "SELECT g FROM GameSolution g WHERE g.timeStart = :timeStart"),
+    @NamedQuery(name = "GameSolution.findByLasting", query = "SELECT g FROM GameSolution g WHERE g.lasting = :lasting"),
+    @NamedQuery(name = "GameSolution.findByFinished", query = "SELECT g FROM GameSolution g WHERE g.finished = :finished")
 })
-public class GameSolutions implements Serializable
+public class GameSolution implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -70,21 +70,21 @@ public class GameSolutions implements Serializable
     
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Games gameId;
+    private Game gameId;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameSolutionId")
-    private Collection<SavedGames> savedGamesCollection;
+    private Collection<SavedGame> savedGamesCollection;
 
-    public GameSolutions()
+    public GameSolution()
     {
     }
 
-    public GameSolutions(Integer id)
+    public GameSolution(Integer id)
     {
         this.id = id;
     }
 
-    public GameSolutions(Integer id, String userId, String userName,
+    public GameSolution(Integer id, String userId, String userName,
             String values, Date timeStart, int lasting, boolean finished)
     {
         this.id = id;
@@ -166,23 +166,23 @@ public class GameSolutions implements Serializable
         this.finished = finished;
     }
 
-    public Games getGameId()
+    public Game getGameId()
     {
         return gameId;
     }
 
-    public void setGameId(Games gameId)
+    public void setGameId(Game gameId)
     {
         this.gameId = gameId;
     }
 
     @XmlTransient
-    public Collection<SavedGames> getSavedGamesCollection()
+    public Collection<SavedGame> getSavedGamesCollection()
     {
         return savedGamesCollection;
     }
 
-    public void setSavedGamesCollection(Collection<SavedGames> savedGamesCollection)
+    public void setSavedGamesCollection(Collection<SavedGame> savedGamesCollection)
     {
         this.savedGamesCollection = savedGamesCollection;
     }
@@ -196,11 +196,12 @@ public class GameSolutions implements Serializable
     @Override
     public boolean equals(Object object)
     {
-        if (!(object instanceof GameSolutions)) {
+        if (!(object instanceof GameSolution))
+        {
             return false;
         }
         
-        GameSolutions other = (GameSolutions) object;
+        GameSolution other = (GameSolution) object;
         
         if ((this.id == null && other.id != null) ||
             (this.id != null && !this.id.equals(other.id)))
