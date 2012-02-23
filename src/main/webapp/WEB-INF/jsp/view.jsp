@@ -12,83 +12,121 @@
 <c:set var="app_path" value="${pageContext.request.contextPath}" />
 
 <script type="text/javascript"><!--
-   
-    // after document is loaded
+    
+    // after the document is loaded
     $(document).ready(function ()
     {
-        /* Game board */
+        /* Game board *********************************************************/
         
-        // activate input check on fields
-        $('#<portlet:namespace/>_board input').keypress(sudoku_game__digit_only)
-        // movement on fields with arrows
-        $('#<portlet:namespace/>_board input').keyup(sudoku_game__arrow_movement);
-        // validator of each field
-        $('#<portlet:namespace/>_board input').blur(sudoku_game__field_validator);
-        // change size of board
-        sudoku_game__board_resizer('<portlet:namespace/>');
-        // focus on first field
-        $('#<portlet:namespace/>_board input[name="board_field[0]"]').focus();
+        window['<portlet:namespace/>_board'] = new SudokuGame_GameBoard('#<portlet:namespace/>_board');
+        window['<portlet:namespace/>_board'].init();
         
-        /* Timer */
         
-        // only if not already started
-        if (window['<portlet:namespace/>__timeout_id'] == undefined)
+        /* Timer **************************************************************/
+        
+        // a start event function
+        window['<portlet:namespace/>_start'] = function ()
         {
-            // init timeout id var
-            window['<portlet:namespace/>__timeout_id'] = null;
-            // start timer
-            if (window['<portlet:namespace/>__timeout'])
-            {
-                // More portlet on same page portlet reload fix, a scenario:
-                //
-                // 1) In the first portlet the game is paused.
-                //    In the second portlet the game is running.
-                // 2) The second portlet is set to maximized state.
-                // 3) The second portlet is set to normal state.
-                // 
-                // This scenario implicates starting the game in the first portlet.
-                if (window['<portlet:namespace/>__timeout_paused'] == undefined)
-                {
-                    sudoku_game__timer('<portlet:namespace/>', window['<portlet:namespace/>__timeout']);
-                }
-                else
-                {
-                    sudoku_game__set_timer_to_el('<portlet:namespace/>', window['<portlet:namespace/>__timeout']);
-                }
-            }
-            else
-            {
-                sudoku_game__timer('<portlet:namespace/>');
-            }
+            window['<portlet:namespace/>_board'].setEnabled(true);
+            $('#<portlet:namespace/>_footer-pause').show();
+            $('#<portlet:namespace/>_footer-play').hide();
+        }
+        
+        // a pause event function
+        window['<portlet:namespace/>_pause'] = function ()
+        {
+            window['<portlet:namespace/>_board'].setEnabled(false);
+            $('#<portlet:namespace/>_footer-pause').hide();
+            $('#<portlet:namespace/>_footer-play').show();
+        }
+        
+        // init the timer or replace the root element
+        if (window['<portlet:namespace/>__timer'] == undefined)
+        {            
+            window['<portlet:namespace/>__timer'] = new SudokuGame_Timer(
+                    '#<portlet:namespace/>_footer-timer',
+                    '<portlet:namespace/>_start', 
+                    '<portlet:namespace/>_pause'
+            );
+        }
+        else
+        {
+            window['<portlet:namespace/>__timer'].setRootElement('#<portlet:namespace/>_footer-timer');
+        }
+        
+        // render if paused renders the timer otherwise if not started starts the timer
+        if (window['<portlet:namespace/>__timer'].isPaused())
+        {
+            window['<portlet:namespace/>__timer'].pause();
+        }
+        else if (!window['<portlet:namespace/>__timer'].isStarted())
+        {
+            window['<portlet:namespace/>__timer'].start();
         }
         
         // pause timer event
         $('#<portlet:namespace/>_footer-pause').click(function ()
         {
-            sudoku_game__pause_game('<portlet:namespace/>');
+            window['<portlet:namespace/>__timer'].pause();
             return false;
         });
         
-        // pause timer event
+        // resume timer event
         $('#<portlet:namespace/>_footer-play').click(function ()
         {
-            sudoku_game__continue_game('<portlet:namespace/>');
+            window['<portlet:namespace/>__timer'].start();
             return false;
         });
         
-        /* Statistics */
+        /* Statistics *********************************************************/
         
         // switching to statistics in normal state of portlet
         $('#<portlet:namespace/>_footer-statistics').click(function ()
         {
-            sudoku_game__show_stats('<portlet:namespace/>');
+            var $game_board = $('#<portlet:namespace/>_board');
+            var $game_stats = $('#<portlet:namespace/>_statistics');
+            var $show_statistics_button = $('#<portlet:namespace/>_footer-statistics');
+            var $show_game_button = $('#<portlet:namespace/>_footer-show-game');
+            var $game_buttons = $('#<portlet:namespace/>_footer-pause, #<portlet:namespace/>_footer-play');
+
+            if ($game_board && $game_stats)
+            {
+                // pause game
+                window['<portlet:namespace/>__timer'].pause();
+                $game_buttons.hide();
+                // hide button and board
+                $show_statistics_button.hide();
+                $game_board.hide();
+                // show stats
+                $game_stats.fadeIn();
+                // show reverse action button
+                $show_game_button.show();
+            }
+
             return false;
         });
         
         // switching to game from statistics in normal state of portlet
         $('#<portlet:namespace/>_footer-show-game').click(function ()
         {
-            sudoku_game__hide_stats('<portlet:namespace/>');
+            var $game_board = $('#<portlet:namespace/>_board');
+            var $game_stats = $('#<portlet:namespace/>_statistics');
+            var $show_statistics_button = $('#<portlet:namespace/>_footer-statistics');
+            var $show_game_button = $('#<portlet:namespace/>_footer-show-game');
+
+            if ($game_board && $game_stats)
+            {
+                // pause game
+                window['<portlet:namespace/>__timer'].start();
+                // hide button and board
+                $show_game_button.hide();
+                $game_stats.hide();
+                // show stats
+                $game_board.fadeIn();
+                // show reverse action button
+                $show_statistics_button.show();
+            }
+
             return false;
         });
         

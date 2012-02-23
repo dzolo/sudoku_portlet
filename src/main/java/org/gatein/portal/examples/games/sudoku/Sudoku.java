@@ -32,6 +32,9 @@ public class Sudoku extends GenericPortlet
         {null, null, null, 8, null, null, null, null, null}
     };
 
+    /**
+     * @see GenericPortlet#doView(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
+     */
     @Override
     public void doView(RenderRequest request, RenderResponse response)
             throws PortletException, IOException
@@ -43,6 +46,9 @@ public class Sudoku extends GenericPortlet
         dispatcher.include(request, response);
     }
 
+    /**
+     * @see GenericPortlet#doEdit(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
+     */
     @Override
     public void doEdit(RenderRequest request, RenderResponse response)
             throws PortletException, IOException
@@ -53,6 +59,9 @@ public class Sudoku extends GenericPortlet
         dispatcher.include(request, response);
     }
 
+    /**
+     * @see GenericPortlet#doHelp(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
+     */
     @Override
     public void doHelp(RenderRequest request, RenderResponse response)
             throws PortletException, IOException
@@ -63,6 +72,9 @@ public class Sudoku extends GenericPortlet
         dispatcher.include(request, response);
     }
 
+    /**
+     * @see GenericPortlet#doHeaders(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
+     */
     @Override
     public void doHeaders(RenderRequest request, RenderResponse response)
     {
@@ -76,17 +88,27 @@ public class Sudoku extends GenericPortlet
 
         Element script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/jquery-1.7.1.min.js");
+        script.setAttribute("src", path + "/js/lib/jquery-1.7.1.min.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
 
         script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/jquery.raty.min.js");
+        script.setAttribute("src", path + "/js/lib/jquery.raty.min.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
 
         script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/site.js");
+        script.setAttribute("src", path + "/js/exceptions.js");
+        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
+
+        script = response.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path + "/js/timer.js");
+        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
+
+        script = response.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path + "/js/game_board.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
 
         script = response.createElement("script");

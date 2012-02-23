@@ -13,7 +13,7 @@
  */
 var SudokuGame_Request = (function (contextPath)
 {
-    /** A private pproperty of the context path */
+    /** The context path (private property) */
     var _contextPath = null;
     
     /**
@@ -191,52 +191,3 @@ var SudokuGame_Request = (function (contextPath)
     // returns an instance of the class
     return this;
 });
-
-/**
- * The request failed exception class
- * 
- * @param message       A message of the error
- * @param cause         A cause of the error
- */
-function SudokuGame_RequestFailedException(message, cause)
-{
-    /** A name public property */
-    this.name = 'RequestFailedException';
-    /** A message public property */
-    this.message = message;
-    /** A cause public property */
-    this.cause = cause;
-    
-    /**
-     * Tranforms the exception object to a string
-     * 
-     * @return          A text reprezentation of the object
-     */
-    this.toString = function ()
-    {
-        return this.name + ': ' + this.message;
-    }
-}
-
-/**
- * The null pointer exception class
- * 
- * @param message       A message of the error
- */
-function SudokuGame_NullPointerException(message)
-{
-    /** A name public property */
-    this.name = 'IllegalStateException';
-    /** A message public property */
-    this.message = message;
-    
-    /**
-     * Tranforms the exception object to a string
-     * 
-     * @return          A text reprezentation of the object
-     */
-    this.toString = function ()
-    {
-        return this.name + ': ' + this.message;
-    }
-}

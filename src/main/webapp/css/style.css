@@ -225,6 +225,7 @@ a.sudoku-game_footer-pause
 
 a.sudoku-game_footer-play
 {
+    display: none;
     background-image: url(../images/icons/play_16x16.png);
 }
 
