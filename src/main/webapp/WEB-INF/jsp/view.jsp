@@ -69,6 +69,13 @@
             return false;
         });
         
+        // pause timer event
+        $('#<portlet:namespace/>_footer-play').click(function ()
+        {
+            sudoku_game__continue_game('<portlet:namespace/>');
+            return false;
+        });
+        
         /* Statistics */
         
         // switching to statistics in normal state of portlet
@@ -150,6 +157,7 @@
     <div class="sudoku-game_footer">
         <span id="<portlet:namespace/>_footer-timer" class="sudoku-game_footer-timer">x:x</span>
         <a href="#" id="<portlet:namespace/>_footer-pause" class="sudoku-game_button sudoku-game_footer-pause" title="Pause the game">Pause</a>
+        <a href="#" id="<portlet:namespace/>_footer-play" class="sudoku-game_button sudoku-game_footer-play" title="Continue the game">Continue</a>
         <c:if test="${renderRequest.windowState ne 'maximized'}">
             <a href="#" id="<portlet:namespace/>_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
             <a href="#" id="<portlet:namespace/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>

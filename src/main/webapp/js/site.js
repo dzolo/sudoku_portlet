@@ -229,15 +229,8 @@ function sudoku_game__pause_game(wid)
         $('#' + wid + '_board input').blur();
 
         // change button
-        $('#' + wid + '_footer-pause').unbind('click').text('Continue').attr({
-            'title' : 'Continue the game',
-            'id'    : wid + '_footer-play',
-            'class' : 'sudoku-game_footer-play sudoku-game_button'
-        }).click(function ()
-        {
-            sudoku_game__continue_game(wid);
-            return false;
-        });
+        $('#' + wid + '_footer-pause').hide();
+        $('#' + wid + '_footer-play').show();
     }
 }
 
@@ -263,15 +256,8 @@ function sudoku_game__continue_game(wid)
         $('#' + wid + '_board input[name="board_field[0]"]').focus();
 
         // change button
-        $('#' + wid + '_footer-play').unbind('click').text('Pause').attr({
-            'title' : 'Pause the game',
-            'id'    : wid + '_footer-pause',
-            'class' : 'sudoku-game_footer-pause sudoku-game_button'
-        }).click(function ()
-        {
-            sudoku_game__pause_game(wid);
-            return false;
-        });
+        $('#' + wid + '_footer-pause').show();
+        $('#' + wid + '_footer-play').hide();
     }
 }
 
