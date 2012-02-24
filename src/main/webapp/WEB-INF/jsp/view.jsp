@@ -137,7 +137,7 @@
 <div class="sudoku-game_container">
     
     <noscript>
-        <div>
+        <div class="sudoku-game_noscript">
             <p>
                 <strong>JavaScript required!</strong>
                 <br/>Please, enable JavaScript in your browser.

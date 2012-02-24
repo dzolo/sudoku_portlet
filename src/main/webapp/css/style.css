@@ -276,7 +276,7 @@ a.sudoku-game_button:hover
     box-shadow: 0 0 1px 1px #ccc;
 }
 
-noscript div
+noscript div.sudoku-game_noscript
 {
     position: absolute;
     top: 0;
@@ -288,7 +288,7 @@ noscript div
     opacity: 0.90;
 }
 
-noscript div p
+noscript div.sudoku-game_noscript p
 {
     position: relative;
     top: 30%;
