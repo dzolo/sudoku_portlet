@@ -135,16 +135,26 @@ var SudokuGame_Request = (function (contextPath)
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
-            data        : data,
-            dataType    : 'json',
+            data        : JSON.stringify(data),
             type        : 'POST',
+            dataType    : 'json',
+            contentType : 'application/json',
             success     : function (data, textStatus, jqXHR)
             {
-                returnObj = data;
+                if (data)
+                {
+                    returnObj = data;
+                }
+                else
+                {
+                    returnObj = {location: jqXHR.getResponseHeader('location')};
+                }
             },
             error       : function (jqXHR, textStatus, et)
             {
-                throw new SudokuGame_RequestFailedException(textStatus, et);
+                throw new SudokuGame_RequestFailedException(
+                        textStatus + ' ' + jqXHR.status, et
+                );
             }
         });
         

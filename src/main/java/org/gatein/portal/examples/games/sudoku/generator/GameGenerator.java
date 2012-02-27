@@ -11,11 +11,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import org.gatein.portal.examples.games.sudoku.entity.Game;
-import org.gatein.portal.examples.games.sudoku.entity.GameDifficulty;
+import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
 
 /**
- * Sudoku Game Generator
+ * Game Generator Class
  *
  * @author Ondřej Fibich
  */
@@ -23,26 +22,23 @@ public class GameGenerator
 {
     
     /**
-     * Generates a Sudoku game with a defined difficulty
+     * Generates an unsolved game with a defined difficulty
      * 
      * @param difficulty    A difficulty level of the game 
      * @return              A generated game as a string with values separated by comma
      */
-    public static Game generate(GameDifficulty difficulty)
+    public static String generate(GameDifficulty difficulty)
     {
-        Game game = new Game();
-        Integer[] gameFields = generateRandomGame();
-        unfillFields(gameFields, difficulty.getRandomUnfilledFieldCount());
-        game.setInitValues(join(gameFields, ","));
-        game.setTypeDificulty(difficulty);
-        // @TODO: game.setType();
-        return game;
+        Integer[] game = generateRandomGame();
+        unfillFields(game, difficulty.getRandomUnfilledFieldCount());
+        return join(game, ",");
     }
     
     /**
-     * Generates a random game and return it.
+     * Generates a random solved game and return it.
      * 
      * @return              A generated game as one-dimensional array
+     * @see http://en.wikipedia.org/wiki/Backtracking
      */
     private static Integer[] generateRandomGame()
     {
@@ -103,10 +99,10 @@ public class GameGenerator
     /**
      * Unfills a specified count of game fields
      * 
-     * @param gameFields    Pre-filled fields
+     * @param game          A solved game
      * @param count         A count of unfilled fields
      */
-    private static void unfillFields(Integer[] gameFields, int count)
+    private static void unfillFields(Integer[] game, int count)
     {
         Random r = new Random();
         
@@ -114,9 +110,9 @@ public class GameGenerator
         {
             int index = r.nextInt(81);
             
-            if (gameFields[index] != null)
+            if (game[index] != null)
             {
-                gameFields[index] = null;
+                game[index] = null;
                 count--;
             }
         }
@@ -132,10 +128,11 @@ public class GameGenerator
     protected static String join(Object[] array, String delimiter)
     {
         StringBuilder builder = new StringBuilder();
+        final String empty = "";
         
         for (int i = 0; i < array.length; i++)
         {
-            builder.append(array[i]);
+            builder.append(array[i] != null ? array[i] : empty);
             
             if ((i + 1) < array.length)
             {

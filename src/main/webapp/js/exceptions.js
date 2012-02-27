@@ -27,7 +27,7 @@ function SudokuGame_RequestFailedException(message, cause)
      */
     this.toString = function ()
     {
-        return this.name + ': ' + this.message;
+        return this.name + ': ' + this.message + '\nCause: ' + cause;
     }
 }
 

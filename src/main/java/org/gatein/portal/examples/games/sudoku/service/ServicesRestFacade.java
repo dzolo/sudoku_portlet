@@ -17,7 +17,7 @@ import org.gatein.portal.examples.games.sudoku.entity.Service;
 /**
  * Services REST Facade Class.
  *
- * @author Onřej Fibich
+ * @author Ondřej Fibich
  */
 @Path("service")
 public class ServicesRestFacade

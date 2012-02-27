@@ -13,6 +13,8 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
+import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 
 /**
  * Game Entity Class
@@ -26,8 +28,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
     @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
     @NamedQuery(name = "Game.findByInitDate", query = "SELECT g FROM Game g WHERE g.initDate = :initDate"),
-    @NamedQuery(name = "Game.findByType", query = "SELECT g FROM Game g WHERE g.type = :type"),
-    @NamedQuery(name = "Game.findByTypeDificulty", query = "SELECT g FROM Game g WHERE g.typeDificulty = :typeDificulty")
+    @NamedQuery(name = "Game.findByType", query = "SELECT g FROM Game g WHERE g.type = :type")
 })
 public class Game implements Serializable
 {
@@ -50,13 +51,14 @@ public class Game implements Serializable
     @Column(name = "init_values")
     private String initValues;
     
+    @Enumerated(EnumType.STRING)
     @Basic(optional = false)
     @Column(name = "type")
-    private String type;
+    private GameType type;
     
     @Enumerated(EnumType.STRING)
     @Column(name = "type_dificulty")
-    private GameDifficulty typeDificulty;
+    private GameDifficulty typeDifficulty;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameId")
     private Collection<GameSolution> gameSolutionsCollection;
@@ -74,7 +76,7 @@ public class Game implements Serializable
         this.id = id;
     }
 
-    public Game(Integer id, Date initDate, String initValues, String type)
+    public Game(Integer id, Date initDate, String initValues, GameType type)
     {
         this.id = id;
         this.initDate = initDate;
@@ -112,24 +114,24 @@ public class Game implements Serializable
         this.initValues = initValues;
     }
 
-    public String getType()
+    public GameType getType()
     {
         return type;
     }
 
-    public void setType(String type)
+    public void setType(GameType type)
     {
         this.type = type;
     }
 
-    public GameDifficulty getTypeDificulty()
+    public GameDifficulty getTypeDifficulty()
     {
-        return typeDificulty;
+        return typeDifficulty;
     }
 
-    public void setTypeDificulty(GameDifficulty typeDificulty)
+    public void setTypeDifficulty(GameDifficulty typeDificulty)
     {
-        this.typeDificulty = typeDificulty;
+        this.typeDifficulty = typeDificulty;
     }
 
     @XmlTransient

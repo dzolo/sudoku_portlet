@@ -5,7 +5,7 @@
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.entity;
+package org.gatein.portal.examples.games.sudoku.entity.datatype;
 
 import java.util.Random;
 
@@ -18,7 +18,7 @@ import java.util.Random;
 public enum GameDifficulty
 {
     EASY(15, 25),
-    MEDIUM(30, 45),
+    MODERATE(30, 45),
     HARD(50, 60),
     EXPERT(65, 68);
     

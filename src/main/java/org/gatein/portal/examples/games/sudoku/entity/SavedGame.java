@@ -41,7 +41,7 @@ public class SavedGame implements Serializable
     
     @Basic(optional = false)
     @Lob
-    @Column(name = "values")
+    @Column(name = "values_")
     private String values;
     
     @JoinColumn(name = "game_solution_id", referencedColumnName = "id")

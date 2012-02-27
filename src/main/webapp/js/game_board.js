@@ -37,7 +37,7 @@ function SudokuGame_GameBoard(rootElement)
             return true;
         }
         // digit
-        else if ((("123456789").indexOf(String.fromCharCode(key)) > -1))
+        else if ((('123456789').indexOf(String.fromCharCode(key)) > -1))
         {
             // just one digit
             return ($(this).val().length == 0);
@@ -100,7 +100,6 @@ function SudokuGame_GameBoard(rootElement)
 
         if ($board_table)
         {
-            var $readonly_inputs = $board_table.find('td input[readonly="readonly"]');
             var width = $board_table.width();
             // width / count of rows - borders sizes in pixels
             var item_width = Math.floor(width / 9 - 10);
@@ -113,13 +112,6 @@ function SudokuGame_GameBoard(rootElement)
 
             $board_table.find('td input').css({
                 'fontSize' : Math.round(item_width * 2 / 3)
-            });
-
-            // set backgroud to solid fields
-            $readonly_inputs.css({
-                'backgroundColor' : '#f2f2f2'
-            }).parent().css({
-                'backgroundColor' : '#f2f2f2'
             });
 
             // fix for IE7
@@ -209,7 +201,7 @@ function SudokuGame_GameBoard(rootElement)
     this.setEnabled = function (enabled)
     {
         _enabled = (enabled) ? true : false;
-        
+
         if (_enabled)
         {
             $(_rootName + '-locker').hide();
@@ -251,6 +243,37 @@ function SudokuGame_GameBoard(rootElement)
             throw new SudokuGame_NullPointerException(
                     "An invalid root element of the game board"
             );
+        }
+    }
+    
+    /**
+     * Sets fields of the game
+     * 
+     * @param game          A game in a form of a string where values are separated by commas
+     */
+    this.setFields = function (game)
+    {
+        var fields = game.split(',');
+        
+        if (fields.length != 81)
+        {
+            throw new SudokuGame_NullPointerException("Invalid game reprezentation");
+        }
+        
+        _$root.find('input').removeAttr('readonly');
+        _$root.find('.sudoku-game_readonly-input').removeClass('sudoku-game_readonly-input');
+        
+        for (var i = 0; i < fields.length; i++)
+        {
+            var input = _$root.find('input[name="board_field[' + i + ']"]');
+            
+            input.val(fields[i]);
+            
+            if (fields[i])
+            {
+                input.attr('readonly', 'readonly');
+                input.parent().addClass('sudoku-game_readonly-input');
+            }
         }
     }
     

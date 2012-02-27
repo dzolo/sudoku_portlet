@@ -42,17 +42,15 @@ public class GameSolution implements Serializable
     @Column(name = "id")
     private Integer id;
     
-    @Basic(optional = false)
     @Column(name = "user_id")
     private String userId;
     
-    @Basic(optional = false)
     @Column(name = "user_name")
     private String userName;
     
     @Basic(optional = false)
     @Lob
-    @Column(name = "values")
+    @Column(name = "values_")
     private String values;
     
     @Basic(optional = false)

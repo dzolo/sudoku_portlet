@@ -19,19 +19,6 @@ import org.w3c.dom.Element;
  */
 public class Sudoku extends GenericPortlet
 {
-    /** Example array */
-    private final static Integer[][] game = {
-        {null, null, null, 4, null, null, null, null, null},
-        {1, null, null, null, null, null, null, null, 8},
-        {null, 2, null, null, null, null, null, null, null},
-        {null, null, null, null, null, null, 4, null, null},
-        {null, null, null, null, null, null, null, null, 6},
-        {5, null, null, 6, null, null, null, null, null},
-        {null, null, null, null, null, null, null, 9, null},
-        {null, null, null, null, null, 9, null, null, null},
-        {null, null, null, 8, null, null, null, null, null}
-    };
-
     /**
      * @see GenericPortlet#doView(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
      */
@@ -40,7 +27,6 @@ public class Sudoku extends GenericPortlet
             throws PortletException, IOException
     {
         response.setContentType("text/html");
-        request.setAttribute("game", game);
         PortletRequestDispatcher dispatcher =
                 getPortletContext().getRequestDispatcher("/WEB-INF/jsp/view.jsp");
         dispatcher.include(request, response);

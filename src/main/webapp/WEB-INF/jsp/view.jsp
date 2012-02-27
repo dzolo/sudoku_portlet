@@ -13,6 +13,11 @@
 
 <script type="text/javascript"><!--
     
+    SudokuGame_userId = null;
+    <c:if test="${not empty pageContext.request.remoteUser}">
+    SudokuGame_userId = '<c:out value="${pageContext.request.remoteUser}"/>'
+    </c:if>
+    
     // after the document is loaded
     $(document).ready(function ()
     {
@@ -41,9 +46,9 @@
         }
         
         // init the timer or replace the root element
-        if (window['<portlet:namespace/>__timer'] == undefined)
+        if (window['<portlet:namespace/>_timer'] == undefined)
         {            
-            window['<portlet:namespace/>__timer'] = new SudokuGame_Timer(
+            window['<portlet:namespace/>_timer'] = new SudokuGame_Timer(
                     '#<portlet:namespace/>_footer-timer',
                     '<portlet:namespace/>_start', 
                     '<portlet:namespace/>_pause'
@@ -51,30 +56,30 @@
         }
         else
         {
-            window['<portlet:namespace/>__timer'].setRootElement('#<portlet:namespace/>_footer-timer');
+            window['<portlet:namespace/>_timer'].setRootElement('#<portlet:namespace/>_footer-timer');
         }
         
         // render if paused renders the timer otherwise if not started starts the timer
-        if (window['<portlet:namespace/>__timer'].isPaused())
+        if (window['<portlet:namespace/>_timer'].isPaused())
         {
-            window['<portlet:namespace/>__timer'].pause();
+            window['<portlet:namespace/>_timer'].pause();
         }
-        else if (!window['<portlet:namespace/>__timer'].isStarted())
+        else if (!window['<portlet:namespace/>_timer'].isStarted())
         {
-            window['<portlet:namespace/>__timer'].start();
+            window['<portlet:namespace/>_timer'].start();
         }
         
         // pause timer event
         $('#<portlet:namespace/>_footer-pause').click(function ()
         {
-            window['<portlet:namespace/>__timer'].pause();
+            window['<portlet:namespace/>_timer'].pause();
             return false;
         });
         
         // resume timer event
         $('#<portlet:namespace/>_footer-play').click(function ()
         {
-            window['<portlet:namespace/>__timer'].start();
+            window['<portlet:namespace/>_timer'].start();
             return false;
         });
         
@@ -92,7 +97,7 @@
             if ($game_board && $game_stats)
             {
                 // pause the game
-                window['<portlet:namespace/>__timer'].pause();
+                window['<portlet:namespace/>_timer'].pause();
                 $game_buttons.hide();
                 // hide button and board
                 $show_statistics_button.hide();
@@ -117,7 +122,7 @@
             if ($game_board && $game_stats)
             {
                 // resume the game
-                window['<portlet:namespace/>__timer'].start();
+                window['<portlet:namespace/>_timer'].start();
                 // hide button and board
                 $show_game_button.hide();
                 $game_stats.hide();
@@ -130,6 +135,53 @@
             return false;
         });
         
+        /* Toolbar Menu *******************************************************/
+        
+        $('#<portlet:namespace/>_button_new').click(function ()
+        {
+            var request = new SudokuGame_Request('<c:out value="${app_path}"/>');
+            var data, id;
+            
+            try
+            {
+                // create a game
+                data = request.makePost('/game', {typeDifficulty: 'HARD'});
+                
+                // get an ID of the created game
+                id = data.location.split('/').pop();
+                // get the created game
+                data = request.makeGet('/game/' + id);
+                
+                // create a game solution of the created game
+                data = request.makePost('/game_solution/' + id, {
+                    userId     : SudokuGame_userId,
+                    userName   : null,
+                    values     : data.initValues
+                });
+                
+                // get an ID of the created game solution
+                id = data.location.split('/').pop();
+                // get the created solution
+                data = request.makeGet('/game_solution/' + id);
+                
+                // reset the timer
+                window['<portlet:namespace/>_timer'].pause();
+                window['<portlet:namespace/>_timer'].setTimeout(0);
+                
+                // set the game board with the solution
+                window['<portlet:namespace/>_board'].setFields(data.values);
+                
+                // start the timer
+                window['<portlet:namespace/>_timer'].start();
+            }
+            catch (e)
+            {
+                alert('Can not create a new game.\nError: ' + e.toString());
+            }
+            
+            return false;
+        });
+       
     });
    
 --></script>
@@ -146,7 +198,7 @@
     </noscript>
 
     <div class="sudoku-game_toolbar">
-        <a href="#" class="sudoku-game_button" title="Create a new game">
+        <a href="#" id="<portlet:namespace/>_button_new" class="sudoku-game_button" title="Create a new game">
             <img alt="New icon" src="<c:out value="${app_path}"/>/images/icons/new_16x16.png" />
             <span>New</span>
         </a>
@@ -174,14 +226,13 @@
     <div class="sudoku-game_body<c:if test="${renderRequest.windowState eq 'maximized'}"> sudoku-game_state-maximized</c:if>">
         <div class="sudoku-game_board" id="<portlet:namespace/>_board">
             <table>
-                <c:forEach items="${game}" var="row" varStatus="row_status">
-                    <c:set var="border_bottom" value="${((row_status.count mod 3) eq 0) and (not row_status.first) and (not row_status.last)}" />
+                <c:forEach var="rowIndex" begin="1" end="9" step="1">
+                    <c:set var="borderBottom" value="${((rowIndex mod 3) eq 0) and (rowIndex ne 1) and (rowIndex ne 9)}" />
                     <tr>
-                        <c:forEach items="${row}" var="field" varStatus="field_status">
-                            <c:set var="border_right" value="${((field_status.count mod 3) eq 0) and (not field_status.first) and (not field_status.last)}" />
-                            <c:set var="index" value="${(row_status.count - 1) * 9 + (field_status.count - 1)}" />
-                            <td style="<c:if test="${border_bottom}">border-bottom: 2px solid #a6a6a6;</c:if><c:if test="${border_right}">border-right: 2px solid #a6a6a6;</c:if>">
-                                <input name="board_field[<c:out value="${index}"/>]" type="text"<c:if test="${not empty field}"> value="${field}" readonly="readonly"</c:if> class="sudoku-game_board-field" />
+                        <c:forEach var="colIndex" begin="1" end="9" step="1">
+                            <c:set var="borderRight" value="${((colIndex mod 3) eq 0) and (colIndex ne 1) and (colIndex ne 9)}" />
+                            <td style="<c:if test="${borderBottom}">border-bottom: 2px solid #a6a6a6;</c:if><c:if test="${borderRight}">border-right: 2px solid #a6a6a6;</c:if>">
+                                <input name="board_field[<c:out value="${(rowIndex - 1) * 9 + (colIndex - 1)}"/>]" type="text" class="sudoku-game_board-field" />
                             </td>
                         </c:forEach>
                     </tr>

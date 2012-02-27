@@ -89,6 +89,12 @@
     background-color: white;
 }
 
+.sudoku-game_board table td.sudoku-game_readonly-input,
+.sudoku-game_board table td.sudoku-game_readonly-input input
+{
+    background-color: #f2f2f2;
+}
+
 .sudoku-game_board table td.sudoku-game_field-error
 {
     background-color: #fe9494;

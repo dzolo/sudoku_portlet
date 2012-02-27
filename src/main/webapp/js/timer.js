@@ -86,6 +86,21 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     }
     
     /**
+     * Sets a timeout of the timer
+     * 
+     * @param timeout       A new timeout in seconds
+     */
+    this.setTimeout = function (timeout)
+    {
+        if (timeout < 0)
+        {
+            throw new SudokuGame_NullPointerException("An invalid timeout value");
+        }
+        
+        _timeout = timeout;
+    }
+    
+    /**
      * Starts the timer
      * 
      * @param time      Beginning [optional]
