@@ -54,8 +54,9 @@ public class Game implements Serializable
     @Column(name = "type")
     private String type;
     
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_dificulty")
-    private String typeDificulty;
+    private GameDifficulty typeDificulty;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameId")
     private Collection<GameSolution> gameSolutionsCollection;
@@ -121,12 +122,12 @@ public class Game implements Serializable
         this.type = type;
     }
 
-    public String getTypeDificulty()
+    public GameDifficulty getTypeDificulty()
     {
         return typeDificulty;
     }
 
-    public void setTypeDificulty(String typeDificulty)
+    public void setTypeDificulty(GameDifficulty typeDificulty)
     {
         this.typeDificulty = typeDificulty;
     }

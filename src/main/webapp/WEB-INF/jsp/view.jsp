@@ -91,7 +91,7 @@
 
             if ($game_board && $game_stats)
             {
-                // pause game
+                // pause the game
                 window['<portlet:namespace/>__timer'].pause();
                 $game_buttons.hide();
                 // hide button and board
@@ -116,7 +116,7 @@
 
             if ($game_board && $game_stats)
             {
-                // pause game
+                // resume the game
                 window['<portlet:namespace/>__timer'].start();
                 // hide button and board
                 $show_game_button.hide();
