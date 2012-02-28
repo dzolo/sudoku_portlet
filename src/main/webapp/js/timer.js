@@ -23,10 +23,6 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     var _timeout = 0;
     /** Indicator of the pause game */
     var _paused = false;
-    /** Start event function */
-    var _startEventFnc = null;
-    /** Pause event function */
-    var _pauseEventFnc = null;
     
     /**
      * Checks if the timer is paused
@@ -46,26 +42,6 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     this.isStarted = function ()
     {
         return _timeout_id != null;
-    }
-    
-    /**
-     * Sets a start event function
-     * 
-     * @param fnc         A start event function
-     */
-    this.setStartEvent = function (fnc)
-    {
-        _startEventFnc = fnc;
-    }
-    
-    /**
-     * Sets a pause event function
-     * 
-     * @param fnc          A pause event function
-     */
-    this.setPauseEvent = function (fnc)
-    {
-        _pauseEventFnc = fnc;
     }
     
     /**
@@ -117,12 +93,8 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
         // change the timeout
         _timeout = time;
         // render
+        _$root.show();
         this.render();
-        // trigger the start event
-        if (_startEventFnc)
-        {
-            eval(_startEventFnc + '()');
-        }
         
         // a timeout hack for running of a inner method of a class
         var self = this;
@@ -143,11 +115,6 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
         }
         // render
         this.render();
-        // trigger the pause event
-        if (_pauseEventFnc)
-        {
-            eval(_pauseEventFnc + '()');
-        }
     }
     
     /**
@@ -169,8 +136,6 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     // CONSTRUCT START /////////////////////////////////////////////////////////
     
     this.setRootElement(rootElement);
-    this.setStartEvent(startEvent);
-    this.setPauseEvent(pauseEvent);
     this.render();
     
     // CONTRUCT END    /////////////////////////////////////////////////////////

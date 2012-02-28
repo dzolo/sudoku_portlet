@@ -19,6 +19,10 @@ function SudokuGame_GameBoard(rootElement)
     var _rootName = null;
     /** An enabled indicator */
     var _enabled = true;
+    /** A game on indicator */
+    var _gamePlayed = false;
+    /** An array of game fields objects */
+    var _fields;
     
     /**
      * On key press event hanler. Enables just one digit in a field.
@@ -26,7 +30,7 @@ function SudokuGame_GameBoard(rootElement)
      * @param e         Key press event
      * @return          Bool value - true for accepting
      */
-    this._digit_only_event = function (e)
+    this._digitOnlyEvent = function (e)
     {
         var key = e.keyCode ? e.keyCode : e.which;
 
@@ -52,7 +56,7 @@ function SudokuGame_GameBoard(rootElement)
      * @param $field    A field as a JQuery object
      * @param focus     An indicator of a focus on the error field
      */
-    this._field_add_error = function ($field, focus)
+    this.addErrorToField = function ($field, focus)
     {
         if (!$field.parent().hasClass('sudoku-game_field-error'))
         {
@@ -70,7 +74,7 @@ function SudokuGame_GameBoard(rootElement)
      * 
      * @return          true if the field is valid, false otherwise 
      */
-    this._field_validator = function()
+    this._fieldValidator = function()
     {
         var $field = $(this);
 
@@ -78,7 +82,7 @@ function SudokuGame_GameBoard(rootElement)
         {
             if ($field.val().length && !$field.val().match(/^[1-9]{1}$/))
             {
-                this._field_add_error($field, false);
+                this.addErrorToField($field, false);
                 return false;
             }
             else if ($field.parent().hasClass('sudoku-game_field-error'))
@@ -93,7 +97,7 @@ function SudokuGame_GameBoard(rootElement)
     /**
      * Resizes fields on the game board to calculated width and height.
      */
-    this._board_resizer = function ()
+    this.resizeBoard = function ()
     {
         var $board_table = $(_rootName + ' table');
         var $board_locker = $(_rootName + '-locker');
@@ -129,7 +133,7 @@ function SudokuGame_GameBoard(rootElement)
      * 
      * @param e         Key press up
      */
-    this._arrow_movement = function (e)
+    this._arrowMovement = function (e)
     {
         var key = e.keyCode ? e.keyCode : e.which;
         var $this = $(this);
@@ -175,22 +179,7 @@ function SudokuGame_GameBoard(rootElement)
 
             var focusField = 'input[name="board_field[' + index + ']"]';
             $this.parent().parent().parent().find(focusField).focus();
-        }    
-    }
-    
-    /**
-     * Initialization of the game board
-     */
-    this.init = function ()
-    {
-        // activate input check on fields
-        $(_rootName + ' input').keypress(this._digit_only_event)
-        // movement on fields with arrows
-        $(_rootName + ' input').keyup(this._arrow_movement);
-        // validator of each field
-        $(_rootName + ' input').blur(this.sudoku_game__field_validator);
-        // change size of board
-        this._board_resizer();
+        }
     }
     
     /**
@@ -229,6 +218,16 @@ function SudokuGame_GameBoard(rootElement)
     }
     
     /**
+     * Gets a state of the game board - a game is on
+     * 
+     * @return           true for a game is on, false for otherwise
+     */
+    this.isGamePlayed = function ()
+    {
+        return _gamePlayed;
+    }
+    
+    /**
      * Sets a root element
      * 
      * @param rootElement   A root element of the game board
@@ -241,7 +240,7 @@ function SudokuGame_GameBoard(rootElement)
         if (!_$root.length)
         {
             throw new SudokuGame_NullPointerException(
-                    "An invalid root element of the game board"
+                    'An invalid root element of the game board'
             );
         }
     }
@@ -257,19 +256,30 @@ function SudokuGame_GameBoard(rootElement)
         
         if (fields.length != 81)
         {
-            throw new SudokuGame_NullPointerException("Invalid game reprezentation");
+            throw new SudokuGame_NullPointerException('Invalid game reprezentation');
         }
         
+        _fields = fields;
+        _gamePlayed = true;
+        
+        this.render();
+    }
+    
+    /**
+     * Renders fields fo the game board
+     */
+    this.render = function ()
+    {
         _$root.find('input').removeAttr('readonly');
         _$root.find('.sudoku-game_readonly-input').removeClass('sudoku-game_readonly-input');
         
-        for (var i = 0; i < fields.length; i++)
+        for (var i = 0; i < _fields.length; i++)
         {
             var input = _$root.find('input[name="board_field[' + i + ']"]');
             
-            input.val(fields[i]);
+            input.val(_fields[i]);
             
-            if (fields[i])
+            if (_fields[i])
             {
                 input.attr('readonly', 'readonly');
                 input.parent().addClass('sudoku-game_readonly-input');
@@ -279,7 +289,16 @@ function SudokuGame_GameBoard(rootElement)
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
     
+    // set root element
     this.setRootElement(rootElement);
+    // activate input check on fields
+    $(_rootName + ' input').keypress(this._digitOnlyEvent)
+    // movement on fields with arrows
+    $(_rootName + ' input').keyup(this._arrowMovement);
+    // validator of each field
+    $(_rootName + ' input').blur(this._fieldValidator);
+    // change size of board
+    this.resizeBoard();
     
     // CONTRUCT END    /////////////////////////////////////////////////////////
     

@@ -19,8 +19,8 @@ public enum GameDifficulty
 {
     EASY(15, 25),
     MODERATE(30, 45),
-    HARD(50, 60),
-    EXPERT(65, 68);
+    HARD(50, 55),
+    EXPERT(60, 63);
     
     /**
      * A minimal count of unfilled filels in this difficulty level 

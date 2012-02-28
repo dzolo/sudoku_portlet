@@ -21,65 +21,26 @@
     // after the document is loaded
     $(document).ready(function ()
     {
-        /* Game board *********************************************************/
+        /* Game ***************************************************************/
         
-        window['<portlet:namespace/>_board'] = new SudokuGame_GameBoard('#<portlet:namespace/>_board');
-        window['<portlet:namespace/>_board'].init();
-        
-        
-        /* Timer **************************************************************/
-        
-        // a start event function
-        window['<portlet:namespace/>_start'] = function ()
+        if (window['<portlet:namespace/>_game'] == undefined)
         {
-            window['<portlet:namespace/>_board'].setEnabled(true);
-            $('#<portlet:namespace/>_footer-pause').show();
-            $('#<portlet:namespace/>_footer-play').hide();
+            window['<portlet:namespace/>_game'] = new SudokuGame_Game('<portlet:namespace/>');
         }
         
-        // a pause event function
-        window['<portlet:namespace/>_pause'] = function ()
-        {
-            window['<portlet:namespace/>_board'].setEnabled(false);
-            $('#<portlet:namespace/>_footer-pause').hide();
-            $('#<portlet:namespace/>_footer-play').show();
-        }
-        
-        // init the timer or replace the root element
-        if (window['<portlet:namespace/>_timer'] == undefined)
-        {            
-            window['<portlet:namespace/>_timer'] = new SudokuGame_Timer(
-                    '#<portlet:namespace/>_footer-timer',
-                    '<portlet:namespace/>_start', 
-                    '<portlet:namespace/>_pause'
-            );
-        }
-        else
-        {
-            window['<portlet:namespace/>_timer'].setRootElement('#<portlet:namespace/>_footer-timer');
-        }
-        
-        // render if paused renders the timer otherwise if not started starts the timer
-        if (window['<portlet:namespace/>_timer'].isPaused())
-        {
-            window['<portlet:namespace/>_timer'].pause();
-        }
-        else if (!window['<portlet:namespace/>_timer'].isStarted())
-        {
-            window['<portlet:namespace/>_timer'].start();
-        }
+        window['<portlet:namespace/>_game'].init();
         
         // pause timer event
         $('#<portlet:namespace/>_footer-pause').click(function ()
         {
-            window['<portlet:namespace/>_timer'].pause();
+            window['<portlet:namespace/>_game'].pause();
             return false;
         });
         
         // resume timer event
         $('#<portlet:namespace/>_footer-play').click(function ()
         {
-            window['<portlet:namespace/>_timer'].start();
+            window['<portlet:namespace/>_game'].start();
             return false;
         });
         
@@ -96,10 +57,13 @@
 
             if ($game_board && $game_stats)
             {
-                // pause the game
-                window['<portlet:namespace/>_timer'].pause();
-                $game_buttons.hide();
+                // pause the game if started
+                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed())
+                {
+                    window['<portlet:namespace/>_game'].pause();
+                }
                 // hide button and board
+                $game_buttons.hide();
                 $show_statistics_button.hide();
                 $game_board.hide();
                 // show stats
@@ -121,8 +85,11 @@
 
             if ($game_board && $game_stats)
             {
-                // resume the game
-                window['<portlet:namespace/>_timer'].start();
+                // resume the game if started
+                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed())
+                {
+                    window['<portlet:namespace/>_game'].start();
+                }
                 // hide button and board
                 $show_game_button.hide();
                 $game_stats.hide();
@@ -145,7 +112,7 @@
             try
             {
                 // create a game
-                data = request.makePost('/game', {typeDifficulty: 'HARD'});
+                data = request.makePost('/game', {typeDifficulty: 'EXPERT'});
                 
                 // get an ID of the created game
                 id = data.location.split('/').pop();
@@ -164,15 +131,10 @@
                 // get the created solution
                 data = request.makeGet('/game_solution/' + id);
                 
-                // reset the timer
-                window['<portlet:namespace/>_timer'].pause();
-                window['<portlet:namespace/>_timer'].setTimeout(0);
-                
-                // set the game board with the solution
-                window['<portlet:namespace/>_board'].setFields(data.values);
-                
-                // start the timer
-                window['<portlet:namespace/>_timer'].start();
+                // start the game
+                window['<portlet:namespace/>_game'].pause();
+                window['<portlet:namespace/>_game'].getTimer().setTimeout(0);
+                window['<portlet:namespace/>_game'].start(data.values);
             }
             catch (e)
             {

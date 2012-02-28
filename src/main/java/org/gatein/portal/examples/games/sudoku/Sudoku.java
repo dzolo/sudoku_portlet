@@ -99,6 +99,11 @@ public class Sudoku extends GenericPortlet
 
         script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path + "/js/game.js");
+        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
+
+        script = response.createElement("script");
+        script.setAttribute("type", "text/javascript");
         script.setAttribute("src", path + "/js/request.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
     }
