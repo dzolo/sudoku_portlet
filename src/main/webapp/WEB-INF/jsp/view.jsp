@@ -13,6 +13,8 @@
 
 <script type="text/javascript"><!--
     
+    // global value contains an indentificator of remote user or null if
+    // the current user is logged in
     SudokuGame_userId = null;
     <c:if test="${not empty pageContext.request.remoteUser}">
     SudokuGame_userId = '<c:out value="${pageContext.request.remoteUser}"/>'
@@ -25,7 +27,9 @@
         
         if (window['<portlet:namespace/>_game'] == undefined)
         {
-            window['<portlet:namespace/>_game'] = new SudokuGame_Game('<portlet:namespace/>');
+            window['<portlet:namespace/>_game'] = new SudokuGame_Game(
+                    '<portlet:namespace/>', '<c:out value="${app_path}"/>'
+            );
         }
         
         window['<portlet:namespace/>_game'].init();
@@ -99,95 +103,6 @@
                 $show_statistics_button.show();
             }
 
-            return false;
-        });
-        
-        /* Toolbar Menu *******************************************************/
-        
-        $('#<portlet:namespace/>_button_new').click(function ()
-        {
-            var request = new SudokuGame_Request('<c:out value="${app_path}"/>');
-            var data, id;
-            
-            try
-            {
-                // create a game
-                data = request.makePost('/game', {typeDifficulty: 'EXPERT'});
-                
-                // get an ID of the created game
-                id = data.location.split('/').pop();
-                // get the created game
-                data = request.makeGet('/game/' + id);
-                
-                // create a game solution of the created game
-                data = request.makePost('/game_solution/' + id, {
-                    userId     : SudokuGame_userId,
-                    userName   : null,
-                    values     : data.initValues
-                });
-                
-                // get an ID of the created game solution
-                id = data.location.split('/').pop();
-                // get the created solution
-                data = request.makeGet('/game_solution/' + id);
-                
-                // start the game
-                window['<portlet:namespace/>_game'].pause();
-                window['<portlet:namespace/>_game'].getTimer().setTimeout(0);
-                window['<portlet:namespace/>_game'].start(data);
-            }
-            catch (e)
-            {
-                alert('Can not create a new game.\nError: ' + e.toString());
-            }
-            
-            return false;
-        });
-        
-        $('#<portlet:namespace/>_button_reset').click(function ()
-        {
-            window['<portlet:namespace/>_game'].reset();
-            return false;
-        });
-        
-        $('#<portlet:namespace/>_button_check').click(function ()
-        {
-            var request = new SudokuGame_Request('<c:out value="${app_path}"/>');
-            var game = window['<portlet:namespace/>_game'].getGameBoard().getFieldsValues();
-            
-            try
-            {
-                var respObj = request.makePostText('/game_solution/check', game);
-                var gameBoard = window['<portlet:namespace/>_game'].getGameBoard();
-                
-                if (!respObj.state)
-                {
-                    throw respObj.message;
-                }
-                
-                if (respObj.check.valid)
-                {
-                    return false;
-                }
-                
-                for (var i = 0; i < respObj.check.fields.length; i++)
-                {
-                    var index = respObj.check.fields[i];
-
-                    if (!gameBoard.getField(index).isFixed())
-                    {
-                        var $f = $('#<portlet:namespace/>_board ' +
-                                   'input[name="board_field[' + index + ']"]');
-                        
-                        gameBoard.addErrorToField($f, false);
-                    }
-                }
-            }
-            catch (e)
-            {
-                alert('Can not check the current game.\nError: ' + e);
-            }
-            
             return false;
         });
        

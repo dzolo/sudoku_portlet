@@ -9,17 +9,42 @@
  * The Game class
  * 
  * @param namespace        A namespace identificator of the portlet
+ * @param appPath          A path to the web application
  * @return SudokuGame_Game
- * @example game = new SudokuGame_Game({timerEl:'#elT',gameBoardEl:'#elGB'});
+ * @example game = new SudokuGame_Game('namespace', '/sudoku');
  */
-function SudokuGame_Game(namespace)
+function SudokuGame_Game(namespace, appPath)
 {
     /** An instance of the timer */
     var _timer;
     /** An instance of the game board */
     var _gameBoard;
+    /** An instance of the game toolbard */
+    var _toolbar;
     /** A namespace identificator of the portlet */
     var _namespace;
+    /** A path to the web application */
+    var _appPath;
+    
+    /**
+     * Gets a application path
+     * 
+     * @return          The app path
+     */
+    this.getAppPath = function ()
+    {
+        return _appPath;
+    }
+    
+    /**
+     * Gets a namespace identificator of the portlet
+     * 
+     * @return          A namespace
+     */
+    this.getNamespace = function ()
+    {
+        return _namespace;
+    }
     
     /**
      * Gets a timer of the game 
@@ -29,6 +54,16 @@ function SudokuGame_Game(namespace)
     this.getTimer = function ()
     {
         return _timer;
+    }
+    
+    /**
+     * Gets a toolbar of the game 
+     * 
+     * @return SudokuGame_GameToolbar
+     */
+    this.getToolbar = function ()
+    {
+        return _toolbar;
     }
     
     /**
@@ -97,6 +132,7 @@ function SudokuGame_Game(namespace)
         }
         
         _gameBoard.setEnabled(true);
+        _toolbar.setButtonsEnable(1, true);
         _timer.start();
         
         $('#' + _namespace + '_footer-pause').show();
@@ -132,9 +168,16 @@ function SudokuGame_Game(namespace)
         throw new SudokuGame_NullPointerException('Empty namespace');
     }
     
+    if (!appPath)
+    {
+        throw new SudokuGame_NullPointerException('Empty application path');
+    }
+    
     _namespace = namespace;
+    _appPath = appPath;
     _timer = new SudokuGame_Timer('#' + namespace + '_footer-timer');
     _gameBoard = new SudokuGame_GameBoard('#' + namespace + '_board');
+    _toolbar = new SudokuGame_GameToolbar(this);
     
     // CONTRUCT END    /////////////////////////////////////////////////////////
     
