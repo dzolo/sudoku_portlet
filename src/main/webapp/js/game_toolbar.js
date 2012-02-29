@@ -243,7 +243,7 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : true,
             action      : function ()
             {
-                
+                alert('Not implemented yet');
             }
         },
         bload: {
@@ -251,7 +251,7 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : false,
             action      : function ()
             {
-                
+                alert('Not implemented yet');
             }
         }
     };

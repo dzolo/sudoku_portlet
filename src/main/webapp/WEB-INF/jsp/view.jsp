@@ -127,11 +127,11 @@
             <span>New</span>
         </a>
         <c:if test="${not empty pageContext.request.remoteUser}">
-            <a href="#" class="sudoku-game_button" title="Save the current game">
+            <a href="#" id="<portlet:namespace/>_button_save" class="sudoku-game_button" title="Save the current game">
                 <img alt="Save icon" src="<c:out value="${app_path}"/>/images/icons/save_16x16.png" />
                 <span>Save</span>
             </a>
-            <a href="#" class="sudoku-game_button" title="Load a previous played game">
+            <a href="#" id="<portlet:namespace/>_button_load" class="sudoku-game_button" title="Load a previous played game">
                 <img alt="Load icon" src="<c:out value="${app_path}"/>/images/icons/load_16x16.png" />
                 <span>Load</span>
             </a>
