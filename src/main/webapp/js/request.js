@@ -119,7 +119,7 @@ var SudokuGame_Request = (function (contextPath)
     }
     
     /**
-     * Makes an POST request to a given path.
+     * Makes an POST request to a given path with JSON data.
      * The path does not contains the context path of the application. 
      *
      * @example request.makePost("/service/", {name: Ondrej, surname: Fibich})
@@ -159,6 +159,34 @@ var SudokuGame_Request = (function (contextPath)
         });
         
         return returnObj;
+    }
+    
+    /**
+     * Makes an POST request to a given path with text/plain data.
+     * The path does not contains the context path of the application. 
+     *
+     * @example request.makePostText("/service/", "data")
+     * @param path          A path of a request
+     * @param data          An input data string of a request
+     * @return              A returned data string
+     * @throws SudokuGame_RequestFailedException
+     */
+    this.makePostText = function (path, data)
+    {
+        return $.ajax({
+            url         : this.getPathOfRestApp() + path,
+            async       : false,
+            data        : data,
+            type        : 'POST',
+            dataType    : 'text',
+            contentType : 'text/plain',
+            error       : function (jqXHR, textStatus, et)
+            {
+                throw new SudokuGame_RequestFailedException(
+                        textStatus + ' ' + jqXHR.status, et
+                );
+            }
+        }).responseText;
     }
     
     /**

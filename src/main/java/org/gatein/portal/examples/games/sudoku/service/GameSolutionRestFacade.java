@@ -13,10 +13,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.gatein.portal.examples.games.sudoku.controller.GameSolutionsController;
 import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
+import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
  * Game Solution REST Facade Class
@@ -78,6 +80,23 @@ public class GameSolutionRestFacade
     public List<GameSolution> findAll()
     {
         return gameSolutionsController.findGameSolutionEntities();
+    }
+    
+    @POST
+    @Path("check")
+    @Consumes({"text/plain"})
+    @Produces({"text/plain"})
+    public String check(String gameSolutionValues)
+    {
+        try
+        {
+            String r = GameUtil.check(gameSolutionValues);
+            return "{\"state\":true,\"check\":" + r + "}";
+        }
+        catch (Exception ex)
+        {
+            return "{\"state\":false,\"message\":\"" + ex.getMessage() + "\"}";
+        }
     }
     
 }

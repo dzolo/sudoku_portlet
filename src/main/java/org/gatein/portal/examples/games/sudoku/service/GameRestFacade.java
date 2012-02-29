@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
-import org.gatein.portal.examples.games.sudoku.generator.GameGenerator;
+import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
  * Game REST Facade Class
@@ -46,7 +46,7 @@ public class GameRestFacade
     {
         try
         {
-            game.setInitValues(GameGenerator.generate(game.getTypeDifficulty()));
+            game.setInitValues(GameUtil.generate(game.getTypeDifficulty()));
             game.setInitDate(new Date());
             game.setType(GameType.GENERATED);
             game.setTypeServiceId(null);

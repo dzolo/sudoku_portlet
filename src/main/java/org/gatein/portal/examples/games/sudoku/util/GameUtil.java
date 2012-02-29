@@ -1,11 +1,11 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : GameGenerator.java
+ * Document      : GameUtil.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
 
-package org.gatein.portal.examples.games.sudoku.generator;
+package org.gatein.portal.examples.games.sudoku.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,12 +14,68 @@ import java.util.Random;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
 
 /**
- * Game Generator Class
+ * Game Util Class
+ * Provides a generator of games, a checker of game solution, etc.
  *
  * @author Ondřej Fibich
  */
-public class GameGenerator
+public class GameUtil
 {
+    /**
+     * Check a solution of game for possible mistakes.
+     * 
+     * @param game          A game to check
+     * @return              JSON formated response for a REST service
+     */
+    public static String check(String game)
+    {
+        Integer[] fields = new Integer[81];
+        String[] fieldsString = game.split(",", -1);
+        StringBuilder buf = new StringBuilder("{\"fields\":[");
+        boolean status = true, statusCheck;
+        
+        if (fieldsString.length != fields.length)
+        {
+            throw new IllegalArgumentException(
+                    "Wrong count of game values for check (" +
+                    fieldsString.length + ")"
+            );
+        }
+        
+        for (int i = 0; i < fields.length; i++)
+        {
+            if (fieldsString[i].length() > 0)
+            {
+                fields[i] = Integer.valueOf(fieldsString[i]);
+            }
+            else
+            {
+                fields[i] = null;
+            }
+        }
+        
+        for (int i = 0; i < fields.length; i++)
+        {
+            if (fields[i] != null && !fields[i].equals(0))
+            {
+                statusCheck = checkField(fields, i);
+                
+                if (!statusCheck)
+                {
+                    if (!status)
+                    {
+                        buf.append(",");
+                    }
+                    
+                    buf.append(i);
+                }
+                
+                status = statusCheck && status;
+            }
+        }
+        
+        return buf.append("],\"valid\":").append(status).append("}").toString();
+    }
     
     /**
      * Generates an unsolved game with a defined difficulty

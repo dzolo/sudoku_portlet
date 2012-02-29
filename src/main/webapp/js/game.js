@@ -61,6 +61,7 @@ function SudokuGame_Game(namespace)
         if (_timer.isPaused())
         {
             this.pause();
+            _gameBoard.render();
         }
         else if (!_timer.isStarted())
         {
@@ -85,17 +86,19 @@ function SudokuGame_Game(namespace)
     /**
      * Starts the game
      * 
-     * @param initValues    Init values of the game [optional]
+     * @param gameSolutionObject    A game solution object
      */
-    this.start = function (initValues)
+    this.start = function (gameSolutionObject)
     {
-        if (initValues)
+        if (gameSolutionObject)
         {
-            _gameBoard.setFields(initValues);
+            _gameBoard.setInitFields(gameSolutionObject.gameId.initValues);
+            _gameBoard.setFields(gameSolutionObject.values);
         }
         
         _gameBoard.setEnabled(true);
         _timer.start();
+        
         $('#' + _namespace + '_footer-pause').show();
         $('#' + _namespace + '_footer-play').hide();
     }
@@ -107,8 +110,19 @@ function SudokuGame_Game(namespace)
     {
         _gameBoard.setEnabled(false);
         _timer.pause();
+        
         $('#' + _namespace + '_footer-play').show();
         $('#' + _namespace + '_footer-pause').hide();
+    }
+    
+    /**
+     * Resets the game
+     */
+    this.reset = function ()
+    {
+        this.pause();
+        _gameBoard.resetUnfixedFields();
+        this.start();
     }
     
     // CONSTRUCT START /////////////////////////////////////////////////////////

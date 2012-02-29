@@ -134,11 +134,59 @@
                 // start the game
                 window['<portlet:namespace/>_game'].pause();
                 window['<portlet:namespace/>_game'].getTimer().setTimeout(0);
-                window['<portlet:namespace/>_game'].start(data.values);
+                window['<portlet:namespace/>_game'].start(data);
             }
             catch (e)
             {
                 alert('Can not create a new game.\nError: ' + e.toString());
+            }
+            
+            return false;
+        });
+        
+        $('#<portlet:namespace/>_button_reset').click(function ()
+        {
+            window['<portlet:namespace/>_game'].reset();
+            return false;
+        });
+        
+        $('#<portlet:namespace/>_button_check').click(function ()
+        {
+            var request = new SudokuGame_Request('<c:out value="${app_path}"/>');
+            var game = window['<portlet:namespace/>_game'].getGameBoard().getFieldsValues();
+            
+            try
+            {
+                var resp = request.makePostText('/game_solution/check', game);
+                var respObj = eval('(' + resp + ')');
+                var gameBoard = window['<portlet:namespace/>_game'].getGameBoard();
+                
+                if (!respObj.state)
+                {
+                    throw respObj.message;
+                }
+                
+                if (respObj.check.valid)
+                {
+                    return false;
+                }
+                
+                for (var i = 0; i < respObj.check.fields.length; i++)
+                {
+                    var index = respObj.check.fields[i];
+
+                    if (!gameBoard.getField(index).isFixed())
+                    {
+                        var $f = $('#<portlet:namespace/>_board ' +
+                                   'input[name="board_field[' + index + ']"]');
+                        
+                        gameBoard.addErrorToField($f, false);
+                    }
+                }
+            }
+            catch (e)
+            {
+                alert('Can not check the current game.\nError: ' + e.toString());
             }
             
             return false;
@@ -174,11 +222,11 @@
                 <span>Load</span>
             </a>
         </c:if>
-        <a href="#" class="sudoku-game_button" title="Reset the current game">
+        <a href="#" id="<portlet:namespace/>_button_reset" class="sudoku-game_button" title="Reset the current game">
             <img alt="Reset icon" src="<c:out value="${app_path}"/>/images/icons/reset_16x16.png" />
             <span>Reset</span>
         </a>
-        <a href="#" class="sudoku-game_button" title="Check your solution of the current game">
+        <a href="#" id="<portlet:namespace/>_button_check" class="sudoku-game_button" title="Check your solution of the current game">
             <img alt="Check icon" src="<c:out value="${app_path}"/>/images/icons/check_16x16.png" />
             <span>Check</span>
         </a>

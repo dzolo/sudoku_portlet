@@ -22,7 +22,7 @@ function SudokuGame_GameBoard(rootElement)
     /** A game on indicator */
     var _gamePlayed = false;
     /** An array of game fields objects */
-    var _fields;
+    var _fields = new Array(81);
     
     /**
      * On key press event hanler. Enables just one digit in a field.
@@ -68,6 +68,19 @@ function SudokuGame_GameBoard(rootElement)
             $field.focus();
         }
     }
+    
+    /**
+     * Removed an error from a field.
+     * 
+     * @param $field    A field as a JQuery object
+     */
+    this.removeErrorFromField = function ($field)
+    {
+        if ($field.parent().hasClass('sudoku-game_field-error'))
+        {
+            $field.parent().removeClass('sudoku-game_field-error');
+        }
+    }
 
     /**
      * Validates a content of a field.
@@ -77,21 +90,29 @@ function SudokuGame_GameBoard(rootElement)
     this._fieldValidator = function()
     {
         var $field = $(this);
+        var state = true;
 
         if ($field)
         {
-            if ($field.val().length && !$field.val().match(/^[1-9]{1}$/))
+            if ($field.val().length)
             {
-                this.addErrorToField($field, false);
-                return false;
+                var index = parseInt($field.attr('name').substr('board_field['.length), 10);
+                
+                try
+                {
+                    self.setField(index, $field.val());
+                }
+                catch (e)
+                {
+                    self.setField(index, null);
+                    state = false;
+                }
             }
-            else if ($field.parent().hasClass('sudoku-game_field-error'))
-            {
-                $field.parent().removeClass('sudoku-game_field-error');
-            }
+            
+            self.removeErrorFromField($field);
         }
         
-        return true;
+        return state;
     }
     
     /**
@@ -164,6 +185,9 @@ function SudokuGame_GameBoard(rootElement)
             arrow = true;
             index += 9;
             break;
+        default:
+            // update of field values
+            $this.trigger('change');
         }
 
         if (arrow)
@@ -246,23 +270,139 @@ function SudokuGame_GameBoard(rootElement)
     }
     
     /**
-     * Sets fields of the game
+     * Sets fields of the game by values
+     * 
+     * @param game          A game in a form of a string where values are separated by commas
+     * @param fixed         If pushed values should be fixed
+     */
+    this._setFields = function (game, fixed)
+    {
+        var fields = game.split(',');
+        
+        if (fields.length != _fields.length)
+        {
+            throw new SudokuGame_NullPointerException('Invalid game reprezentation');
+        }
+        
+        for (var i = 0; i < _fields.length; i++)
+        {
+            if (fixed === true || !_fields[i].isFixed())
+            {
+                // set a fixed indicator if init values are pushed
+                if (fixed === true)
+                {
+                    _fields[i].setFixed(fields[i].length == 1);
+                }
+                // set value
+                _fields[i].setValue(fields[i]);
+            }
+        }
+        
+        _gamePlayed = true;
+        
+        this.render();
+    }
+    
+    /**
+     * Sets fields of the game by init values
+     * 
+     * @param game          A game in a form of a string where values are separated by commas
+     */
+    this.setInitFields = function (game)
+    {
+        this._setFields(game, true);
+    }
+    
+    /**
+     * Sets fields of the game by values
      * 
      * @param game          A game in a form of a string where values are separated by commas
      */
     this.setFields = function (game)
     {
-        var fields = game.split(',');
-        
-        if (fields.length != 81)
+        this._setFields(game, false);
+    }
+    
+    /**
+     * Sets a value of the field
+     * 
+     * @param index         A number of the field
+     * @param value         A new value of the field
+     */
+    this.setField = function (index, value)
+    {
+        if (index >= 0 && index < _fields.length)
         {
-            throw new SudokuGame_NullPointerException('Invalid game reprezentation');
+            if (_fields[index].isFixed())
+            {
+                throw new SudokuGame_IllegalStateException(
+                        'A value od a fixed field can not be changed.'
+                );
+            }
+            
+            if (value == null)
+            {
+                value = '';
+            }
+            
+            if (value.length != 0 && !value.match(/^[1-9]{1}$/))
+            {
+                throw new SudokuGame_NullPointerException('An invalid value.');
+            }
+            
+            _fields[index].setValue(value);
+            
+            this.render();
+        }
+    }
+    
+    /**
+     * Gets a field
+     *
+     * @param index         An index of the field
+     * @return              A field
+     */
+    this.getField = function (index)
+    {
+        if (index >= 0 && index < _fields.length)
+        {
+            return _fields[index]
         }
         
-        _fields = fields;
-        _gamePlayed = true;
+        throw new SudokuGame_NullPointerException('Wrong index: ' + index);
+    }
+    
+    /**
+     * Resets unfixed fields
+     */
+    this.resetUnfixedFields = function ()
+    {
+        for (var i = 0; i < _fields.length; i++)
+        {
+            if (!_fields[i].isFixed())
+            {
+                _fields[i].setValue(null);
+            }
+        }
         
         this.render();
+    }
+    
+    /**
+     * Gets values of fields
+     * 
+     * @return              Values as a string where values are separated by commas
+     */
+    this.getFieldsValues = function ()
+    {
+        var buffer = [];
+        
+        for (var i = 0; i < _fields.length; i++)
+        {
+            buffer.push(_fields[i].getValue());
+        }
+        
+        return buffer.join(',');
     }
     
     /**
@@ -277,9 +417,9 @@ function SudokuGame_GameBoard(rootElement)
         {
             var input = _$root.find('input[name="board_field[' + i + ']"]');
             
-            input.val(_fields[i]);
+            input.val(_fields[i].getValue());
             
-            if (_fields[i])
+            if (_fields[i].isFixed())
             {
                 input.attr('readonly', 'readonly');
                 input.parent().addClass('sudoku-game_readonly-input');
@@ -289,6 +429,11 @@ function SudokuGame_GameBoard(rootElement)
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
     
+    // fields init
+    for (var i = 0; i < _fields.length; i++)
+    {
+        _fields[i] = new SudokuGame_GameBoardField(null);
+    }
     // set root element
     this.setRootElement(rootElement);
     // activate input check on fields
@@ -296,9 +441,11 @@ function SudokuGame_GameBoard(rootElement)
     // movement on fields with arrows
     $(_rootName + ' input').keyup(this._arrowMovement);
     // validator of each field
-    $(_rootName + ' input').blur(this._fieldValidator);
+    $(_rootName + ' input').change(this._fieldValidator);
     // change size of board
     this.resizeBoard();
+    // hack for this in _fieldValidator
+    var self = this;
     
     // CONTRUCT END    /////////////////////////////////////////////////////////
     
