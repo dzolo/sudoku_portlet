@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.gatein.portal.examples.games.sudoku.controller.GameSolutionsController;
 import org.gatein.portal.examples.games.sudoku.controller.GamesController;
@@ -85,17 +84,23 @@ public class GameSolutionRestFacade
     @POST
     @Path("check")
     @Consumes({"text/plain"})
-    @Produces({"text/plain"})
+    @Produces({"application/json"})
     public String check(String gameSolutionValues)
     {
         try
         {
-            String r = GameUtil.check(gameSolutionValues);
-            return "{\"state\":true,\"check\":" + r + "}";
+            final List<Integer> incorrect = GameUtil.check(gameSolutionValues);
+            
+            return "{\"state\":true, \"check\": {\"valid\":"
+                    + incorrect.isEmpty() + ",\"fields\":["
+                    + GameUtil.join(incorrect.toArray(), ",")
+                    + "]}}";
         }
         catch (Exception ex)
         {
-            return "{\"state\":false,\"message\":\"" + ex.getMessage() + "\"}";
+            return "{\"state\":false,\"message\":\""
+                    + ex.getMessage().replace('"', '\'')
+                    + "\"}";
         }
     }
     

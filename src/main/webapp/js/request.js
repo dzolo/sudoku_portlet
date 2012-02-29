@@ -173,20 +173,28 @@ var SudokuGame_Request = (function (contextPath)
      */
     this.makePostText = function (path, data)
     {
-        return $.ajax({
+        var returnObj = null;
+        
+        $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
             data        : data,
             type        : 'POST',
-            dataType    : 'text',
+            dataType    : 'json',
             contentType : 'text/plain',
+            success     : function (data, textStatus, jqXHR)
+            {
+                returnObj = data;
+            },
             error       : function (jqXHR, textStatus, et)
             {
                 throw new SudokuGame_RequestFailedException(
                         textStatus + ' ' + jqXHR.status, et
                 );
             }
-        }).responseText;
+        });
+        
+        return returnObj;
     }
     
     /**

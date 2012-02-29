@@ -25,14 +25,13 @@ public class GameUtil
      * Check a solution of game for possible mistakes.
      * 
      * @param game          A game to check
-     * @return              JSON formated response for a REST service
+     * @return              List of incorrect fields
      */
-    public static String check(String game)
+    public static List<Integer> check(String game)
     {
         Integer[] fields = new Integer[81];
         String[] fieldsString = game.split(",", -1);
-        StringBuilder buf = new StringBuilder("{\"fields\":[");
-        boolean status = true, statusCheck;
+        List<Integer> incorrect = new ArrayList<Integer>(); 
         
         if (fieldsString.length != fields.length)
         {
@@ -58,23 +57,14 @@ public class GameUtil
         {
             if (fields[i] != null && !fields[i].equals(0))
             {
-                statusCheck = checkField(fields, i);
-                
-                if (!statusCheck)
+                if (!checkField(fields, i))
                 {
-                    if (!status)
-                    {
-                        buf.append(",");
-                    }
-                    
-                    buf.append(i);
+                    incorrect.add(new Integer(i));
                 }
-                
-                status = statusCheck && status;
             }
         }
         
-        return buf.append("],\"valid\":").append(status).append("}").toString();
+        return incorrect;
     }
     
     /**
@@ -181,7 +171,7 @@ public class GameUtil
      * @param delimiter     A delimiter sequence
      * @return              A joined string
      */
-    protected static String join(Object[] array, String delimiter)
+    public static String join(Object[] array, String delimiter)
     {
         StringBuilder builder = new StringBuilder();
         final String empty = "";

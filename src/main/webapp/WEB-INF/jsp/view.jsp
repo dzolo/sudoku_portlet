@@ -157,8 +157,7 @@
             
             try
             {
-                var resp = request.makePostText('/game_solution/check', game);
-                var respObj = eval('(' + resp + ')');
+                var respObj = request.makePostText('/game_solution/check', game);
                 var gameBoard = window['<portlet:namespace/>_game'].getGameBoard();
                 
                 if (!respObj.state)
@@ -186,7 +185,7 @@
             }
             catch (e)
             {
-                alert('Can not check the current game.\nError: ' + e.toString());
+                alert('Can not check the current game.\nError: ' + e);
             }
             
             return false;
