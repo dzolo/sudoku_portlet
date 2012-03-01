@@ -297,7 +297,6 @@ function SudokuGame_GameToolbar(gameParent)
                                 {
                                     setTimeout(function ()
                                     {
-                                        _parent.start();
                                         $dialog.dialog('close');
                                     }, 6000);
                                 });
@@ -310,7 +309,6 @@ function SudokuGame_GameToolbar(gameParent)
                             {
                                 setTimeout(function ()
                                 {
-                                    _parent.start();
                                     $dialog.dialog('close');
                                 }, 3000);
                             });
@@ -320,10 +318,13 @@ function SudokuGame_GameToolbar(gameParent)
                         text    : 'Cancel',
                         click   : function()
                         {
-                            _parent.start();
                             $(this).dialog('close');
                         }
                     }]
+                }).bind('dialogclose', function(e)
+                {
+                    $(this).unbind('dialogclose');
+                    _parent.start();
                 }).dialog('open');
             }
         },
