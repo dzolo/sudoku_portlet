@@ -179,6 +179,7 @@ function SudokuGame_GameToolbar(gameParent)
                     data = request.makeGet('/game_solution/' + id);
 
                     // start the game
+                    _parent.setGameSolutionId(id);
                     _parent.pause();
                     _parent.getTimer().setTimeout(0);
                     _parent.start(data);
@@ -202,6 +203,8 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : true,
             action      : function ()
             {
+                _parent.pause();
+                
                 var request = new SudokuGame_Request(_parent.getAppPath());
                 var game = _parent.getGameBoard().getFieldsValues();
 
@@ -236,6 +239,10 @@ function SudokuGame_GameToolbar(gameParent)
                 {
                     alert('Can not check the current game.\nError: ' + e);
                 }
+                finally
+                {
+                    _parent.start();
+                }
             }
         },
         bsave: {
@@ -243,7 +250,81 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : true,
             action      : function ()
             {
-                alert('Not implemented yet');
+                var $dialog = $('#' + _parent.getNamespace() + '_dialog-save');
+                var $dialogBody = $dialog.find('._ui-dialog-body');
+                var $dialogInfo = $dialog.find('.ui-state-box');
+                var $dialogInput = $dialog.find('input');
+                var m = 'The current game was successfully saved.';
+                
+                _parent.pause();
+                $dialogBody.show();
+                $dialogInfo.hide();
+                
+                $dialog.dialog({
+                    buttons: [{
+                        text    : 'Ok',
+                        click   : function()
+                        {
+                            // check
+                            if (!$dialogInput.val().length) 
+                            {
+                                $dialogInput.focus();
+                                return;
+                            }
+                            
+                            // hide body and buttons
+                            $dialogBody.fadeOut('slow');
+                            $dialog.dialog({buttons: []});
+                            
+                            // save
+                            var request = new SudokuGame_Request(_parent.getAppPath());
+                            var id, inputData = {
+                                name        : $dialogInput.val(),
+                                values      : _parent.getGameBoard().getFieldsValues(),
+                                lasting     : _parent.getTimer().getTimeout()
+                            };
+                            
+                            try
+                            {
+                                // create a saved game
+                                request.makePost('/saved_game/' + _parent.getGameSolutionId(), inputData);
+                            }
+                            catch (e)
+                            {
+                                m = 'The current game was not saved. Error: ' + e
+                                
+                                $dialogInfo.stateBox('Game not saved', m, 'error', 'alert').fadeIn('slow', function ()
+                                {
+                                    setTimeout(function ()
+                                    {
+                                        _parent.start();
+                                        $dialog.dialog('close');
+                                    }, 6000);
+                                });
+                                
+                                return;
+                            }
+                            
+                            // show a notification and hide the dialog
+                            $dialogInfo.stateBox('Game saved', m).fadeIn('slow', function ()
+                            {
+                                setTimeout(function ()
+                                {
+                                    _parent.start();
+                                    $dialog.dialog('close');
+                                }, 3000);
+                            });
+                        }
+                    },
+                    {
+                        text    : 'Cancel',
+                        click   : function()
+                        {
+                            _parent.start();
+                            $(this).dialog('close');
+                        }
+                    }]
+                }).dialog('open');
             }
         },
         bload: {

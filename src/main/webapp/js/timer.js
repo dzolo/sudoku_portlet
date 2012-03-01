@@ -77,6 +77,16 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     }
     
     /**
+     * Gets a timeout of the timer
+     * 
+     * @return             A timeout in seconds
+     */
+    this.getTimeout = function ()
+    {
+        return _timeout;
+    }
+    
+    /**
      * Starts the timer
      * 
      * @param time      Beginning [optional]

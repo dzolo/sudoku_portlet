@@ -105,6 +105,19 @@
 
             return false;
         });
+        
+        /* Dialogs ************************************************************/
+        
+        $('#<portlet:namespace/>_dialog-save').dialog({
+            width           : 200,
+            height          : 'auto',
+            modal           : true,
+            autoOpen        : false,
+            closeOnEscape   : true
+        });
+        
+        $('#<portlet:namespace/>_dialog-load').dialog({autoOpen: false});
+        $('#<portlet:namespace/>_dialog-new').dialog({autoOpen: false});
        
     });
    
@@ -120,6 +133,22 @@
             </p>
         </div>
     </noscript>
+    
+    <div id="<portlet:namespace/>_dialog-save" style="display: none" title="Save the current game">
+        
+        <div class="ui-state-box"></div>
+        
+        <div class="_ui-dialog-body">
+            <label>Please enter a name:</label><br />
+            <input type="text" id="<portlet:namespace/>_dialog-save-name" width="100" />
+        </div>
+        
+    </div>
+    
+    <div id="<portlet:namespace/>_dialog-load" title="Load a game"></div>
+    
+    <div id="<portlet:namespace/>_dialog-new" title="A new game"></div>
+    
 
     <div class="sudoku-game_toolbar">
         <a href="#" id="<portlet:namespace/>_button_new" class="sudoku-game_button" title="Create a new game">

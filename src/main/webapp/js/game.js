@@ -25,6 +25,29 @@ function SudokuGame_Game(namespace, appPath)
     var _namespace;
     /** A path to the web application */
     var _appPath;
+    /** An identificator of the solution in the database */
+    var _gameSolutionId;
+    
+    /**
+     * Gets an ID of the game solution
+     * 
+     * @return          An identificator of the solution in the database
+     */
+    this.getGameSolutionId = function ()
+    {
+        return _gameSolutionId;
+    }
+    
+    /**
+     * Sets an ID of the game solution
+     * 
+     * @param id        A new identificator of the solution in the database
+     */
+    this.setGameSolutionId = function (id)
+    {
+        _gameSolutionId = id;
+    }
+    
     
     /**
      * Gets a application path

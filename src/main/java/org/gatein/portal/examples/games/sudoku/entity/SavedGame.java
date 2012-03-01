@@ -8,6 +8,7 @@
 package org.gatein.portal.examples.games.sudoku.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -34,6 +35,15 @@ public class SavedGame implements Serializable
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
+    @Basic(optional = false)
+    @Column(name = "name")
+    private String name;
+    
+    @Basic(optional = false)
+    @Column(name = "saved")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date saved;
     
     @Basic(optional = false)
     @Column(name = "lasting")
@@ -72,6 +82,26 @@ public class SavedGame implements Serializable
     public void setId(Integer id)
     {
         this.id = id;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public Date getSaved()
+    {
+        return saved;
+    }
+
+    public void setSaved(Date saved)
+    {
+        this.saved = saved;
     }
 
     public int getLasting()
