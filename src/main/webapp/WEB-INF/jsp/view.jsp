@@ -90,7 +90,8 @@
             if ($game_board && $game_stats)
             {
                 // resume the game if started
-                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed())
+                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed() &&
+                    !window['<portlet:namespace/>_game'].getTimer().isStarted())
                 {
                     window['<portlet:namespace/>_game'].start();
                 }
