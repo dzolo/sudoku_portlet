@@ -141,7 +141,7 @@
         
         <div class="_ui-dialog-body">
             <label>Please enter a name:</label><br />
-            <input type="text" id="<portlet:namespace/>_dialog-save-name" width="100" />
+            <input type="text" id="<portlet:namespace/>_dialog-save-name" style="width: 95%; margin-top: 1em" />
         </div>
         
     </div>
