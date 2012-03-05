@@ -75,12 +75,10 @@ public class GameSolutionRestFacade
         try
         {
             final String name = GameSolutionRestFacade.class.getName();
-            Logger.getLogger(name).log(Level.INFO, "{0}: {1}", new Object[]{gameSolution.getId(), gameSolution.getLasting()});
             merged = gameSolutionsController.findGameSolution(gameSolution.getId());
             merged.setFinished(gameSolution.getFinished());
             merged.setLasting(gameSolution.getLasting());
             merged.setValues(gameSolution.getValues());
-            Logger.getLogger(name).log(Level.INFO, "{0}: {1}", new Object[]{merged.getId(), merged.getLasting()});
             gameSolutionsController.edit(merged);
             return Response.ok().build();
         }
