@@ -115,6 +115,7 @@ function SudokuGame_Game(namespace, appPath)
     {
         this.reloadRootElements();
         _gameBoard.resizeBoard();
+        _toolbar.reenableButtons();
         
         if (_timer.isPaused())
         {

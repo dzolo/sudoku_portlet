@@ -46,7 +46,7 @@ function SudokuGame_GameToolbar(gameParent)
                 {
                     if (_buttons[i].gameRelated)
                     {
-                        this.setButtonEnable(_buttons[i].id, enable);
+                        this._setButtonEnable(_buttons[i], enable);
                     }
                 }
                 
@@ -58,7 +58,7 @@ function SudokuGame_GameToolbar(gameParent)
                 {
                     if (!_buttons[i].gameRelated)
                     {
-                        this.setButtonEnable(_buttons[i].id, enable);
+                        this._setButtonEnable(_buttons[i], enable);
                     }
                 }
                 
@@ -68,26 +68,42 @@ function SudokuGame_GameToolbar(gameParent)
                 
                 for (i in _buttons)
                 {
-                    this.setButtonEnable(_buttons[i].id, enable);
+                    this._setButtonEnable(_buttons[i], enable);
                 }
+        }
+    }
+    
+    /**
+     * Reenables buttons (required after the DOM is changed)
+     */
+    this.reenableButtons = function ()
+    {
+        for (var i in _buttons)
+        {
+            this._setButtonEnable(_buttons[i]);
         }
     }
     
     /**
      * Enables button
      * 
-     * @param buttonId      An ID of button (an index of the _items object)
-     * @param enable        Enabled/disable indicator
+     * @param button        An object of a button
+     * @param enable        Enabled/disable indicator [optional, default=re-init of the button]
      */
-    this.setButtonEnable = function (buttonId, enable)
+    this._setButtonEnable = function (button, enable)
     {
-        var $btn = this.getButton(buttonId);
+        var $btn = this.getButton(button.id);
+            
+        if (enable != undefined || button.enable == undefined)
+        {
+            button.enable = (enable === true);
+        }
         
         if ($btn.length)
         {
             $btn.unbind('click');
             
-            if (enable)
+            if (button.enable)
             {
                 $btn.click(this._actionHandler);
                 
@@ -119,9 +135,9 @@ function SudokuGame_GameToolbar(gameParent)
         {
             if ($btn.attr('id').match(_buttons[i].id))
             {
-                self.setButtonEnable(_buttons[i].id, false);
+                self._setButtonEnable(_buttons[i], false);
                 _buttons[i].action();
-                self.setButtonEnable(_buttons[i].id, true);
+                self._setButtonEnable(_buttons[i], true);
                 break;
             }
         }
