@@ -74,7 +74,6 @@ public class GameSolutionRestFacade
         
         try
         {
-            final String name = GameSolutionRestFacade.class.getName();
             merged = gameSolutionsController.findGameSolution(gameSolution.getId());
             merged.setFinished(gameSolution.getFinished());
             merged.setLasting(gameSolution.getLasting());
