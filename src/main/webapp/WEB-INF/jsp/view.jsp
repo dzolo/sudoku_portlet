@@ -124,6 +124,7 @@
             autoOpen        : false,
             closeOnEscape   : true
         });
+        
         $('#<portlet:namespace/>_dialog-new').dialog({autoOpen: false});
        
     });

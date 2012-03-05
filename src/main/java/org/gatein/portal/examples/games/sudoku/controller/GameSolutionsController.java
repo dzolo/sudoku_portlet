@@ -109,7 +109,7 @@ public class GameSolutionsController extends Controller
                 );
             }
             
-            if (persGameSolution.getSavedGamesCollection().equals(
+            if (!persGameSolution.getSavedGamesCollection().equals(
                     gameSolution.getSavedGamesCollection()))
             {
                 throw new ForbiddenChangeOnEntityException(
@@ -124,13 +124,6 @@ public class GameSolutionsController extends Controller
                 );
             }
             
-            if (!persGameSolution.getUserName().equals(gameSolution.getUserName()))
-            {
-                throw new ForbiddenChangeOnEntityException(
-                        "Forbidden change on the user_name field"
-                );
-            }
-            
             if (!persGameSolution.getTimeStart().equals(gameSolution.getTimeStart()))
             {
                 throw new ForbiddenChangeOnEntityException(
@@ -138,7 +131,9 @@ public class GameSolutionsController extends Controller
                 );
             }
             
+            em.getTransaction().begin();
             em.merge(gameSolution);
+            em.getTransaction().commit();
         }
         catch (Exception ex)
         {

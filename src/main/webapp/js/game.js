@@ -184,6 +184,8 @@ function SudokuGame_Game(namespace, appPath)
         
         $('#' + _namespace + '_footer-play').show();
         $('#' + _namespace + '_footer-pause').hide();
+        
+        this.store(true);
     }
     
     /**
@@ -194,6 +196,41 @@ function SudokuGame_Game(namespace, appPath)
         this.pause();
         _gameBoard.resetUnfixedFields();
         this.start();
+    }
+    
+    /**
+     * Stores the current game to the database
+     * 
+     * @param force         Store also an unstarted game?
+     * @return              Stored? [optional]
+     * @throws SudokuGame_RequestFailedException
+     * @throws SudokuGame_IllegalStateException
+     */
+    this.store = function (force)
+    {
+        if (force || this.getGameBoard().isGamePlayed())
+        {
+            if (force && !this.getGameBoard().isGamePlayed())
+            {
+                return false;
+            }
+            
+            var data = {
+                id       : this.getGameSolutionId(),
+                values   : this.getGameBoard().getFieldsValues(),
+                lasting  : this.getTimer().getTimeout(),
+                finished : false
+            };
+            
+            var request = new SudokuGame_Request(this.getAppPath());
+            request.makePut('/game_solution', data);
+            
+            return true;
+        }
+        else
+        {
+            throw new new SudokuGame_IllegalStateException('Can not store game');
+        }
     }
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
@@ -210,9 +247,16 @@ function SudokuGame_Game(namespace, appPath)
     
     _namespace = namespace;
     _appPath = appPath;
-    _timer = new SudokuGame_Timer('#' + namespace + '_footer-timer');
+    _timer = new SudokuGame_Timer(this, '#' + namespace + '_footer-timer');
     _gameBoard = new SudokuGame_GameBoard('#' + namespace + '_board');
     _toolbar = new SudokuGame_GameToolbar(this);
+    
+    // store on close
+    var self = this;
+    $(window).unload(function ()
+    {
+        self.store(true);
+    });
     
     // CONTRUCT END    /////////////////////////////////////////////////////////
     

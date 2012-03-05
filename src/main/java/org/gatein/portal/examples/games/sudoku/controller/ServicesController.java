@@ -73,7 +73,9 @@ public class ServicesController extends Controller
                 );
             }
             
+            em.getTransaction().begin();
             em.persist(service);
+            em.getTransaction().commit();
         }
         catch (Exception ex)
         {            

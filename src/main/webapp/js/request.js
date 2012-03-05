@@ -203,20 +203,21 @@ var SudokuGame_Request = (function (contextPath)
      *
      * @example request.makePut("/service/", {name: Ondrej, surname: Fibich})
      * @param path          A path of a request
-     * @param inputData     An input data object of a request
+     * @param data          An input data object of a request
      * @return              A returned data object (typically an ID of created element)
      * @throws SudokuGame_RequestFailedException
      */
-    this.makePut = function (path, inputData)
+    this.makePut = function (path, data)
     {
         var returnObj = null;
         
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
-            data        : inputData,
-            dataType    : 'json',
+            data        : JSON.stringify(data),
             type        : 'PUT',
+            dataType    : 'json',
+            contentType : 'application/json',
             success     : function (data, textStatus, jqXHR)
             {
                 return data;

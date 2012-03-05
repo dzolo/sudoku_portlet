@@ -65,6 +65,32 @@ public class GameSolutionRestFacade
             return Response.notModified(ex.toString()).build();
         }
     }
+    
+    @PUT
+    @Consumes({"application/xml", "application/json"})
+    public Response edit(GameSolution gameSolution)
+    {
+        GameSolution merged;
+        
+        try
+        {
+            final String name = GameSolutionRestFacade.class.getName();
+            Logger.getLogger(name).log(Level.INFO, "{0}: {1}", new Object[]{gameSolution.getId(), gameSolution.getLasting()});
+            merged = gameSolutionsController.findGameSolution(gameSolution.getId());
+            merged.setFinished(gameSolution.getFinished());
+            merged.setLasting(gameSolution.getLasting());
+            merged.setValues(gameSolution.getValues());
+            Logger.getLogger(name).log(Level.INFO, "{0}: {1}", new Object[]{merged.getId(), merged.getLasting()});
+            gameSolutionsController.edit(merged);
+            return Response.ok().build();
+        }
+        catch (Exception ex)
+        {
+            final String name = GameSolutionRestFacade.class.getName();
+            Logger.getLogger(name).log(Level.WARNING, null, ex);
+            return Response.notModified(ex.getMessage()).build();
+        }
+    }
 
     @GET
     @Path("{id}")

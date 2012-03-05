@@ -8,12 +8,13 @@
 /**
  * The Timer class.
  * 
+ * @param gameParent        An instance of game which is a parent of the toolbar
  * @param rootElement   A root element of the timer
  * @param startEvent    A start event function
  * @param pauseEvent    A pause event function
  * @return SudokuGame_Timer
  */
-function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
+function SudokuGame_Timer(gameParent, rootElement, startEvent, pauseEvent)
 {
     /** Root element of the game board */
     var _$root = null;
@@ -23,6 +24,8 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     var _timeout = 0;
     /** Indicator of the pause game */
     var _paused = false;
+    /** An instance of game which is a parent of the toolbar */
+    var _parent;
     
     /**
      * Checks if the timer is paused
@@ -109,6 +112,19 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
         // a timeout hack for running of a inner method of a class
         var self = this;
         _timeout_id = setTimeout(function () {self.start(time + 1)}, 1000);
+        
+        // auto-update of the database each 5 seconds
+        if ((_timeout + 1) % 5 == 0)
+        {
+            try
+            {
+                _parent.store();
+            }
+            catch (e)
+            {
+                alert('Can not store the current game solution to the server. Error:' + e);
+            }
+        }
     }
     
     /**
@@ -144,6 +160,14 @@ function SudokuGame_Timer(rootElement, startEvent, pauseEvent)
     }
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
+    
+    if (!gameParent)
+    {
+        throw new SudokuGame_NullPointerException('An empty parent');
+    }
+    
+    // set parent
+    _parent = gameParent;
     
     this.setRootElement(rootElement);
     this.render();
