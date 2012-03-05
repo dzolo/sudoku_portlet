@@ -92,5 +92,13 @@ public class SavedGameRestFacade
     {
         return savedGamesController.findSavedGameEntities();
     }
+
+    @GET
+    @Path("user/{userId}")
+    @Produces({"application/xml", "application/json"})
+    public List<SavedGame> findAllOfUser(@PathParam("userId") String userId)
+    {
+        return savedGamesController.findSavedGameEntitiesOfUser(userId);
+    }
     
 }

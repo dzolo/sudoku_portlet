@@ -230,19 +230,42 @@ public class SavedGamesController extends Controller
      * @return              A list of saved games
      */
     private List<SavedGame> findSavedGameEntities(boolean all, int maxResults,
-                                                   int firstResult)
+                                                  int firstResult)
     {
         EntityManager em = emf.createEntityManager();
         
         try
         {
-            Query q = em.createQuery("select object(o) from SavedGame as o");
+            Query q = em.createNamedQuery("SavedGame.findAll");
             
             if (!all)
             {
                 q.setMaxResults(maxResults);
                 q.setFirstResult(firstResult);
             }
+            
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Gets saved games of a user.
+     * 
+     * @param uid           An identificator of a user
+     * @return              A list of saved games
+     */
+    public List<SavedGame> findSavedGameEntitiesOfUser(String uid)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("SavedGame.findByUser");
+            q.setParameter("uid", uid);
             
             return q.getResultList();
         }

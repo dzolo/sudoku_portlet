@@ -144,14 +144,26 @@ function SudokuGame_Game(namespace, appPath)
     /**
      * Starts the game
      * 
-     * @param gameSolutionObject    A game solution object
+     * @param obj           A game solution object
      */
-    this.start = function (gameSolutionObject)
+    this.start = function (obj)
     {
-        if (gameSolutionObject)
+        if (obj)
         {
-            _gameBoard.setInitFields(gameSolutionObject.gameId.initValues);
-            _gameBoard.setFields(gameSolutionObject.values);
+            // game solution
+            if (obj['gameId'] != undefined)
+            {
+                _gameBoard.setInitFields(obj.gameId.initValues);
+                _gameBoard.setFields(obj.values);
+                this.setGameSolutionId(obj.id);
+            }
+            // game saved
+            else if (obj['gameSolutionId'] != undefined)
+            {
+                _gameBoard.setInitFields(obj.gameSolutionId.gameId.initValues);
+                _gameBoard.setFields(obj.values);
+                this.setGameSolutionId(obj.gameSolutionId.id);
+            }
         }
         
         _gameBoard.setEnabled(true);

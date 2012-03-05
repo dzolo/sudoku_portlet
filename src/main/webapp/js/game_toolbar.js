@@ -179,7 +179,6 @@ function SudokuGame_GameToolbar(gameParent)
                     data = request.makeGet('/game_solution/' + id);
 
                     // start the game
-                    _parent.setGameSolutionId(id);
                     _parent.pause();
                     _parent.getTimer().setTimeout(0);
                     _parent.start(data);
@@ -262,7 +261,7 @@ function SudokuGame_GameToolbar(gameParent)
                 
                 $dialog.dialog({
                     buttons: [{
-                        text    : 'Ok',
+                        text    : 'Save',
                         click   : function()
                         {
                             // check
@@ -278,7 +277,7 @@ function SudokuGame_GameToolbar(gameParent)
                             
                             // save
                             var request = new SudokuGame_Request(_parent.getAppPath());
-                            var id, inputData = {
+                            var inputData = {
                                 name        : $dialogInput.val(),
                                 values      : _parent.getGameBoard().getFieldsValues(),
                                 lasting     : _parent.getTimer().getTimeout()
@@ -331,9 +330,145 @@ function SudokuGame_GameToolbar(gameParent)
         bload: {
             id          : 'button_load',
             gameRelated : false,
+            oTable      : null,
             action      : function ()
             {
-                alert('Not implemented yet');
+                var request = new SudokuGame_Request(_parent.getAppPath());
+                var $dialog = $('#' + _parent.getNamespace() + '_dialog-load');
+                var $dialogTable = $dialog.find('table');
+                var $dialogTableBody = $dialogTable.find('tbody');
+                var data, start = false;
+                
+                // pause the game
+                if (_parent.getTimer().isStarted())
+                {
+                    _parent.pause();
+                    start = true;
+                }
+                
+                // get data
+                try
+                {
+                    data = request.makeGet('/saved_game/user/' + SudokuGame_userId);
+                }
+                catch (e)
+                {
+                    alert('Can not load a game. Error: ' + e.toString());
+                    
+                    if (start)
+                    {
+                        _parent.start();
+                    }
+                    
+                    return;
+                }
+                
+                // clear the table
+                if (this.oTable)
+                {
+                    this.oTable.fnClearTable();
+                }
+                
+                // put data into the table
+                for (var i = 0; i < data.length; i++)
+                {
+                    var d = new Date(data[i].saved);
+                    var dstr = d.toLocaleFormat('%Y/%m/%d %H:%M:%S');
+                    
+                    $dialogTableBody.append(
+                        $('<tr>').append(
+                            $('<td>').text(data[i].id)
+                        ).append(
+                            $('<td>').text(data[i].name)
+                        ).append(
+                            $('<td>').text(dstr)
+                        ).append(
+                            $('<td>').text(data[i].lasting)
+                        )
+                    );
+                }
+                
+                // init the data table
+                var _oTable = this.oTable = $dialogTable.dataTable({
+                    'sDom'              : 't<"F"fp>',
+                    'aaSorting'         : [[ 2, 'desc' ]],
+                    'sPaginationType'   : 'full_numbers',
+                    'bJQueryUI'         : true,
+                    'bDestroy'          : true
+                });
+                
+                // init and open the dialog
+                $dialog.dialog({
+                    buttons: [{
+                        text     : 'Load',
+                        disabled : true,
+                        click    : function()
+                        {
+                            var sel = _oTable.$('tr.row_selected');
+                            var id = parseInt($(sel.find('td')[0]).html(), 10);
+                            var request = new SudokuGame_Request(_parent.getAppPath());
+
+                            try
+                            {
+                                // get the created solution
+                                var data = request.makeGet('/saved_game/' + id);
+
+                                // start the game
+                                _parent.pause();
+                                _parent.getTimer().setTimeout(data.lasting);
+                                _parent.start(data);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not load a game.\nError: ' + e.toString());
+                                $(this).dialog('close');
+                                return;
+                            }
+                            
+                            // close dialog without an event
+                            $(this).unbind('dialogclose');
+                            $(this).dialog('close');
+                        }
+                    },
+                    {
+                        text    : 'Cancel',
+                        click   : function()
+                        {
+                            $(this).dialog('close');
+                        }
+                    }]
+                }).bind('dialogclose', function(e)
+                {
+                    $(this).unbind('dialogclose');
+                    
+                    if (start)
+                    {
+                        _parent.start();
+                    }
+                }).dialog('open');
+                
+                // line select
+                $dialogTableBody.find('tr').click(function()
+                {
+                    var btn = $('.ui-dialog-buttonpane button:contains("Load")');
+                    
+                    if ($(this).hasClass('row_selected'))
+                    {
+                        $(this).removeClass('row_selected');
+                        
+                        btn.attr('disabled', true)
+                           .addClass('ui-state-disabled');
+                    }
+                    else
+                    {
+                        _oTable.$('tr.row_selected').removeClass('row_selected');
+                        $(this).addClass('row_selected');
+                        
+                        btn.removeAttr('disabled')
+                           .removeClass('ui-state-disabled')
+                           .removeClass('ui-button-disabled');
+                    }
+                });
             }
         }
     };

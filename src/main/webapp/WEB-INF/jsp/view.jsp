@@ -117,7 +117,13 @@
             closeOnEscape   : true
         });
         
-        $('#<portlet:namespace/>_dialog-load').dialog({autoOpen: false});
+        $('#<portlet:namespace/>_dialog-load').dialog({
+            width           : 600,
+            height          : 'auto',
+            modal           : true,
+            autoOpen        : false,
+            closeOnEscape   : true
+        });
         $('#<portlet:namespace/>_dialog-new').dialog({autoOpen: false});
        
     });
@@ -146,9 +152,21 @@
         
     </div>
     
-    <div id="<portlet:namespace/>_dialog-load" title="Load a game"></div>
+    <div id="<portlet:namespace/>_dialog-load" style="display: none; padding: 0" title="Load a saved game">
+        <table cellpadding="0" cellspacing="0" border="0" class="display">
+            <thead>
+                <tr>
+                    <th width="5%">ID</th>
+                    <th width="50%">Name</th>
+                    <th width="40%">Time</th>
+                    <th width="15%">Lasting</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
     
-    <div id="<portlet:namespace/>_dialog-new" title="A new game"></div>
+    <div id="<portlet:namespace/>_dialog-new" title="Create a new game"></div>
     
 
     <div class="sudoku-game_toolbar">

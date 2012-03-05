@@ -22,8 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "SavedGame.findAll", query = "SELECT s FROM SavedGame s"),
-    @NamedQuery(name = "SavedGame.findById", query = "SELECT s FROM SavedGame s WHERE s.id = :id"),
-    @NamedQuery(name = "SavedGame.findByLasting", query = "SELECT s FROM SavedGame s WHERE s.lasting = :lasting")
+    @NamedQuery(name = "SavedGame.findByUser", query = "SELECT s FROM SavedGame s WHERE s.gameSolutionId.userId = :uid")
 })
 public class SavedGame implements Serializable
 {
