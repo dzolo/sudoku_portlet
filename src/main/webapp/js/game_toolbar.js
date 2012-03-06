@@ -278,6 +278,7 @@ function SudokuGame_GameToolbar(gameParent)
                 $dialog.dialog({
                     buttons: [{
                         text    : 'Save',
+                        id      : _parent.getNamespace() + '_btn-save',
                         click   : function()
                         {
                             // check
@@ -325,7 +326,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 setTimeout(function ()
                                 {
                                     $dialog.dialog('close');
-                                }, 3000);
+                                }, 2000);
                             });
                         }
                     },
@@ -340,7 +341,20 @@ function SudokuGame_GameToolbar(gameParent)
                 {
                     $(this).unbind('dialogclose');
                     _parent.start();
-                }).dialog('open');
+                });
+                
+                // submit on enter
+                $dialogInput.keypress(function(e)
+                {
+                    if(e.which == 13)
+                    {
+                        $(this).blur();
+                        $('#' + _parent.getNamespace() + '_btn-save').trigger('click');
+                    }
+                });
+                
+                // open dialog
+                $dialog.dialog('open');
             }
         },
         bload: {
@@ -417,6 +431,7 @@ function SudokuGame_GameToolbar(gameParent)
                 $dialog.dialog({
                     buttons: [{
                         text     : 'Load',
+                        id       : _parent.getNamespace() + '_btn-load',
                         disabled : true,
                         click    : function()
                         {
@@ -466,7 +481,7 @@ function SudokuGame_GameToolbar(gameParent)
                 // line select
                 $dialogTableBody.find('tr').click(function()
                 {
-                    var btn = $('.ui-dialog-buttonpane button:contains("Load")');
+                    var btn = $('#' + _parent.getNamespace() + '_btn-load');
                     
                     if ($(this).hasClass('row_selected'))
                     {
@@ -484,6 +499,14 @@ function SudokuGame_GameToolbar(gameParent)
                            .removeClass('ui-state-disabled')
                            .removeClass('ui-button-disabled');
                     }
+                }).dblclick(function ()
+                {
+                    if (_oTable.$('tr.row_selected').length == 0)
+                    {
+                        $(this).trigger('click');
+                    }
+                    
+                    $('#' + _parent.getNamespace() + '_btn-load').trigger('click');
                 });
             }
         }
