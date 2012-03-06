@@ -21,8 +21,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "saved_games")
 @XmlRootElement
 @NamedQueries({
+    @NamedQuery(name = "SavedGame.count", query = "SELECT count(s) FROM SavedGame s"),
     @NamedQuery(name = "SavedGame.findAll", query = "SELECT s FROM SavedGame s"),
-    @NamedQuery(name = "SavedGame.findByUser", query = "SELECT s FROM SavedGame s WHERE s.gameSolutionId.userId = :uid")
+    @NamedQuery(name = "SavedGame.findByUser", query = "SELECT s FROM SavedGame s WHERE s.gameSolutionId.userId = :uid AND s.gameSolutionId.finished = 0")
 })
 public class SavedGame implements Serializable
 {

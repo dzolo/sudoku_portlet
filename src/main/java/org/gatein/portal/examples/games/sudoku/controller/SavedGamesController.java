@@ -305,7 +305,7 @@ public class SavedGamesController extends Controller
         EntityManager em = emf.createEntityManager();
         try
         {
-            Query q = em.createQuery("select count(o) from SavedGame as o");
+            Query q = em.createNamedQuery("SavedGame.count");
             return ((Long) q.getSingleResult()).intValue();
         }
         finally
