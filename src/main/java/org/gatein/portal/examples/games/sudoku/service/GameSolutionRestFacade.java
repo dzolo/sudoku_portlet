@@ -74,10 +74,25 @@ public class GameSolutionRestFacade
         
         try
         {
+            if (gameSolution.getFinished() &&
+                !GameUtil.check(gameSolution.getValues(), true).isEmpty())
+            {
+                throw new IllegalArgumentException("The end of a game is incorrect");
+            }
+            
             merged = gameSolutionsController.findGameSolution(gameSolution.getId());
-            merged.setFinished(gameSolution.getFinished());
-            merged.setLasting(gameSolution.getLasting());
-            merged.setValues(gameSolution.getValues());
+            
+            if (merged.getFinished())
+            {
+                merged.setRating(gameSolution.getRating());
+            }
+            else
+            {
+                merged.setFinished(gameSolution.getFinished());
+                merged.setLasting(gameSolution.getLasting());
+                merged.setValues(gameSolution.getValues());
+            }
+            
             gameSolutionsController.edit(merged);
             return Response.ok().build();
         }

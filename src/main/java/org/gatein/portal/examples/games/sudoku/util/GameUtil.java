@@ -29,6 +29,18 @@ public class GameUtil
      */
     public static List<Integer> check(String game)
     {
+        return check(game, false);
+    }
+    
+    /**
+     * Check a solution of game for possible mistakes.
+     * 
+     * @param game          A game to check
+     * @param emptyMistake  Takes an empty value as an error
+     * @return              List of incorrect fields
+     */
+    public static List<Integer> check(String game, boolean emptyMistake)
+    {
         Integer[] fields = new Integer[81];
         String[] fieldsString = game.split(",", -1);
         List<Integer> incorrect = new ArrayList<Integer>(); 
@@ -61,6 +73,10 @@ public class GameUtil
                 {
                     incorrect.add(new Integer(i));
                 }
+            }
+            else if (emptyMistake && fields[i] == null)
+            {
+                incorrect.add(new Integer(i));
             }
         }
         

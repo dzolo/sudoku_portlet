@@ -8,11 +8,14 @@
 /**
  * The Game Board class
  * 
+ * @param gameParent    An instance of game which is a parent of the toolbar
  * @param rootElement   A root element of the game board
  * @return SudokuGame_GameBoard
  */
-function SudokuGame_GameBoard(rootElement)
+function SudokuGame_GameBoard(gameParent, rootElement)
 {
+    /** An instance of game which is a parent of the toolbar */
+    var _parent;
     /** A root element of the game board */
     var _$root = null;
     /** A name of a root element of the game board */
@@ -70,6 +73,16 @@ function SudokuGame_GameBoard(rootElement)
     }
     
     /**
+     * Gets the parent
+     * 
+     * @return          The parent
+     */
+    this.getParent = function ()
+    {
+        return _parent;
+    }
+    
+    /**
      * Removed an error from a field.
      * 
      * @param $field    A field as a JQuery object
@@ -90,28 +103,43 @@ function SudokuGame_GameBoard(rootElement)
     this._fieldValidator = function()
     {
         var $field = $(this);
-        var state = true;
+        var state = false;
 
         if ($field)
         {
-            if ($field.val().length)
+            var index = parseInt($field.attr('name').substr('board_field['.length), 10);
+
+            try
             {
-                var index = parseInt($field.attr('name').substr('board_field['.length), 10);
-                
+                self.setField(index, $field.val());
+                state = true;
+            }
+            catch (e)
+            {   
                 try
                 {
-                    self.setField(index, $field.val());
-                }
-                catch (e)
-                {
                     self.setField(index, null);
-                    state = false;
+                    $field.val('');
+                }
+                catch (ignore)
+                {
+                    console.log(ignore);
                 }
             }
             
             self.removeErrorFromField($field);
         }
         
+        // check if all fields are filled in
+        if (state)
+        {
+            // all fields are filled in
+            if (self.getParent().checkEnd())
+            {
+                _gamePlayed = false;
+            }
+        }
+            
         return state;
     }
     
@@ -340,12 +368,12 @@ function SudokuGame_GameBoard(rootElement)
                 );
             }
             
-            if (value == null)
+            if (value == '')
             {
-                value = '';
+                value = null;
             }
             
-            if (value.length != 0 && !value.match(/^[1-9]{1}$/))
+            if (value != null && !value.match(/^[1-9]{1}$/))
             {
                 throw new SudokuGame_NullPointerException('An invalid value.');
             }
@@ -428,6 +456,14 @@ function SudokuGame_GameBoard(rootElement)
     }
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
+    
+    if (!gameParent)
+    {
+        throw new SudokuGame_NullPointerException('An empty parent');
+    }
+    
+    // set parent
+    _parent = gameParent;
     
     // fields init
     for (var i = 0; i < _fields.length; i++)

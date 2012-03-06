@@ -175,7 +175,7 @@ function SudokuGame_GameToolbar(gameParent)
                 try
                 {
                     // create a game
-                    data = request.makePost('/game', {typeDifficulty: 'EXPERT'});
+                    data = request.makePost('/game', {typeDifficulty: 'EASY'});
 
                     // get an ID of the created game
                     id = data.location.split('/').pop();

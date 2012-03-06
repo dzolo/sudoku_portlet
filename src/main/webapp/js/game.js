@@ -203,15 +203,17 @@ function SudokuGame_Game(namespace, appPath)
      * Stores the current game to the database
      * 
      * @param force         Store also an unstarted game?
+     * @param end           Store the end of a game?
+     * @param rating        A rating of a game
      * @return              Stored? [optional]
      * @throws SudokuGame_RequestFailedException
      * @throws SudokuGame_IllegalStateException
      */
-    this.store = function (force)
+    this.store = function (force, end, rating)
     {
         if (force || this.getGameBoard().isGamePlayed())
-        {
-            if (force && !this.getGameBoard().isGamePlayed())
+        {            
+            if (force && !this.getGameBoard().isGamePlayed() && rating == undefined)
             {
                 return false;
             }
@@ -220,8 +222,13 @@ function SudokuGame_Game(namespace, appPath)
                 id       : this.getGameSolutionId(),
                 values   : this.getGameBoard().getFieldsValues(),
                 lasting  : this.getTimer().getTimeout(),
-                finished : false
+                finished : (end === true)
             };
+            
+            if (rating != undefined)
+            {
+                data.rating = rating;
+            }
             
             var request = new SudokuGame_Request(this.getAppPath());
             request.makePut('/game_solution', data);
@@ -231,6 +238,129 @@ function SudokuGame_Game(namespace, appPath)
         else
         {
             throw new new SudokuGame_IllegalStateException('Can not store game');
+        }
+    }
+    
+    /**
+     * Check if the game was solved
+     * 
+     * @return              The game is solved?
+     */
+    this.checkEnd = function ()
+    {
+        // check if all fields are filled in, end if not
+        for (var i = 0; i < 81; i++)
+        {
+            if (!this.getGameBoard().getField(i).hasValue())
+            {
+                return false;
+            }
+        }
+        
+        // pause the game
+        this.pause();
+        
+        // check the solution
+        var request = new SudokuGame_Request(this.getAppPath());
+        var game = this.getGameBoard().getFieldsValues();
+
+        try
+        {
+            var respObj = request.makePostText('/game_solution/check', game);
+
+            if (!respObj.state)
+            {
+                throw respObj.message;
+            }
+
+            // an invalid solution
+            if (!respObj.check.valid)
+            {
+                this.start();
+            }
+            // a correct solution!
+            else
+            {
+                this._end();
+                return true;
+            }
+        }
+        catch (e)
+        {
+            alert('Can not check the current game.\nError: ' + e);
+            this.start();
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Ends the solved game
+     */
+    this._end = function ()
+    {
+        var $dialog = $('#' + self.getNamespace() + '_dialog-end');
+            
+        try
+        {
+            // disable buttons
+            $('#' + _namespace + '_footer-play').hide();
+            this.getToolbar().setButtonsEnable(0, true);
+            this.getToolbar().setButtonsEnable(1, false);
+            
+            // store the solution
+            this.store(true, true);
+            
+            // build the end dialog
+            $dialog.append(
+                $('<p>').append(
+                    $('<b>').html('Congradulations! You succesfully solved this game. ')
+                ).append(
+                    $('<span>').html('It tooks you ' + this.getTimer().getTimeout() + ' seconds.')
+                )
+            ).append($('<p>').html('Did you enjoy this game? Please, rate it.'));
+            
+            // init a close action of the dialog
+            $dialog.dialog().bind('dialogclose', function(e)
+            {
+                $(this).unbind('dialogclose');                
+                $(this).html('');
+                // show statistics of the game
+                $('#' + self.getNamespace() + '_footer-statistics').trigger('click');
+            });
+                
+            // rating
+            $dialog.append($('<div>').raty({
+                starOn   : this.getAppPath() + '/images/icons/star-on.png',
+                starOff  : this.getAppPath() + '/images/icons/star-off.png',
+                click    : function ()
+                {
+                    var rating = $(this).raty('score');
+                    
+                    if (rating != null && rating <= 5 && rating > 0)
+                    {
+                        $(this).raty('readOnly', true);
+                        
+                        try
+                        {
+                            self.store(true, true, rating);
+                        }
+                        catch (ignore)
+                        {
+                            console.log(ignore);
+                        }
+                    }
+                    
+                    $dialog.dialog('close');
+                }
+            }));
+            
+            // open
+            $dialog.dialog('open');
+        }
+        catch (e)
+        {
+            alert('Can not end the game. Error: ' + e);
         }
     }
     
@@ -246,14 +376,15 @@ function SudokuGame_Game(namespace, appPath)
         throw new SudokuGame_NullPointerException('Empty application path');
     }
     
+    var self = this;
+    
     _namespace = namespace;
     _appPath = appPath;
     _timer = new SudokuGame_Timer(this, '#' + namespace + '_footer-timer');
-    _gameBoard = new SudokuGame_GameBoard('#' + namespace + '_board');
+    _gameBoard = new SudokuGame_GameBoard(this, '#' + namespace + '_board');
     _toolbar = new SudokuGame_GameToolbar(this);
     
     // store on close
-    var self = this;
     $(window).unload(function ()
     {
         self.store(true);

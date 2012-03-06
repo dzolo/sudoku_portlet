@@ -117,6 +117,14 @@
             closeOnEscape   : true
         });
         
+        $('#<portlet:namespace/>_dialog-end').dialog({
+            width           : 200,
+            height          : 'auto',
+            modal           : true,
+            autoOpen        : false,
+            closeOnEscape   : true
+        });
+        
         $('#<portlet:namespace/>_dialog-load').dialog({
             width           : 600,
             height          : 'auto',
@@ -168,6 +176,8 @@
     </div>
     
     <div id="<portlet:namespace/>_dialog-new" title="Create a new game"></div>
+    
+    <div id="<portlet:namespace/>_dialog-end" title="The game was solved!"></div>
     
 
     <div class="sudoku-game_toolbar">

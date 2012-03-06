@@ -42,6 +42,7 @@ public class GameSolution implements Serializable
     @Column(name = "id")
     private Integer id;
     
+    @Basic(optional = false)
     @Column(name = "user_id")
     private String userId;
     
@@ -62,9 +63,11 @@ public class GameSolution implements Serializable
     @Column(name = "lasting")
     private int lasting;
     
-    @Basic(optional = false)
     @Column(name = "finished")
     private boolean finished;
+    
+    @Column(name = "rating")
+    private Integer rating;
     
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
@@ -172,6 +175,16 @@ public class GameSolution implements Serializable
     public void setGameId(Game gameId)
     {
         this.gameId = gameId;
+    }
+
+    public Integer getRating()
+    {
+        return rating;
+    }
+
+    public void setRating(Integer rating)
+    {
+        this.rating = rating;
     }
 
     @XmlTransient

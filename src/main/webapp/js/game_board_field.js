@@ -41,6 +41,16 @@ function SudokuGame_GameBoardField(value, fixed)
     }
     
     /**
+     * Check if the fields has a value
+     * 
+     * @return              true if has a value, false otherwise
+     */
+    this.hasValue = function ()
+    {
+        return ((this.getValue() > 0) && (this.getValue() <= 9));
+    }
+    
+    /**
      * Sets an indicator if a field
      * 
      * @param fixed         An indicator
