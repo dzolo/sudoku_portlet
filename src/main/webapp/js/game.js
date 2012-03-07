@@ -25,8 +25,20 @@ function SudokuGame_Game(namespace, appPath)
     var _namespace;
     /** A path to the web application */
     var _appPath;
+    /** An identificator of the game in the database */
+    var _gameId;
     /** An identificator of the solution in the database */
     var _gameSolutionId;
+    
+    /**
+     * Gets an ID of the game
+     * 
+     * @return          An identificator of the game in the database
+     */
+    this.getGameId = function ()
+    {
+        return _gameId;
+    }
     
     /**
      * Gets an ID of the game solution
@@ -156,6 +168,7 @@ function SudokuGame_Game(namespace, appPath)
             {
                 _gameBoard.setInitFields(obj.gameId.initValues);
                 _gameBoard.setFields(obj.values);
+                _gameId = obj.gameId.id;
                 this.setGameSolutionId(obj.id);
             }
             // game saved
@@ -163,6 +176,7 @@ function SudokuGame_Game(namespace, appPath)
             {
                 _gameBoard.setInitFields(obj.gameSolutionId.gameId.initValues);
                 _gameBoard.setFields(obj.values);
+                _gameId = obj.gameSolutionId.gameId.id;
                 this.setGameSolutionId(obj.gameSolutionId.id);
             }
         }
@@ -173,6 +187,9 @@ function SudokuGame_Game(namespace, appPath)
         
         $('#' + _namespace + '_footer-pause').show();
         $('#' + _namespace + '_footer-play').hide();
+        
+        // reload statisctics
+        SudokuGame_loadStatistics(this.getNamespace());
     }
     
     /**
@@ -352,6 +369,9 @@ function SudokuGame_Game(namespace, appPath)
                     }
                     
                     $dialog.dialog('close');
+                    
+                    // reload statistics
+                    SudokuGame_loadStatistics(self.getNamespace());
                 }
             }));
             

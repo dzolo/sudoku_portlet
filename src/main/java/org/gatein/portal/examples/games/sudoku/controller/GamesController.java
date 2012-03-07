@@ -8,8 +8,11 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
@@ -117,7 +120,7 @@ public class GamesController extends Controller
         
         try
         {
-            Query q = em.createQuery("select object(o) from Game as o");
+            Query q = em.createNamedQuery("Game.findAll");
             
             if (!all)
             {
@@ -126,6 +129,161 @@ public class GamesController extends Controller
             }
             
             return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Finds at most five best solutions of a game with a given ID
+     * 
+     * @param id            An identificator of a game
+     * @return              The best entities
+     */
+    public List<GameSolution> findBestSolvedGameSolutionEntities(Integer id)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findBestSolvedSolutions");
+            q.setParameter("gid", id);
+            q.setFirstResult(0);
+            q.setMaxResults(5);
+            
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Finds at most five best solvers of games
+     * 
+     * @return              A list of the best solvers
+     */
+    public List<Map<String, Object>> findBestSolvers()
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findBestSolvers");
+            q.setFirstResult(0);
+            q.setMaxResults(5);
+            
+            List<Object[]> rsp = q.getResultList();
+            List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+            
+            for (Object[] line : rsp)
+            {
+                for (int i = 2; i < line.length; i++)
+                {
+                    if (line[i] == null)
+                        line[i] = new Long(0);
+                }
+                
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("userId", line[0]);
+                map.put("userName", line[1]);
+                map.put("c_solved", line[2]);
+                map.put("s_lasting", line[3]);
+                map.put("a_rating", line[3]);
+                list.add(map);
+            }
+            
+            return list;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Finds global statistics of all games
+     * 
+     * @return                A map of stats with items: a_rating, a_lasting, c_solved, c_played
+     */
+    public Map<String, Object> findStatistics()
+    {
+        Map<String, Object> stats = new HashMap<String, Object>();
+        EntityManager em = emf.createEntityManager();
+        GameSolutionsController gsc = new GameSolutionsController();
+        
+        try
+        {
+            /* Global stats for logged users */
+            
+            Query q = em.createNamedQuery("Game.findStatisticsLoggedPlayers");
+            
+            try
+            {
+                Object[] results = (Object[]) q.getSingleResult();
+
+                for (int i = 0; i < results.length; i++)
+                {
+                    if (results[i] == null)
+                        results[i] = new Long(0);
+                }
+
+                stats.put("a_rating", results[0]);
+                stats.put("a_lasting", results[1]);
+                stats.put("s_lasting", results[2]);
+            }
+            catch (NoResultException nre)
+            {
+                stats.put("a_rating", new Integer(0));
+                stats.put("a_lasting", new Integer(0));
+                stats.put("s_lasting", new Integer(0));
+            }
+            
+            stats.put("c_players", new Integer(gsc.getSolverCount()));
+            stats.put("c_games", new Integer(getGameCount()));
+            stats.put("c_finished",  new Integer(gsc.getFinishedGameSolutionCount()));
+            
+            return stats;
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Finds total statistics of the game
+     * 
+     * @param game            An identificator of the game
+     * @return                A map of stats with items: a_rating, a_lasting, c_solved, c_played
+     */
+    public Map<String, Object> findStatisticsOf(Integer game)
+    {
+        Map<String, Object> stats = new HashMap<String, Object>();
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findStatisticsOfGame");
+            q.setParameter("gid", game);
+            
+            Object[] results = (Object[]) q.getSingleResult();
+            
+            for (int i = 0; i < results.length; i++)
+            {
+                if (results[i] == null)
+                    results[i] = new Long(0);
+            }
+            
+            stats.put("a_rating", results[0]);
+            stats.put("a_lasting", results[1]);
+            stats.put("c_solved", results[2]);
+            stats.put("c_played", new Integer(getSolutionsCountOf(game)));
+            
+            return stats;
         }
         finally
         {
@@ -165,6 +323,29 @@ public class GamesController extends Controller
         try
         {
             Query q = em.createQuery("select count(o) from Game as o");
+            return ((Long) q.getSingleResult()).intValue();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    /**
+     * Gets a count of game solutions of the given game.
+     * 
+     * @param game          An indentificator of the game
+     * @return              A total count
+     */
+    public int getSolutionsCountOf(Integer game)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.countOfSolutionsOfGame");
+            q.setParameter("gid", game);
+            
             return ((Long) q.getSingleResult()).intValue();
         }
         finally

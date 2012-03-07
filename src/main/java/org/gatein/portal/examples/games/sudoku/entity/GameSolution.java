@@ -23,13 +23,27 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "game_solutions")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "GameSolution.findAll",query = "SELECT g FROM GameSolution g"),
-    @NamedQuery(name = "GameSolution.findById", query = "SELECT g FROM GameSolution g WHERE g.id = :id"),
-    @NamedQuery(name = "GameSolution.findByUserId", query = "SELECT g FROM GameSolution g WHERE g.userId = :userId"),
-    @NamedQuery(name = "GameSolution.findByUserName", query = "SELECT g FROM GameSolution g WHERE g.userName = :userName"),
-    @NamedQuery(name = "GameSolution.findByTimeStart", query = "SELECT g FROM GameSolution g WHERE g.timeStart = :timeStart"),
-    @NamedQuery(name = "GameSolution.findByLasting", query = "SELECT g FROM GameSolution g WHERE g.lasting = :lasting"),
-    @NamedQuery(name = "GameSolution.findByFinished", query = "SELECT g FROM GameSolution g WHERE g.finished = :finished")
+    @NamedQuery(
+        name = "GameSolution.findAll",
+        query = "SELECT g FROM GameSolution g"
+    ),
+    @NamedQuery(
+        name = "GameSolution.count",
+        query = "SELECT COUNT(g) FROM GameSolution g"
+    ),
+    @NamedQuery(
+        name = "GameSolution.countFinished",
+        query = "SELECT COUNT(g) FROM GameSolution g "
+              + "WHERE g.finished > 0"
+    ),
+    @NamedQuery(
+        name = "GameSolution.countSolver",
+        query = "SELECT COUNT(g2) FROM GameSolution g2 "
+              + "WHERE g2.id IN ("
+              + "   SELECT g.id FROM GameSolution g "
+              + "   WHERE g.finished > 0 "
+              + "   GROUP BY g.userId)"
+    )
 })
 public class GameSolution implements Serializable
 {

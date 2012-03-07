@@ -8,7 +8,6 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -194,7 +193,7 @@ public class GameSolutionsController extends Controller
         
         try
         {
-            Query q = em.createQuery("select object(o) from GameSolution as o");
+            Query q = em.createNamedQuery("GameSolution.findAll");
             
             if (!all)
             {
@@ -241,7 +240,7 @@ public class GameSolutionsController extends Controller
         
         try
         {
-            Query q = em.createQuery("select count(o) from GameSolution as o");
+            Query q = em.createNamedQuery("GameSolution.count");
             return ((Long) q.getSingleResult()).intValue();
         }
         finally
@@ -249,4 +248,45 @@ public class GameSolutionsController extends Controller
             em.close();
         }
     }
+
+    /**
+     * Gets a count of finished game solutions of logged users.
+     * 
+     * @return              A count
+     */
+    public int getFinishedGameSolutionCount()
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("GameSolution.countFinished");
+            return ((Long) q.getSingleResult()).intValue();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Gets a count of players who solved a game
+     * 
+     * @return              A count
+     */
+    public int getSolverCount()
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("GameSolution.countSolver");
+            return ((Long) q.getSingleResult()).intValue();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
 }

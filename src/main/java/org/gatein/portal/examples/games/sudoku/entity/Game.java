@@ -25,10 +25,52 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 @Table(name = "games")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Game.findAll", query = "SELECT g FROM Game g"),
-    @NamedQuery(name = "Game.findById", query = "SELECT g FROM Game g WHERE g.id = :id"),
-    @NamedQuery(name = "Game.findByInitDate", query = "SELECT g FROM Game g WHERE g.initDate = :initDate"),
-    @NamedQuery(name = "Game.findByType", query = "SELECT g FROM Game g WHERE g.type = :type")
+    @NamedQuery(
+        name = "Game.findAll",
+        query = "SELECT g FROM Game g"
+    ),
+    @NamedQuery(
+        name = "Game.findStatisticsLoggedPlayers",
+        query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
+              + "FROM GameSolution gs "
+              + "WHERE gs.finished > 0 "
+              + "GROUP BY gs.userId "
+              + "HAVING gs.userId IS NOT NULL"
+    ),
+    @NamedQuery(
+        name = "Game.findStatisticsNotLoggedPlayers",
+        query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
+              + "FROM GameSolution gs "
+              + "WHERE gs.finished > 0 "
+              + "GROUP BY gs.userId "
+              + "HAVING gs.userId IS NULL"
+    ),
+    @NamedQuery(
+        name = "Game.findStatisticsOfGame",
+        query = "SELECT AVG(gs.rating), AVG(gs.lasting), COUNT(gs.id) "
+              + "FROM GameSolution gs "
+              + "WHERE gs.gameId.id = :gid AND gs.finished > 0"
+    ),
+    @NamedQuery(
+        name = "Game.findBestSolvers",
+        query = "SELECT gs.userId, gs.userName, COUNT(gs.id), SUM(gs.lasting), AVG(gs.rating)"
+              + "FROM GameSolution gs "
+              + "WHERE gs.finished > 0 "
+              + "GROUP BY gs.userId "
+              + "HAVING gs.userId IS NOT NULL "
+              + "ORDER BY COUNT(gs.id) DESC, SUM(gs.lasting) ASC"
+    ),
+    @NamedQuery(
+        name = "Game.findBestSolvedSolutions",
+        query = "SELECT gs FROM GameSolution gs "
+              + "WHERE gs.finished > 0 AND gs.gameId.id = :gid "
+              + "ORDER BY gs.lasting"
+    ),
+    @NamedQuery(
+        name = "Game.countOfSolutionsOfGame",
+        query = "SELECT COUNT(gs) from GameSolution gs "
+              + "WHERE gs.gameId.id = :gid"
+    )
 })
 public class Game implements Serializable
 {

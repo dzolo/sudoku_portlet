@@ -48,65 +48,6 @@
             return false;
         });
         
-        /* Statistics *********************************************************/
-        
-        // switching to statistics in normal state of portlet
-        $('#<portlet:namespace/>_footer-statistics').click(function ()
-        {
-            var $game_board = $('#<portlet:namespace/>_board');
-            var $game_stats = $('#<portlet:namespace/>_statistics');
-            var $show_statistics_button = $('#<portlet:namespace/>_footer-statistics');
-            var $show_game_button = $('#<portlet:namespace/>_footer-show-game');
-            var $game_buttons = $('#<portlet:namespace/>_footer-pause, #<portlet:namespace/>_footer-play');
-
-            if ($game_board && $game_stats)
-            {
-                // pause the game if started
-                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed())
-                {
-                    window['<portlet:namespace/>_game'].pause();
-                }
-                // hide button and board
-                $game_buttons.hide();
-                $show_statistics_button.hide();
-                $game_board.hide();
-                // show stats
-                $game_stats.fadeIn();
-                // show reverse action button
-                $show_game_button.show();
-            }
-
-            return false;
-        });
-        
-        // switching to game from statistics in normal state of portlet
-        $('#<portlet:namespace/>_footer-show-game').click(function ()
-        {
-            var $game_board = $('#<portlet:namespace/>_board');
-            var $game_stats = $('#<portlet:namespace/>_statistics');
-            var $show_statistics_button = $('#<portlet:namespace/>_footer-statistics');
-            var $show_game_button = $('#<portlet:namespace/>_footer-show-game');
-
-            if ($game_board && $game_stats)
-            {
-                // resume the game if started
-                if (window['<portlet:namespace/>_game'].getGameBoard().isGamePlayed() &&
-                    !window['<portlet:namespace/>_game'].getTimer().isStarted())
-                {
-                    window['<portlet:namespace/>_game'].start();
-                }
-                // hide button and board
-                $show_game_button.hide();
-                $game_stats.hide();
-                // show stats
-                $game_board.fadeIn();
-                // show reverse action button
-                $show_statistics_button.show();
-            }
-
-            return false;
-        });
-        
         /* Dialogs ************************************************************/
         
         $('#<portlet:namespace/>_dialog-save').dialog({
@@ -232,7 +173,7 @@
         <a href="#" id="<portlet:namespace/>_footer-play" class="sudoku-game_button sudoku-game_footer-play" title="Continue the game">Continue</a>
         <c:if test="${renderRequest.windowState ne 'maximized'}">
             <a href="#" id="<portlet:namespace/>_footer-statistics" class="sudoku-game_button sudoku-game_footer-statistics" title="Show statistics">Statistics</a>
-            <a href="#" id="<portlet:namespace/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Continue the game</a>
+            <a href="#" id="<portlet:namespace/>_footer-show-game" class="sudoku-game_button sudoku-game_footer-show-game" title="Show game">Back to the game</a>
         </c:if>
         <div class="sudoku-game_cleared"></div>
     </div>

@@ -9,13 +9,17 @@ package org.gatein.portal.examples.games.sudoku.service;
 
 import java.net.URI;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
+import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
@@ -74,6 +78,148 @@ public class GameRestFacade
     public List<Game> findAll()
     {
         return gamesController.findGameEntities();
+    }
+    
+    @GET
+    @Path("stats")
+    @Produces({"application/json"})
+    public String statsOfGames(@PathParam("id") Integer id)
+    {
+        StringBuilder b = new StringBuilder();
+        Map<String, Object> totalStats;
+        
+        try
+        {
+            totalStats = gamesController.findStatistics();
+            
+            b.append("{\"state\":true, \"stats\": {");
+            
+            for (Iterator it = totalStats.keySet().iterator(); it.hasNext();)
+            {
+                final String key = (String) it.next();
+                
+                b.append("\"");
+                b.append(key);
+                b.append("\":");
+                b.append(totalStats.get(key));
+                
+                if (it.hasNext())
+                    b.append(",");
+            }
+            
+            b.append("}}");
+            
+            return b.toString();
+        }
+        catch (Exception ex)
+        {
+            return "{\"state\":false,\"message\":\""
+                 + ex.getMessage().replace('"', '\'')
+                 + "\"}";
+        }
+    }
+    
+    @GET
+    @Path("stats/{id}")
+    @Produces({"application/json"})
+    public String statsOfGame(@PathParam("id") Integer id)
+    {
+        StringBuilder b = new StringBuilder();
+        Map<String, Object> totalStats;
+        
+        try
+        {
+            totalStats = gamesController.findStatisticsOf(id);
+            
+            b.append("{\"state\":true, \"stats\": {");
+            
+            for (Iterator it = totalStats.keySet().iterator(); it.hasNext();)
+            {
+                final String key = (String) it.next();
+                
+                b.append("\"");
+                b.append(key);
+                b.append("\":");
+                b.append(totalStats.get(key));
+                
+                if (it.hasNext())
+                    b.append(",");
+            }
+            
+            b.append("}}");
+            
+            return b.toString();
+        }
+        catch (Exception ex)
+        {
+            return "{\"state\":false,\"message\":\""
+                 + ex.getMessage().replace('"', '\'')
+                 + "\"}";
+        }
+    }
+    
+    @GET
+    @Path("stats/best_solvers/{id}")
+    @Produces({"application/json"})
+    public List<GameSolution> bestSolversOfGame(@PathParam("id") Integer id)
+    {
+        return gamesController.findBestSolvedGameSolutionEntities(id);
+    }
+    
+    @GET
+    @Path("stats/best_solvers")
+    @Produces({"application/json"})
+    public String bestSolvers()
+    {
+        StringBuilder b = new StringBuilder();
+        List<Map<String, Object>> solvers;
+        
+        try
+        {
+            solvers = gamesController.findBestSolvers();
+            
+            b.append("{\"state\":true, \"solvers\": [");
+            
+            for (Iterator<Map<String, Object>> it = solvers.iterator(); it.hasNext();)
+            {
+                final Map<String, Object> map = it.next();
+                
+                b.append("{");
+                
+                for (Iterator it2 = map.keySet().iterator(); it2.hasNext();)
+                {
+                    final String key = String.valueOf(it2.next());
+                    final Object value = map.get(key);
+                
+                    b.append("\"");
+                    b.append(key);
+                    b.append("\":");
+                    
+                    if (value instanceof String && value != null)
+                        b.append("\"").append(value).append("\"");
+                    else
+                        b.append(value);
+
+                    if (it2.hasNext())
+                        b.append(",");
+                }
+                
+                b.append("}");
+                
+                if (it.hasNext())
+                    b.append(",");
+            }
+            
+            b.append("]}");
+            
+            return b.toString();
+        }
+        catch (Exception ex)
+        {
+            return "{\"state\":false,\"message\":\""
+                 + ex.getMessage().replace('"', '\'')
+                 + "\"}";
+        }
     }
     
 }
