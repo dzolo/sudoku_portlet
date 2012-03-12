@@ -73,6 +73,14 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     }
     
     /**
+     * Clears errors from fields
+     */
+    this.clearErrors = function ()
+    {
+        _$root.find('.sudoku-game_field-error').removeClass('sudoku-game_field-error');
+    }
+    
+    /**
      * Gets the parent
      * 
      * @return          The parent

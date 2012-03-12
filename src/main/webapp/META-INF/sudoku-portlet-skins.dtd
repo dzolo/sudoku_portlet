@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : sudoku-portlet-skins.dtd
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization  : FIT VUT <http://www.fit.vutbr.cz>
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE portlet-skins SYSTEM "sudoku-portlet-skins.dtd">
+
+    <portlet-skins>
+    ...
+    </portlet-skins>
+-->
+
+<!ELEMENT portlet-skins (skin+)>
+
+<!ELEMENT skin (game-board)>
+<!ATTLIST skin
+    default (true|false) "false"
+    name CDATA #REQUIRED
+  >
+
+<!ELEMENT game-board (field)>
+<!ATTLIST game-board
+    border-color CDATA #REQUIRED
+    font-color CDATA #REQUIRED
+  >
+
+<!ELEMENT field EMPTY>
+<!ATTLIST field
+    fixed-background CDATA #REQUIRED
+    background CDATA #REQUIRED
+  >

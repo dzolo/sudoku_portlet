@@ -17,18 +17,21 @@
     // the current user is logged in
     SudokuGame_userId = null;
     <c:if test="${not empty pageContext.request.remoteUser}">
-    SudokuGame_userId = '<c:out value="${pageContext.request.remoteUser}"/>'
+    SudokuGame_userId = '${pageContext.request.remoteUser}'
     </c:if>
     
     // after the document is loaded
     $(document).ready(function ()
     {
+        /* CSS fixes **********************************************************/
+        $('.sudoku-game_container').css('position', 'static');
+        
         /* Game ***************************************************************/
         
         if (window['<portlet:namespace/>_game'] == undefined)
         {
             window['<portlet:namespace/>_game'] = new SudokuGame_Game(
-                    '<portlet:namespace/>', '<c:out value="${app_path}"/>'
+                    '<portlet:namespace/>', '${app_path}'
             );
         }
         
@@ -123,25 +126,25 @@
 
     <div class="sudoku-game_toolbar">
         <a href="#" id="<portlet:namespace/>_button_new" class="sudoku-game_button" title="Create a new game">
-            <img alt="New icon" src="<c:out value="${app_path}"/>/images/icons/new_16x16.png" />
+            <img alt="New icon" src="${app_path}/images/icons/new_16x16.png" />
             <span>New</span>
         </a>
         <c:if test="${not empty pageContext.request.remoteUser}">
             <a href="#" id="<portlet:namespace/>_button_save" class="sudoku-game_button" title="Save the current game">
-                <img alt="Save icon" src="<c:out value="${app_path}"/>/images/icons/save_16x16.png" />
+                <img alt="Save icon" src="${app_path}/images/icons/save_16x16.png" />
                 <span>Save</span>
             </a>
             <a href="#" id="<portlet:namespace/>_button_load" class="sudoku-game_button" title="Load a previous played game">
-                <img alt="Load icon" src="<c:out value="${app_path}"/>/images/icons/load_16x16.png" />
+                <img alt="Load icon" src="${app_path}/images/icons/load_16x16.png" />
                 <span>Load</span>
             </a>
         </c:if>
         <a href="#" id="<portlet:namespace/>_button_reset" class="sudoku-game_button" title="Reset the current game">
-            <img alt="Reset icon" src="<c:out value="${app_path}"/>/images/icons/reset_16x16.png" />
+            <img alt="Reset icon" src="${app_path}/images/icons/reset_16x16.png" />
             <span>Reset</span>
         </a>
         <a href="#" id="<portlet:namespace/>_button_check" class="sudoku-game_button" title="Check your solution of the current game">
-            <img alt="Check icon" src="<c:out value="${app_path}"/>/images/icons/check_16x16.png" />
+            <img alt="Check icon" src="${app_path}/images/icons/check_16x16.png" />
             <span>Check</span>
         </a>
         <div class="sudoku-game_cleared"></div>
@@ -156,7 +159,7 @@
                         <c:forEach var="colIndex" begin="1" end="9" step="1">
                             <c:set var="borderRight" value="${((colIndex mod 3) eq 0) and (colIndex ne 1) and (colIndex ne 9)}" />
                             <td style="<c:if test="${borderBottom}">border-bottom: 2px solid #a6a6a6;</c:if><c:if test="${borderRight}">border-right: 2px solid #a6a6a6;</c:if>">
-                                <input name="board_field[<c:out value="${(rowIndex - 1) * 9 + (colIndex - 1)}"/>]" type="text" class="sudoku-game_board-field" />
+                                <input name="board_field[${(rowIndex - 1) * 9 + (colIndex - 1)}]" type="text" class="sudoku-game_board-field" />
                             </td>
                         </c:forEach>
                     </tr>

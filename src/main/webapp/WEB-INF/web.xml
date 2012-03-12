@@ -4,7 +4,7 @@
     Project       : Bachelor Thesis - Sudoku game implementation as portlet
     Document      : web.xml
     Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
-    Organization: : FIT VUT <http://www.fit.vutbr.cz>
+    Organization  : FIT VUT <http://www.fit.vutbr.cz>
 -->
 
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"

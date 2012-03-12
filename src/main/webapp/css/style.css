@@ -11,7 +11,7 @@
 {
     width: 100%;
     height: 100%;
-    position: relative;
+    position: relative; /* because of nonscript element */
 }
 
 /* VIEW mode - toolbar --> */
@@ -70,7 +70,7 @@
 
 .sudoku-game_board table td
 {
-    border: 1px solid #ececec;
+    border: 1px solid #a6a6a6;
     vertical-align: middle;
 }
 
@@ -97,7 +97,7 @@
 
 .sudoku-game_board table td.sudoku-game_field-error
 {
-    background-color: #fe9494;
+    background-color: #fe9494 ! important;
 }
 
 .sudoku-game_board table td.sudoku-game_field-error input
@@ -252,6 +252,76 @@ a.sudoku-game_footer-show-game
 /* <-- VIEW mode - footer */
 
 /*** EDIT mode ***/
+
+.sudoku-game_edit
+{
+    padding: 5px;
+    background: url(../images/layout/toolbar_bg.png);
+    background-repeat: repeat-x;
+}
+
+.sudoku-game_edit table tr td
+{
+    vertical-align: middle;
+}
+
+.sudoku-game_edit table tr td b
+{
+    display: block;
+    height: 20px;
+    padding-top: 5px;
+}
+
+a.sudoku-game_edit-tab-button, a.sudoku-game_edit-tab-button-active
+{
+    display: block;
+    float: left;
+    position: relative;
+    top: 1px;
+    margin-right: 2px;
+    padding: 4px 8px 2px 8px;
+    border: 1px solid #ebebeb;
+    background: white;
+    color: #444;
+}
+
+a.sudoku-game_edit-tab-button:hover, a.sudoku-game_edit-tab-button-active
+{
+    border: 1px solid #ccc;
+    border-bottom-color: white;
+    color: black;
+}
+
+.sudoku-game_edit-tab
+{
+    clear: both;
+    padding: 5px 8px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+.sudoku-game_edit-colorpicker
+{
+    position: relative;
+    width: 36px;
+    height: 36px;
+}
+
+.sudoku-game_edit-colorpicker div
+{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 28px;
+    height: 28px;
+    background: url(../images/colorpicker/select2.png) center;
+}
+
+
+.sudoku-game_edit-colorpicker-disabled div
+{
+    background: url(../images/colorpicker/select2_disabled.png) center;
+}
 
 /*** HELP mode ***/
 

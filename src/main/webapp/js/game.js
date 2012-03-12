@@ -179,6 +179,8 @@ function SudokuGame_Game(namespace, appPath)
                 _gameId = obj.gameSolutionId.gameId.id;
                 this.setGameSolutionId(obj.gameSolutionId.id);
             }
+            
+            _gameBoard.clearErrors();
         }
         
         _gameBoard.setEnabled(true);
@@ -213,6 +215,7 @@ function SudokuGame_Game(namespace, appPath)
     {
         this.pause();
         _gameBoard.resetUnfixedFields();
+        _gameBoard.clearErrors();
         this.start();
     }
     

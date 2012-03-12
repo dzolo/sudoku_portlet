@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : sudoku-portlet-skins.xml
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization  : FIT VUT <http://www.fit.vutbr.cz>
+    DTD           : /WEB-INF/sudoku-portlet-skins.dtd
+-->
+
+<!DOCTYPE portlet-skins SYSTEM "../META-INF/sudoku-portlet-skins.dtd">
+
+<portlet-skins>
+    
+    <skin name="Default" default="true">
+        <game-board font-color="000000" border-color="a6a6a6">
+            <field background="f2f2f2" fixed-background="ffffff"/>
+        </game-board>
+    </skin>
+    
+    <skin name="New theme">
+        <game-board font-color="012345" border-color="678900">
+            <field background="abcdef" fixed-background="012345"/>
+        </game-board>
+    </skin>
+    
+</portlet-skins>
