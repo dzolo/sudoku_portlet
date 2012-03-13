@@ -1,6 +1,6 @@
 /* 
- * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : Sudoku.java
+ * Project       : Bachelor Thesis - SudokuPortlet game implementation as portlet
+ * Document      : SudokuPortlet.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
@@ -26,7 +26,7 @@ import org.xml.sax.SAXParseException;
  * @author Ondřej Fibich
  * @version 1.0
  */
-public class Sudoku extends GenericPortlet
+public class SudokuPortlet extends GenericPortlet
 {
     /**
      * Path to a document which contains a skin definition
@@ -34,7 +34,7 @@ public class Sudoku extends GenericPortlet
     private static final String SKIN_DOC_PATH = "/WEB-INF/sudoku-portlet-skins.xml";
     
     /**
-     * CSS definitions definitions for skins
+     * CSS definitions for skins
      */
     private static final String[][] SKIN_CSS_DEFINITIONS = {
         { ".sudoku-game_board table td", "color" },
@@ -155,7 +155,7 @@ public class Sudoku extends GenericPortlet
         }
         catch (ReadOnlyException ex)
         {
-            Logger.getLogger(Sudoku.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -265,7 +265,7 @@ public class Sudoku extends GenericPortlet
      */
     private void loadSkins() throws SAXParseException, Exception
     {
-        final String loggerName = Sudoku.class.getName();
+        final String loggerName = SudokuPortlet.class.getName();
         final String skinDocPath = getPortletContext().getRealPath(SKIN_DOC_PATH);
         
         // load a factory
