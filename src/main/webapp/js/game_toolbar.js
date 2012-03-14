@@ -169,40 +169,119 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : false,
             action      : function ()
             {
+                _parent.pause();
+                
                 var request = new SudokuGame_Request(_parent.getAppPath());
-                var data, id;
+                var $wizard = $('#' + _parent.getNamespace() + '_dialog-new');
+                var chooseInputName = _parent.getNamespace() + '_dialog-new-choose'; 
+                var diffInputName = _parent.getNamespace() + '_dialog-new-diff';
+                
+                $wizard.dialog('open').jWizard({
+                    previous: function (event, ui)
+                    {
+                        $wizard.dialog('option', 'title', 'Create a new game');
+                    },
+                    next: function (event, ui)
+                    {
+                        if (ui.currentStepIndex != 0)
+                        {
+                            return;
+                        }
+                        
+                        var type = $('input[name="' + chooseInputName + '"]:checked').val();
+                        
+                        if (type == "generate")
+                        {
+                            /* build next step */
+                            
+                            $wizard.dialog('option', 'title', 'Create a new game: Select difficulty of a game');
+                            
+                            var step2 = $wizard.find('.sg__second');
+                            
+                            step2.html('');
+                            
+                            var diffs = {
+                                EASY        : 'An easy game for begginers', 
+                                MODERATE    : 'A moderate game for less skilled players',
+                                HARD        : 'A hard game for good players',
+                                EXPERT      : 'A very hard game for brilliant players'
+                            };
+                            
+                            var table = $('<table>');
+                            
+                            for (var k in diffs)
+                            {
+                                table.append(
+                                    $('<tr>').append(
+                                        $('<td>').css('width', '20px').append(
+                                            $('<input>').attr({
+                                                type    : 'radio',
+                                                name    : diffInputName,
+                                                value   : k
+                                            })
+                                        )
+                                    ).append(
+                                        $('<td>').append(
+                                            $('<label>').text(diffs[k])
+                                        )
+                                    )
+                                );
+                            }
+                            
+                            table.find('input:eq(0)').attr('checked', 'checked');
+                            step2.append(table);
+                        }
+                        else
+                        {
+                            alert("Not supportey yet");
+                        }
+                    },
+                    finish: function(event, ui)
+                    {
+                        var type = $('input[name="' + chooseInputName + '"]:checked').val();
+                        
+                        if (type == "generate")
+                        {
+                            var data, id;
+                            var diff = $('input[name="' + diffInputName + '"]:checked').val();
 
-                try
-                {
-                    // create a game
-                    data = request.makePost('/game', {typeDifficulty: 'EASY'});
+                            try
+                            {
+                                // create a game
+                                data = request.makePost('/game', {
+                                    typeDifficulty: diff
+                                });
 
-                    // get an ID of the created game
-                    id = data.location.split('/').pop();
-                    // get the created game
-                    data = request.makeGet('/game/' + id);
+                                // get an ID of the created game
+                                id = data.location.split('/').pop();
+                                // get the created game
+                                data = request.makeGet('/game/' + id);
 
-                    // create a game solution of the created game
-                    data = request.makePost('/game_solution/' + id, {
-                        userId     : SudokuGame_userId, // global property
-                        userName   : null,
-                        values     : data.initValues
-                    });
+                                // create a game solution of the created game
+                                data = request.makePost('/game_solution/' + id, {
+                                    userId     : SudokuGame_userId, // global property
+                                    userName   : null,
+                                    values     : data.initValues
+                                });
 
-                    // get an ID of the created game solution
-                    id = data.location.split('/').pop();
-                    // get the created solution
-                    data = request.makeGet('/game_solution/' + id);
+                                // get an ID of the created game solution
+                                id = data.location.split('/').pop();
+                                // get the created solution
+                                data = request.makeGet('/game_solution/' + id);
 
-                    // start the game
-                    _parent.pause();
-                    _parent.getTimer().setTimeout(0);
-                    _parent.start(data);
-                }
-                catch (e)
-                {
-                    alert('Can not create a new game.\nError: ' + e.toString());
-                }
+                                // start the game
+                                _parent.getTimer().setTimeout(0);
+                                _parent.start(data);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not create a new game.\nError: ' + e.toString());
+                            }
+                            
+                            $(this).dialog('close');
+                        }
+                    }
+                }).jWizard('firstStep').dialog('option', 'title', 'Create a new game');
             }
         },
         breset: {

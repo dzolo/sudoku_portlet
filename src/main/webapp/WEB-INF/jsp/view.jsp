@@ -23,9 +23,6 @@
     // after the document is loaded
     $(document).ready(function ()
     {
-        /* CSS fixes **********************************************************/
-        $('.sudoku-game_container').css('position', 'static');
-        
         /* Game ***************************************************************/
         
         if (window['<portlet:namespace/>_game'] == undefined)
@@ -77,7 +74,13 @@
             closeOnEscape   : true
         });
         
-        $('#<portlet:namespace/>_dialog-new').dialog({autoOpen: false});
+        $('#<portlet:namespace/>_dialog-new').dialog({
+            width           : 600,
+            height          : 'auto',
+            modal           : true,
+            autoOpen        : false,
+            closeOnEscape   : true
+        });
        
     });
    
@@ -119,7 +122,40 @@
         </table>
     </div>
     
-    <div id="<portlet:namespace/>_dialog-new" title="Create a new game"></div>
+    <div id="<portlet:namespace/>_dialog-new" style="display: none; padding: 0" title="Create a new game">
+        <div>
+            <table>
+                <c:if test="${not empty pageContext.request.remoteUser}">
+                    <tr>
+                        <td>
+                            <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_own" checked="checked" disabled="disabled" />
+                        </td>
+                        <td>
+                            <label for="<portlet:namespace/>_dialog-new-choose">Load from your previously played games which were unfinished.</label>
+                        </td>
+                    </tr>
+                </c:if>
+                <tr>
+                    <td>
+                        <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load" disabled="disabled" />
+                    </td>
+                    <td>
+                        <label for="<portlet:namespace/>_dialog-new-choose">Load from games which were played by other players.</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="generate" />
+                    </td>
+                    <td>
+                        <label for="<portlet:namespace/>_dialog-new-choose">Generate a new random game.</label>
+                    </td>
+                </tr>
+            </table>
+            
+        </div>
+        <div class="sg__second"></div>
+    </div>
     
     <div id="<portlet:namespace/>_dialog-end" title="The game was solved!"></div>
     

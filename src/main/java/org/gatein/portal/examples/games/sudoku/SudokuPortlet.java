@@ -74,7 +74,7 @@ public class SudokuPortlet extends GenericPortlet
         catch (SAXParseException npex)
         {
             final String m = "Wrong sytax of portlet skins document, "
-                           + "check DTD for mode details";
+                           + "check DTD for more details";
             
             throw new PortletException(m, npex);
         }
@@ -191,6 +191,12 @@ public class SudokuPortlet extends GenericPortlet
         link.setAttribute("href", path + "/css/colorpicker.css");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
         
+        link = response.createElement("link");
+        link.setAttribute("type", "text/css");
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", path + "/css/jWizard.base.css");
+        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
+        
         link = response.createElement("style");
         link.setAttribute("type", "text/css");
         link.setTextContent(buildSkinStyleTagContent(request.getPreferences()));
@@ -219,6 +225,11 @@ public class SudokuPortlet extends GenericPortlet
         script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
         script.setAttribute("src", path + "/js/lib/jquery.colorpicker.js");
+        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
+        
+        script = response.createElement("script");
+        script.setAttribute("type", "text/javascript");
+        script.setAttribute("src", path + "/js/lib/jquery.jWizard.min.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
 
         script = response.createElement("script");
