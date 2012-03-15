@@ -177,6 +177,10 @@ function SudokuGame_GameToolbar(gameParent)
                 var diffInputName = _parent.getNamespace() + '_dialog-new-diff';
                 
                 $wizard.dialog('open').jWizard({
+                    cancel: function ()
+                    {
+                        $wizard.dialog('close');
+                    },
                     previous: function (event, ui)
                     {
                         $wizard.dialog('option', 'title', 'Create a new game');
@@ -190,10 +194,10 @@ function SudokuGame_GameToolbar(gameParent)
                         
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
                         
-                        if (type == "generate")
+                        // build newxt step according to the type
+                        
+                        if (type == 'generate')
                         {
-                            /* build next step */
-                            
                             $wizard.dialog('option', 'title', 'Create a new game: Select difficulty of a game');
                             
                             var step2 = $wizard.find('.sg__second');
@@ -231,9 +235,17 @@ function SudokuGame_GameToolbar(gameParent)
                             table.find('input:eq(0)').attr('checked', 'checked');
                             step2.append(table);
                         }
+                        else if (type == 'load')
+                        {
+                            
+                        }
+                        else if (type == 'load_own')
+                        {
+                            
+                        }
                         else
                         {
-                            alert("Not supportey yet");
+                            $wizard.jWizard('firstStep');
                         }
                     },
                     finish: function(event, ui)
@@ -482,7 +494,9 @@ function SudokuGame_GameToolbar(gameParent)
                 for (var i = 0; i < data.length; i++)
                 {
                     var d = new Date(data[i].saved);
-                    var dstr = d.toLocaleFormat('%Y/%m/%d %H:%M:%S');
+                    var dstr = d.getFullYear() + '/' + (d.getMonth() < 9 ? '0' : '')
+                             + (d.getMonth() + 1) + '/' + (d.getDate() < 9 ? '0' : '')
+                             + d.getDate() +  ' ' + d.toLocaleTimeString();
                     
                     $dialogTableBody.append(
                         $('<tr>').append(
