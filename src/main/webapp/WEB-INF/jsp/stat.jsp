@@ -14,10 +14,10 @@
 <script type="text/javascript"><!--
    
     /**
-        * Loads a content of statistics
-        * 
-        * @param namespace
-        */
+     * Loads a content of statistics
+     * 
+     * @param namespace
+     */
     function SudokuGame_loadStatistics(namespace)
     {
         var $game_stats = $('#' + namespace + '_statistics');
@@ -92,13 +92,12 @@
                             ).append(
                                 $('<td>').html(solvers[i].userId) // @todo name
                             ).append(
-                                $('<td>').html(Math.floor(solvers[i].lasting / 60)
-                                                          + ':' + (solvers[i].lasting % 60))
+                                $('<td>').html(SudokuGame_lasting(solvers[i].lasting))
                             ).append(
                                 $('<td>').html($('<span>').raty({
                                     readOnly : true,
                                     start    : Math.floor(solvers[i].rating),
-                                    starOn   : '${app_path}images/icons/star-on_small.png',
+                                    starOn   : '${app_path}/images/icons/star-on_small.png',
                                     starOff  : '${app_path}/images/icons/star-off_small.png'
                                 }))
                             ));
@@ -144,12 +143,12 @@
                         $('<li>').html('The average rating of game is ').append($('<span>').raty({
                             readOnly : true,
                             start    : Math.floor(stats.stats.a_rating),
-                            starOn   : '${app_path}images/icons/star-on_small.png',
-                            starOff  : '${app_path}images/icons/star-off_small.png'
+                            starOn   : '${app_path}/images/icons/star-on_small.png',
+                            starOff  : '${app_path}/images/icons/star-off_small.png'
                         }))
                     ).append(
                         $('<li>').html('The average solution time is ')
-                            .append($('<b>').text(Math.floor(lasting / 60) + ':' + (lasting % 60)))
+                            .append($('<b>').text(SudokuGame_lasting(lasting)))
                             .append(' seconds.')
                     );
                 }
@@ -234,8 +233,7 @@
                         ).append(
                             $('<td>').html(data.solvers[i].c_solved)
                         ).append(
-                            $('<td>').html(Math.floor(data.solvers[i].s_lasting / 60)
-                                                      + ':' + (data.solvers[i].s_lasting % 60))
+                            $('<td>').html(SudokuGame_lasting(data.solvers[i].s_lasting))
                         ));
                     }
                 }
@@ -277,18 +275,18 @@
                         .append(' times by ')
                         .append($('<b>').text(stats.stats.c_players))
                         .append(' players in a time of ')
-                        .append($('<b>').text(Math.floor(lasting2 / 60) + ':' + (lasting2 % 60)))
+                        .append($('<b>').text(SudokuGame_lasting(lasting2)))
                         .append(' seconds.')
                 ).append(
                     $('<li>').html('The average solution time is ')
-                        .append($('<b>').text(Math.floor(lasting / 60) + ':' + (lasting % 60)))
+                        .append($('<b>').text(SudokuGame_lasting(lasting)))
                         .append(' seconds.')
                 ).append(
                     $('<li>').html('The average rating is ').append($('<span>').raty({
                         readOnly : true,
                         start    : Math.floor(stats.stats.a_rating),
-                        starOn   : '${app_path}images/icons/star-on_small.png',
-                        starOff  : '${app_path}images/icons/star-off_small.png'
+                        starOn   : '${app_path}/images/icons/star-on_small.png',
+                        starOff  : '${app_path}/images/icons/star-off_small.png'
                     }))
                 );
             }

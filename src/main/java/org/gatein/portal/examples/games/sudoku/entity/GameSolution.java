@@ -28,6 +28,11 @@ import javax.xml.bind.annotation.XmlTransient;
         query = "SELECT g FROM GameSolution g"
     ),
     @NamedQuery(
+        name = "GameSolution.findUnfinishedOfUser",
+        query = "SELECT g FROM GameSolution g "
+              + "WHERE g.userId = :uid AND g.finished = 0"
+    ),
+    @NamedQuery(
         name = "GameSolution.count",
         query = "SELECT COUNT(g) FROM GameSolution g"
     ),

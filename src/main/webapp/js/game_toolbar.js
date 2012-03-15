@@ -169,12 +169,20 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : false,
             action      : function ()
             {
-                _parent.pause();
+                var start = false;
+                
+                // pause the game
+                if (_parent.getTimer().isStarted())
+                {
+                    _parent.pause();
+                    start = true;
+                }
                 
                 var request = new SudokuGame_Request(_parent.getAppPath());
                 var $wizard = $('#' + _parent.getNamespace() + '_dialog-new');
                 var chooseInputName = _parent.getNamespace() + '_dialog-new-choose'; 
                 var diffInputName = _parent.getNamespace() + '_dialog-new-diff';
+                var $dialogTableBody = null;
                 
                 $wizard.dialog('open').jWizard({
                     cancel: function ()
@@ -193,16 +201,25 @@ function SudokuGame_GameToolbar(gameParent)
                         }
                         
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
+                        var $step2 = $wizard.find('.sg__second');
+                        var loaderImg = _parent.getAppPath() + '/images/icons/loader.gif';
+                        var $finishButton = $wizard.find('.jw-button-finish');
+
+                        $step2.html(
+                            $('<div>').css({
+                                textAlign   : 'center',
+                                padding     : '20px'
+                            }).append(
+                                $('<img>').attr('src', loaderImg)
+                            )
+                        );
                         
                         // build newxt step according to the type
                         
                         if (type == 'generate')
                         {
                             $wizard.dialog('option', 'title', 'Create a new game: Select difficulty of a game');
-                            
-                            var step2 = $wizard.find('.sg__second');
-                            
-                            step2.html('');
+                            $finishButton.removeAttr('disabled').removeClass('ui-state-disabled');
                             
                             var diffs = {
                                 EASY        : 'An easy game for begginers', 
@@ -211,11 +228,11 @@ function SudokuGame_GameToolbar(gameParent)
                                 EXPERT      : 'A very hard game for brilliant players'
                             };
                             
-                            var table = $('<table>');
+                            var $table = $('<table>');
                             
                             for (var k in diffs)
                             {
-                                table.append(
+                                $table.append(
                                     $('<tr>').append(
                                         $('<td>').css('width', '20px').append(
                                             $('<input>').attr({
@@ -232,8 +249,8 @@ function SudokuGame_GameToolbar(gameParent)
                                 );
                             }
                             
-                            table.find('input:eq(0)').attr('checked', 'checked');
-                            step2.append(table);
+                            $table.find('input:eq(0)').attr('checked', 'checked');
+                            $step2.html($table);
                         }
                         else if (type == 'load')
                         {
@@ -241,7 +258,112 @@ function SudokuGame_GameToolbar(gameParent)
                         }
                         else if (type == 'load_own')
                         {
+                            $wizard.dialog('option', 'title', 'Create a new game: Select your previous unfinished game');
                             
+                            setTimeout(function ()
+                            {
+                                $finishButton.attr('disabled', true).addClass('ui-state-disabled');
+                            }, 0);
+                            
+                            var data;
+                            
+                            // get data
+                            try
+                            {
+                                data = request.makeGet('/game_solution/unfinished/' + SudokuGame_userId);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not load games. Error: ' + e.toString());
+                                $wizard.jWizard('firstStep');
+                                return;
+                            }
+                            
+                            $table = $('<table>').addClass('display').append($('<thead>').append(
+                                    $('<tr>').append(
+                                        $('<th>').attr('width', '15%').text('ID')
+                                    ).append(
+                                        $('<th>').attr('width', '30%').text('Origin / Type')
+                                    ).append(
+                                        $('<th>').attr('width', '40%').text('Time of creation')
+                                    ).append(
+                                        $('<th>').attr('width', '15%').text('Lasting')
+                                    )
+                                )
+                            );
+                                
+                            $dialogTableBody = $('<tbody>');
+                            
+                            // put data into the table
+                            for (var i = 0; i < data.length; i++)
+                            {
+                                var t, d = new Date(data[i].timeStart);
+                                var dstr = d.getFullYear() + '/' + (d.getMonth() < 9 ? '0' : '')
+                                         + (d.getMonth() + 1) + '/' + (d.getDate() < 9 ? '0' : '')
+                                         + d.getDate() +  ' ' + d.toLocaleTimeString();
+                                     
+                                if (data[i].gameId.type == 'GENERATED')
+                                {
+                                    t = 'Generated / ' + data[i].gameId.typeDifficulty;
+                                }
+                                else
+                                {
+                                    t = 'Remote service / x'; // @todo after service implementation
+                                }
+
+                                $dialogTableBody.append(
+                                    $('<tr>').append(
+                                        $('<td>').text(data[i].id)
+                                    ).append(
+                                        $('<td>').text(t)
+                                    ).append(
+                                        $('<td>').text(dstr)
+                                    ).append(
+                                        $('<td>').text(SudokuGame_lasting(data[i].lasting))
+                                    )
+                                );
+                            }
+                            
+                            $step2.html($table.append($dialogTableBody));
+                            
+                            // line select
+                            $dialogTableBody.find('tr').click(function()
+                            {
+                                if ($(this).hasClass('row_selected'))
+                                {
+                                    $(this).removeClass('row_selected');
+
+                                    $finishButton.attr('disabled', true)
+                                        .addClass('ui-state-disabled');
+                                }
+                                else
+                                {
+                                    $dialogTableBody.find('tr.row_selected')
+                                        .removeClass('row_selected');
+                                        
+                                    $(this).addClass('row_selected');
+
+                                    $finishButton.removeAttr('disabled')
+                                        .removeClass('ui-state-disabled');
+                                }
+                            }).dblclick(function ()
+                            {
+                                if ($dialogTableBody.find('tr.row_selected').length == 0)
+                                {
+                                    $(this).trigger('click');
+                                }
+
+                                $finishButton.trigger('click');
+                            });
+                            
+                            // init the data table
+                            $table.dataTable({
+                                'sDom'              : 't<"F"fp>',
+                                'aaSorting'         : [[ 2, 'desc' ]],
+                                'sPaginationType'   : 'full_numbers',
+                                'bJQueryUI'         : true,
+                                'bDestroy'          : true
+                            });
                         }
                         else
                         {
@@ -252,7 +374,7 @@ function SudokuGame_GameToolbar(gameParent)
                     {
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
                         
-                        if (type == "generate")
+                        if (type == 'generate')
                         {
                             var data, id;
                             var diff = $('input[name="' + diffInputName + '"]:checked').val();
@@ -288,9 +410,46 @@ function SudokuGame_GameToolbar(gameParent)
                             catch (e)
                             {
                                 alert('Can not create a new game.\nError: ' + e.toString());
+                                
+                                if (start)
+                                {
+                                    _parent.start();
+                                }
                             }
                             
                             $(this).dialog('close');
+                        }
+                        else if (type == 'load_own')
+                        {
+                            var sel = $dialogTableBody.find('tr.row_selected');
+                            id = parseInt($(sel.find('td')[0]).html(), 10);
+
+                            try
+                            {
+                                if (id < 1)
+                                {
+                                    throw new SudokuGame_NullPointerException('Unselected game');
+                                }
+                                
+                                // get the created solution
+                                data = request.makeGet('/game_solution/' + id);
+
+                                // start the game
+                                _parent.pause();
+                                _parent.getTimer().setTimeout(data.lasting);
+                                _parent.start(data);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not load a game.\nError: ' + e.toString());
+                                
+                                if (start)
+                                {
+                                    _parent.start();
+                                }
+                            }
+                            
+                            $wizard.dialog('close');
                         }
                     }
                 }).jWizard('firstStep').dialog('option', 'title', 'Create a new game');
@@ -506,13 +665,44 @@ function SudokuGame_GameToolbar(gameParent)
                         ).append(
                             $('<td>').text(dstr)
                         ).append(
-                            $('<td>').text(data[i].lasting)
+                            $('<td>').text(SudokuGame_lasting(data[i].lasting))
                         )
                     );
                 }
                 
+                // line select
+                $dialogTableBody.find('tr').click(function()
+                {
+                    var btn = $('#' + _parent.getNamespace() + '_btn-load');
+                    
+                    if ($(this).hasClass('row_selected'))
+                    {
+                        $(this).removeClass('row_selected');
+                        
+                        btn.attr('disabled', true)
+                           .addClass('ui-state-disabled');
+                    }
+                    else
+                    {
+                        $dialogTableBody.find('tr.row_selected').removeClass('row_selected');
+                        $(this).addClass('row_selected');
+                        
+                        btn.removeAttr('disabled')
+                           .removeClass('ui-state-disabled')
+                           .removeClass('ui-button-disabled');
+                    }
+                }).dblclick(function ()
+                {
+                    if ($dialogTableBody.find('tr.row_selected').length == 0)
+                    {
+                        $(this).trigger('click');
+                    }
+                    
+                    $('#' + _parent.getNamespace() + '_btn-load').trigger('click');
+                });
+                
                 // init the data table
-                var _oTable = this.oTable = $dialogTable.dataTable({
+                this.oTable = $dialogTable.dataTable({
                     'sDom'              : 't<"F"fp>',
                     'aaSorting'         : [[ 2, 'desc' ]],
                     'sPaginationType'   : 'full_numbers',
@@ -528,7 +718,7 @@ function SudokuGame_GameToolbar(gameParent)
                         disabled : true,
                         click    : function()
                         {
-                            var sel = _oTable.$('tr.row_selected');
+                            var sel = $dialogTableBody.find('tr.row_selected');
                             var id = parseInt($(sel.find('td')[0]).html(), 10);
                             var request = new SudokuGame_Request(_parent.getAppPath());
 
@@ -570,37 +760,6 @@ function SudokuGame_GameToolbar(gameParent)
                         _parent.start();
                     }
                 }).dialog('open');
-                
-                // line select
-                $dialogTableBody.find('tr').click(function()
-                {
-                    var btn = $('#' + _parent.getNamespace() + '_btn-load');
-                    
-                    if ($(this).hasClass('row_selected'))
-                    {
-                        $(this).removeClass('row_selected');
-                        
-                        btn.attr('disabled', true)
-                           .addClass('ui-state-disabled');
-                    }
-                    else
-                    {
-                        _oTable.$('tr.row_selected').removeClass('row_selected');
-                        $(this).addClass('row_selected');
-                        
-                        btn.removeAttr('disabled')
-                           .removeClass('ui-state-disabled')
-                           .removeClass('ui-button-disabled');
-                    }
-                }).dblclick(function ()
-                {
-                    if (_oTable.$('tr.row_selected').length == 0)
-                    {
-                        $(this).trigger('click');
-                    }
-                    
-                    $('#' + _parent.getNamespace() + '_btn-load').trigger('click');
-                });
             }
         }
     };

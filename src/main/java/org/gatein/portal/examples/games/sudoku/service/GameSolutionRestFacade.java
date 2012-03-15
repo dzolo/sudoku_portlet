@@ -118,6 +118,14 @@ public class GameSolutionRestFacade
     {
         return gameSolutionsController.findGameSolutionEntities();
     }
+
+    @GET
+    @Path("unfinished/{uid}")
+    @Produces({"application/xml", "application/json"})
+    public List<GameSolution> findUnfinishedOfUser(@PathParam("uid") String uid)
+    {
+        return gameSolutionsController.findUnfinishedGameSolutionEntitiesOfUser(uid);
+    }
     
     @POST
     @Path("check")

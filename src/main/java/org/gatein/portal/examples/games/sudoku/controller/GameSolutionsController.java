@@ -210,6 +210,29 @@ public class GameSolutionsController extends Controller
     }
 
     /**
+     * Gets unfinished game solutions of a player.
+     * 
+     * @param uid           An idenfificator of a player
+     * @return              A list of game solutions
+     */
+    public List<GameSolution> findUnfinishedGameSolutionEntitiesOfUser(String uid)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("GameSolution.findUnfinishedOfUser");
+            q.setParameter("uid", uid);
+            
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    /**
      * Finds a game solution entity with a specified id.
      * 
      * @param id            An identificator

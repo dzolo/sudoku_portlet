@@ -496,3 +496,16 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     // returns an instance of the class
     return this;
 }
+
+/**
+ * Prints formated lasting in form minutes:seconds
+ * 
+ * @param lasting       A lasting in seconds
+ */
+function SudokuGame_lasting(lasting)
+{
+    var min = Math.floor(lasting / 60);
+    var sec = Math.floor(lasting % 60);
+    
+    return min + ':' + (sec < 10 ? '0' : '') + sec;
+}

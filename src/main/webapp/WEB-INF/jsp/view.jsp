@@ -128,7 +128,7 @@
                 <c:if test="${not empty pageContext.request.remoteUser}">
                     <tr>
                         <td>
-                            <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_own" checked="checked" disabled="disabled" />
+                            <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_own" checked="checked" />
                         </td>
                         <td>
                             <label for="<portlet:namespace/>_dialog-new-choose">Load from your previously played games which were unfinished.</label>

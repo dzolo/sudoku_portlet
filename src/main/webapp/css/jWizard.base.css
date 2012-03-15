@@ -6,7 +6,7 @@
         display: none ! important;
 }
 .jw-content {
-	padding: .5em 0;
+	padding: 0;
 }
         .jw-content table td {
                 vertical-align: middle;
@@ -33,9 +33,11 @@
 		margin-left: 10em;
 	}
 	.jw-steps-wrap {
-		height: 15em;
+		/*height: 15em;*/
+                min-height: 100px;
+                _height: 100px;
 		overflow: auto;
-		padding: .5em;
+		/*padding: .5em;*/
 	}
 		.jw-content p {
 			margin-top: 0;
