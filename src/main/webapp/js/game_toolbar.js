@@ -279,7 +279,8 @@ function SudokuGame_GameToolbar(gameParent)
                                 return;
                             }
                             
-                            $table = $('<table>').addClass('display').append($('<thead>').append(
+                            $table = $('<table>').addClass('dataTables_display').append(
+                                $('<thead>').append(
                                     $('<tr>').append(
                                         $('<th>').attr('width', '15%').text('ID')
                                     ).append(
@@ -297,14 +298,9 @@ function SudokuGame_GameToolbar(gameParent)
                             // put data into the table
                             for (var i = 0; i < data.length; i++)
                             {
-                                var t, d = new Date(data[i].timeStart);
-                                var dstr = d.getFullYear() + '/' + (d.getMonth() < 9 ? '0' : '')
-                                         + (d.getMonth() + 1) + '/' + (d.getDate() < 9 ? '0' : '')
-                                         + d.getDate() +  ' ' + d.toLocaleTimeString();
-                                     
                                 if (data[i].gameId.type == 'GENERATED')
                                 {
-                                    t = 'Generated / ' + data[i].gameId.typeDifficulty;
+                                    var t = 'Generated / ' + data[i].gameId.typeDifficulty;
                                 }
                                 else
                                 {
@@ -317,7 +313,7 @@ function SudokuGame_GameToolbar(gameParent)
                                     ).append(
                                         $('<td>').text(t)
                                     ).append(
-                                        $('<td>').text(dstr)
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].timeStart)))
                                     ).append(
                                         $('<td>').text(SudokuGame_lasting(data[i].lasting))
                                     )
@@ -651,19 +647,14 @@ function SudokuGame_GameToolbar(gameParent)
                 
                 // put data into the table
                 for (var i = 0; i < data.length; i++)
-                {
-                    var d = new Date(data[i].saved);
-                    var dstr = d.getFullYear() + '/' + (d.getMonth() < 9 ? '0' : '')
-                             + (d.getMonth() + 1) + '/' + (d.getDate() < 9 ? '0' : '')
-                             + d.getDate() +  ' ' + d.toLocaleTimeString();
-                    
+                {                    
                     $dialogTableBody.append(
                         $('<tr>').append(
                             $('<td>').text(data[i].id)
                         ).append(
                             $('<td>').text(data[i].name)
                         ).append(
-                            $('<td>').text(dstr)
+                            $('<td>').text(SudokuGame_dateFormat(new Date(data[i].saved)))
                         ).append(
                             $('<td>').text(SudokuGame_lasting(data[i].lasting))
                         )

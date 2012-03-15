@@ -109,7 +109,7 @@
     </div>
     
     <div id="<portlet:namespace/>_dialog-load" style="display: none; padding: 0" title="Load a saved game">
-        <table cellpadding="0" cellspacing="0" border="0" class="display">
+        <table cellpadding="0" cellspacing="0" border="0" class="dataTables_display">
             <thead>
                 <tr>
                     <th width="5%">ID</th>

@@ -509,3 +509,19 @@ function SudokuGame_lasting(lasting)
     
     return min + ':' + (sec < 10 ? '0' : '') + sec;
 }
+
+/**
+ * Prints formated date in form YYYY:mm:dd H:i:s
+ * 
+ * @param date         A date object
+ */
+function SudokuGame_dateFormat(date)
+{
+    var Y = date.getFullYear();
+    var m = date.getMonth() + 1;
+    var d = date.getDate();
+    var time = date.toLocaleTimeString();
+    
+    return Y + '/' + (m <= 10 ? '0' : '') + m + '/'
+        + (d <= 10 ? '0' : '') + d + ' ' + time;
+}
