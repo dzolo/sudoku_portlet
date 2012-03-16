@@ -164,6 +164,18 @@ function SudokuGame_GameToolbar(gameParent)
     _parent = gameParent;
     // inits items
     _buttons = {
+        
+        /***********************************************************************
+         * Button for creating a new game, three ways of doing it:
+         * 
+         * * load an unfinished game of the logged user (not for anonymous)
+         * * create solution of game which was played by another user
+         * * generate a new random game
+         * 
+         * The whole procedure is implemented as a wizard. The first step of
+         * the wizard defines the way. The second specifies the properties of
+         * the way.
+         */
         bnew: {
             id          : 'button_new',
             gameRelated : false,
@@ -195,15 +207,12 @@ function SudokuGame_GameToolbar(gameParent)
                     },
                     next: function (event, ui)
                     {
-                        if (ui.currentStepIndex != 0)
-                        {
-                            return;
-                        }
-                        
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
                         var $step2 = $wizard.find('.sg__second');
                         var loaderImg = _parent.getAppPath() + '/images/icons/loader.gif';
                         var $finishButton = $wizard.find('.jw-button-finish');
+
+                        // loader
 
                         $step2.html(
                             $('<div>').css({
@@ -214,7 +223,7 @@ function SudokuGame_GameToolbar(gameParent)
                             )
                         );
                         
-                        // build newxt step according to the type
+                        // build next step according to the type
                         
                         if (type == 'generate')
                         {
@@ -403,12 +412,11 @@ function SudokuGame_GameToolbar(gameParent)
                             });
                             
                             // init the data table
-                            var oTable = $table.dataTable({
+                            $table.dataTable({
                                 'sDom'              : 't<"F"fp>',
                                 'aaSorting'         : [[ 2, 'desc' ]],
                                 'sPaginationType'   : 'full_numbers',
-                                'bJQueryUI'         : true,
-                                'bDestroy'          : true
+                                'bJQueryUI'         : true
                             });
                         }
                         else if (type == 'load_own')
@@ -510,18 +518,15 @@ function SudokuGame_GameToolbar(gameParent)
                                 'sDom'              : 't<"F"fp>',
                                 'aaSorting'         : [[ 2, 'desc' ]],
                                 'sPaginationType'   : 'full_numbers',
-                                'bJQueryUI'         : true,
-                                'bDestroy'          : true
+                                'bJQueryUI'         : true
                             });
-                        }
-                        else
-                        {
-                            $wizard.jWizard('firstStep');
                         }
                     },
                     finish: function(event, ui)
                     {
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
+                        
+                        // process the data and create or load a game
                         
                         if (type == 'generate')
                         {
@@ -566,7 +571,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 }
                             }
                             
-                            $(this).dialog('close');
+                            $wizard.dialog('close');
                         }
                         else if (type == 'load_own')
                         {
@@ -647,6 +652,10 @@ function SudokuGame_GameToolbar(gameParent)
                 }).jWizard('firstStep').dialog('option', 'title', 'Create a new game');
             }
         },
+        
+        /***********************************************************************
+         * Button for reseting the current solution.
+         */
         breset: {
             id          : 'button_reset',
             gameRelated : true,
@@ -655,6 +664,11 @@ function SudokuGame_GameToolbar(gameParent)
                 _parent.reset();
             }
         },
+        
+        /***********************************************************************
+         * Button for checking the current solution. 
+         * Marks invalid fields.
+         */
         bcheck: {
             id          : 'button_check',
             gameRelated : true,
@@ -678,6 +692,8 @@ function SudokuGame_GameToolbar(gameParent)
                     {
                         return false;
                     }
+                    
+                    // mark invalid fields
 
                     for (var i = 0; i < respObj.check.fields.length; i++)
                     {
@@ -702,6 +718,12 @@ function SudokuGame_GameToolbar(gameParent)
                 }
             }
         },
+        
+        /***********************************************************************
+         * Button for saving the current solution. 
+         * Opens a dialog in order to input a name of the current solution and
+         * then saves the solution.
+         */
         bsave: {
             id          : 'button_save',
             gameRelated : true,
@@ -799,6 +821,12 @@ function SudokuGame_GameToolbar(gameParent)
                 $dialog.dialog('open');
             }
         },
+        
+        /***********************************************************************
+         * Button for loading a saved game.
+         * Opens a dialog in order to select a saved solution of a game
+         * for loading and then loads the solution.
+         */
         bload: {
             id          : 'button_load',
             gameRelated : false,
