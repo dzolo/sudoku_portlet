@@ -195,6 +195,11 @@ table.dataTables_display tr.heading2 td {
 
 table.dataTables_display td {
 	padding: 3px 10px;
+        cursor: pointer;
+}
+
+table.dataTables_display td table td {
+        cursor: default;
 }
 
 table.dataTables_display td.center {

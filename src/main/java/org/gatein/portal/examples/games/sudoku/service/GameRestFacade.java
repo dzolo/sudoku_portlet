@@ -79,6 +79,14 @@ public class GameRestFacade
     {
         return gamesController.findGameEntities();
     }
+
+    @GET
+    @Path("proposals/{uid}")
+    @Produces({"application/xml", "application/json"})
+    public List<Game> findAllProposals(@PathParam("uid") String id)
+    {
+        return gamesController.findGameProposalEntities(id);
+    }
     
     @GET
     @Path("stats")

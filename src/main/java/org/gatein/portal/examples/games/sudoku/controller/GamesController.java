@@ -135,6 +135,30 @@ public class GamesController extends Controller
             em.close();
         }
     }
+
+    /**
+     * Gets limited count of proposal game entities
+     * 
+     * @param uid           An indentificator of user who requests proposals
+     * @return 
+     */
+    public List<Game> findGameProposalEntities(String uid)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findProposals");
+            q.setParameter("uid", uid);
+            q.setMaxResults(50);
+            
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
     
     /**
      * Finds at most five best solutions of a game with a given ID

@@ -137,7 +137,7 @@
                 </c:if>
                 <tr>
                     <td>
-                        <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load" disabled="disabled" />
+                        <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load" />
                     </td>
                     <td>
                         <label for="<portlet:namespace/>_dialog-new-choose">Load from games which were played by other players.</label>

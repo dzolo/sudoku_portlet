@@ -254,7 +254,162 @@ function SudokuGame_GameToolbar(gameParent)
                         }
                         else if (type == 'load')
                         {
+                            $wizard.dialog('option', 'title', 'Create a new game: Select a game');
                             
+                            setTimeout(function ()
+                            {
+                                $finishButton.attr('disabled', true).addClass('ui-state-disabled');
+                            }, 0);
+                            
+                            var data;
+                            
+                            // get data
+                            try
+                            {
+                                data = request.makeGet('/game/proposals/' + SudokuGame_userId);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not load games. Error: ' + e.toString());
+                                $wizard.jWizard('firstStep');
+                                return;
+                            }
+                            
+                            $table = $('<table>').addClass('dataTables_display').append(
+                                $('<thead>').append(
+                                    $('<tr>').append(
+                                        $('<th>').attr('width', '15%').text('ID')
+                                    ).append(
+                                        $('<th>').attr('width', '30%').text('Origin / Type')
+                                    ).append(
+                                        $('<th>').attr('width', '40%').text('Time of creation')
+                                    )
+                                )
+                            );
+                                
+                            $dialogTableBody = $('<tbody>');
+                            
+                            // put data into the table
+                            for (var i = 0; i < data.length; i++)
+                            {
+                                if (data[i].type == 'GENERATED')
+                                {
+                                    var t = 'Generated / ' + data[i].typeDifficulty;
+                                }
+                                else
+                                {
+                                    t = 'Remote service / x'; // @todo after service implementation
+                                }
+
+                                $dialogTableBody.append(
+                                    $('<tr>').append(
+                                        $('<td>').text(data[i].id)
+                                    ).append(
+                                        $('<td>').text(t)
+                                    ).append(
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initDate)))
+                                    )
+                                );
+                            }
+                            
+                            $step2.html($table.append($dialogTableBody));
+                            
+                            // line select
+                            $dialogTableBody.find('tr').click(function()
+                            {
+                                var $this = $(this);
+                                var className = _parent.getNamespace() + '_row_selected_detail';
+                                
+                                if ($this.hasClass('row_selected'))
+                                {
+                                    $this.removeClass('row_selected');
+
+                                    $finishButton.attr('disabled', true)
+                                        .addClass('ui-state-disabled');
+                                    
+                                    $('.' + className).remove();
+                                }
+                                else
+                                {
+                                    $dialogTableBody.find('tr.row_selected')
+                                        .removeClass('row_selected');
+                                        
+                                    $this.addClass('row_selected');
+
+                                    $finishButton.removeAttr('disabled')
+                                        .removeClass('ui-state-disabled');
+                                        
+                                    var stats, id = parseInt($($this.find('td')[0]).html(), 10);
+                                    
+                                    $('.' + className).remove();
+
+                                    try
+                                    {
+                                        stats = request.makeGet('/game/stats/' + id)
+
+                                        if (!stats.state)
+                                        {
+                                            throw stats.message;
+                                        }
+                                    }
+                                    catch (e)
+                                    {
+                                        alert(e);
+                                        return;
+                                    }
+
+                                    $this.after(
+                                        $('<tr>').addClass(className).append(
+                                            $('<td>').attr('colspan', 5).css('padding', 0).append(
+                                                $('<table>').attr('cellpadding', 5).css({
+                                                        paddingLeft : '50px',
+                                                        border      : '1px solid #ccc'
+                                                }).append(
+                                                    $('<tr>').append(
+                                                        $('<td>').text('Statistics (solved/played):')
+                                                    ).append(
+                                                        $('<td>').text(stats.stats.c_solved + '/' + stats.stats.c_played)
+                                                    )
+                                                ).append(
+                                                    $('<tr>').append(
+                                                        $('<td>').text('Average rating:')
+                                                    ).append(
+                                                        $('<td>').append($('<span>').raty({
+                                                            readOnly : true,
+                                                            start    : Math.floor(stats.stats.a_rating),
+                                                            starOn   : _parent.getAppPath() + '/images/icons/star-on_small.png',
+                                                            starOff  : _parent.getAppPath() + '/images/icons/star-off_small.png'
+                                                        }))
+                                                    )
+                                                ).append(
+                                                    $('<tr>').append(
+                                                        $('<td>').text('Average lasting:')
+                                                    ).append(
+                                                        $('<td>').text(SudokuGame_lasting(stats.stats.a_lasting))
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    );
+                                }
+                            }).dblclick(function ()
+                            {
+                                if ($dialogTableBody.find('tr.row_selected').length == 0)
+                                {
+                                    $(this).trigger('click');
+                                }
+
+                                $finishButton.trigger('click');
+                            });
+                            
+                            // init the data table
+                            var oTable = $table.dataTable({
+                                'sDom'              : 't<"F"fp>',
+                                'aaSorting'         : [[ 2, 'desc' ]],
+                                'sPaginationType'   : 'full_numbers',
+                                'bJQueryUI'         : true,
+                                'bDestroy'          : true
+                            });
                         }
                         else if (type == 'load_own')
                         {
@@ -264,8 +419,6 @@ function SudokuGame_GameToolbar(gameParent)
                             {
                                 $finishButton.attr('disabled', true).addClass('ui-state-disabled');
                             }, 0);
-                            
-                            var data;
                             
                             // get data
                             try
@@ -296,11 +449,11 @@ function SudokuGame_GameToolbar(gameParent)
                             $dialogTableBody = $('<tbody>');
                             
                             // put data into the table
-                            for (var i = 0; i < data.length; i++)
+                            for (i = 0; i < data.length; i++)
                             {
                                 if (data[i].gameId.type == 'GENERATED')
                                 {
-                                    var t = 'Generated / ' + data[i].gameId.typeDifficulty;
+                                    t = 'Generated / ' + data[i].gameId.typeDifficulty;
                                 }
                                 else
                                 {
@@ -438,6 +591,49 @@ function SudokuGame_GameToolbar(gameParent)
                             catch (e)
                             {
                                 alert('Can not load a game.\nError: ' + e.toString());
+                                
+                                if (start)
+                                {
+                                    _parent.start();
+                                }
+                            }
+                            
+                            $wizard.dialog('close');
+                        }
+                        else if (type == 'load')
+                        {
+                            sel = $dialogTableBody.find('tr.row_selected');
+                            id = parseInt($(sel.find('td')[0]).html(), 10);
+
+                            try
+                            {
+                                if (id < 1)
+                                {
+                                    throw new SudokuGame_NullPointerException('Unselected game');
+                                }
+                                
+                                // get the created solution
+                                data = request.makeGet('/game/' + id);
+
+                                // create a game solution of the created game
+                                data = request.makePost('/game_solution/' + id, {
+                                    userId     : SudokuGame_userId, // global property
+                                    userName   : null,
+                                    values     : data.initValues
+                                });
+
+                                // get an ID of the created game solution
+                                id = data.location.split('/').pop();
+                                // get the created solution
+                                data = request.makeGet('/game_solution/' + id);
+
+                                // start the game
+                                _parent.getTimer().setTimeout(0);
+                                _parent.start(data);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not create a game solution.\nError: ' + e.toString());
                                 
                                 if (start)
                                 {

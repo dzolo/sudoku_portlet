@@ -33,17 +33,20 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
         name = "Game.findStatisticsLoggedPlayers",
         query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
               + "FROM GameSolution gs "
-              + "WHERE gs.finished > 0 "
-              + "GROUP BY gs.userId "
-              + "HAVING gs.userId IS NOT NULL"
+              + "WHERE gs.finished > 0 AND gs.userId IS NOT NULL"
     ),
     @NamedQuery(
         name = "Game.findStatisticsNotLoggedPlayers",
         query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
               + "FROM GameSolution gs "
-              + "WHERE gs.finished > 0 "
-              + "GROUP BY gs.userId "
-              + "HAVING gs.userId IS NULL"
+              + "WHERE gs.finished > 0 AND gs.userId IS NULL"
+    ),
+    @NamedQuery(
+        name = "Game.findProposals",
+        query = "SELECT gs.gameId FROM GameSolution gs "
+              + "WHERE gs.userId NOT LIKE :uid AND gs.finished > 0 "
+              + "GROUP BY gs.gameId.id "
+              + "ORDER BY COUNT(gs.gameId.id) DESC, AVG(gs.rating) DESC"
     ),
     @NamedQuery(
         name = "Game.findStatisticsOfGame",
