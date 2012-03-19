@@ -177,7 +177,7 @@ var SudokuGame_Request = (function (contextPath)
         
         $.ajax({
             url         : this.getPathOfRestApp() + path,
-            async       : false,
+            async       : (async === true),
             data        : data,
             type        : 'POST',
             dataType    : 'json',
@@ -195,6 +195,28 @@ var SudokuGame_Request = (function (contextPath)
         });
         
         return returnObj;
+    }
+    
+    /**
+     * Makes an asynchronous POST request to a given path with text/plain data.
+     * The path does not contains the context path of the application. 
+     *
+     * @example request.makePostText("/service/", "data")
+     * @param path          A path of a request
+     * @param data          An input data string of a request
+     * @return              A returned data string
+     * @throws SudokuGame_RequestFailedException
+     */
+    this.makeAsynPostTextToAbsolutePath = function (path, data)
+    {
+        $.ajax({
+            url         : path,
+            async       : true,
+            data        : data,
+            type        : 'POST',
+            dataType    : 'text',
+            contentType : 'application/x-www-form-urlencoded'
+        });
     }
     
     /**

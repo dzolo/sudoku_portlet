@@ -10,10 +10,13 @@
  * 
  * @param namespace        A namespace identificator of the portlet
  * @param appPath          A path to the web application
+ * @param lastPlayedResourceURL
+ *                         A path to the serve resource method for saving the last
+ *                         played solution of a game
  * @return SudokuGame_Game
  * @example game = new SudokuGame_Game('namespace', '/sudoku');
  */
-function SudokuGame_Game(namespace, appPath)
+function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
 {
     /** An instance of the timer */
     var _timer;
@@ -29,6 +32,8 @@ function SudokuGame_Game(namespace, appPath)
     var _gameId;
     /** An identificator of the solution in the database */
     var _gameSolutionId;
+    /** A path to the serve resource method for saving the last played solution of a game */
+    var _lastPlayedResourceURL;
     
     /**
      * Gets an ID of the game
@@ -122,8 +127,10 @@ function SudokuGame_Game(namespace, appPath)
     
     /**
      * Inits an instantized game
+     * 
+     * @param lastPlayedSolutionId   An identifcator of the last played solution [optional]
      */
-    this.init = function ()
+    this.init = function (lastPlayedSolutionId)
     {
         this.reloadRootElements();
         _gameBoard.resizeBoard();
@@ -150,6 +157,31 @@ function SudokuGame_Game(namespace, appPath)
         }
         else
         {
+            var id = parseInt(lastPlayedSolutionId, 10); 
+            
+            if (!isNaN(id))
+            {
+                var request = new SudokuGame_Request(_appPath);
+                
+                try
+                {
+                    var data = request.makeGet('/game_solution/' + id);
+                    
+                    if (data.finished == 0)
+                    {
+                        this.getGameBoard().setFields(data.values);
+                        this.setGameSolutionId(id);
+                    }
+                    else
+                    {
+                        this.start(data);
+                    }
+                }
+                catch (ignore)
+                {
+                }
+            }
+            
             _gameBoard.render();
         }
     }
@@ -181,6 +213,11 @@ function SudokuGame_Game(namespace, appPath)
             }
             
             _gameBoard.clearErrors();
+            
+            // change the last played game for a user
+            (new SudokuGame_Request(_appPath)).makeAsynPostTextToAbsolutePath(
+                _lastPlayedResourceURL, 'last-played-id=' + _gameSolutionId
+            );
         }
         
         _gameBoard.setEnabled(true);
@@ -332,7 +369,7 @@ function SudokuGame_Game(namespace, appPath)
             this.store(true, true);
             
             // build the end dialog
-            $dialog.append(
+            $dialog.html(
                 $('<p>').append(
                     $('<b>').html('Congradulations! You succesfully solved this game. ')
                 ).append(
@@ -403,6 +440,7 @@ function SudokuGame_Game(namespace, appPath)
     
     _namespace = namespace;
     _appPath = appPath;
+    _lastPlayedResourceURL = lastPlayedResourceURL;
     _timer = new SudokuGame_Timer(this, '#' + namespace + '_footer-timer');
     _gameBoard = new SudokuGame_GameBoard(this, '#' + namespace + '_board');
     _toolbar = new SudokuGame_GameToolbar(this);

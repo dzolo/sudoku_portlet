@@ -92,7 +92,11 @@ public class SudokuPortlet extends GenericPortlet
     public void doView(RenderRequest request, RenderResponse response)
             throws PortletException, IOException
     {
+        final String prevDolId = request.getPreferences().getValue("game-lastPlayedSolutionId", null);
+        Logger.getLogger(SudokuPortlet.class.getName()).log(Level.INFO, "Vem to:" + prevDolId);
+        request.setAttribute("lastPlayedSolutionId", prevDolId);
         response.setContentType("text/html");
+        
         PortletRequestDispatcher dispatcher =
                 getPortletContext().getRequestDispatcher("/WEB-INF/jsp/view.jsp");
         dispatcher.include(request, response);
@@ -159,6 +163,38 @@ public class SudokuPortlet extends GenericPortlet
         }
     }
 
+    /**
+     * @see GenericPortlet#serveResource(javax.portlet.ResourceRequest, javax.portlet.ResourceResponse) 
+     */
+    @Override
+    public void serveResource(ResourceRequest request, ResourceResponse response)
+            throws PortletException, IOException
+    {
+        // a change last game action invoked by POST method
+        if ("changeLastPlayedGame".equals(request.getResourceID()) &&
+            "POST".equals(request.getMethod()))
+        {
+            PortletPreferences p = request.getPreferences();
+            int id;
+
+            try
+            {
+                id = Integer.parseInt(request.getParameter("last-played-id"));
+                p.setValue("game-lastPlayedSolutionId", String.valueOf(id));                
+                p.store();
+            }
+            catch (NumberFormatException nfex)
+            {
+                final String m = "Wrong id of a game solution";
+                Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, m, nfex);
+            }
+            catch (ReadOnlyException ex)
+            {
+                Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     /**
      * @see GenericPortlet#doHeaders(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 
      */

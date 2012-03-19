@@ -10,6 +10,7 @@
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <portlet:defineObjects />
 <c:set var="app_path" value="${pageContext.request.contextPath}" />
+<portlet:resourceURL var="rURLchangeLastPlayedGame" id="changeLastPlayedGame" />
 
 <script type="text/javascript"><!--
     
@@ -17,7 +18,7 @@
     // the current user is logged in
     SudokuGame_userId = null;
     <c:if test="${not empty pageContext.request.remoteUser}">
-    SudokuGame_userId = '${pageContext.request.remoteUser}'
+    SudokuGame_userId = '${pageContext.request.remoteUser}';
     </c:if>
     
     // after the document is loaded
@@ -28,11 +29,18 @@
         if (window['<portlet:namespace/>_game'] == undefined)
         {
             window['<portlet:namespace/>_game'] = new SudokuGame_Game(
-                    '<portlet:namespace/>', '${app_path}'
+                    '<portlet:namespace/>', '${app_path}',
+                    '${rURLchangeLastPlayedGame}'
             );
+                
+            var sID = (SudokuGame_userId) ? '${lastPlayedSolutionId}' : null;
+            
+            window['<portlet:namespace/>_game'].init(sID);
         }
-        
-        window['<portlet:namespace/>_game'].init();
+        else
+        {
+            window['<portlet:namespace/>_game'].init();
+        }
         
         // pause timer event
         $('#<portlet:namespace/>_footer-pause').click(function ()
