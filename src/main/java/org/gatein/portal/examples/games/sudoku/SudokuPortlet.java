@@ -34,6 +34,11 @@ public class SudokuPortlet extends GenericPortlet
     private static final String SKIN_DOC_PATH = "/WEB-INF/sudoku-portlet-skins.xml";
     
     /**
+     * Logger
+     */
+    private static final Logger logger = Logger.getLogger(SudokuPortlet.class.getName());
+    
+    /**
      * CSS definitions for skins
      */
     private static final String[][] SKIN_CSS_DEFINITIONS = {
@@ -93,7 +98,7 @@ public class SudokuPortlet extends GenericPortlet
             throws PortletException, IOException
     {
         final String prevDolId = request.getPreferences().getValue("game-lastPlayedSolutionId", null);
-        Logger.getLogger(SudokuPortlet.class.getName()).log(Level.INFO, "Vem to:" + prevDolId);
+        
         request.setAttribute("lastPlayedSolutionId", prevDolId);
         response.setContentType("text/html");
         
@@ -159,7 +164,7 @@ public class SudokuPortlet extends GenericPortlet
         }
         catch (ReadOnlyException ex)
         {
-            Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, null, ex);
         }
     }
 
@@ -185,12 +190,11 @@ public class SudokuPortlet extends GenericPortlet
             }
             catch (NumberFormatException nfex)
             {
-                final String m = "Wrong id of a game solution";
-                Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, m, nfex);
+                logger.log(Level.SEVERE, "Wrong id of a game solution", nfex);
             }
             catch (ReadOnlyException ex)
             {
-                Logger.getLogger(SudokuPortlet.class.getName()).log(Level.SEVERE, null, ex);
+                logger.log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -312,7 +316,6 @@ public class SudokuPortlet extends GenericPortlet
      */
     private void loadSkins() throws SAXParseException, Exception
     {
-        final String loggerName = SudokuPortlet.class.getName();
         final String skinDocPath = getPortletContext().getRealPath(SKIN_DOC_PATH);
         
         // load a factory
@@ -325,8 +328,7 @@ public class SudokuPortlet extends GenericPortlet
         {
             public void warning(SAXParseException e) throws SAXException
             {
-                final String m = "Document validation warning";
-                Logger.getLogger(loggerName).log(Level.WARNING, m, e);
+                logger.log(Level.WARNING, "Document validation warning", e);
             }
 
             public void error(SAXParseException e) throws SAXException
@@ -362,7 +364,7 @@ public class SudokuPortlet extends GenericPortlet
                 {
                     Node fontColorNode = attrsChild.getNamedItem("font-color");
                     Node borderColorNode = attrsChild.getNamedItem("border-color");
-                    
+
                     skin.put("fontColor", fontColorNode.getTextContent());
                     skin.put("borderColor", borderColorNode.getTextContent());
 
@@ -377,7 +379,7 @@ public class SudokuPortlet extends GenericPortlet
                         {
                             Node bgNode = attrsChild.getNamedItem("background");
                             Node fixBgNode = attrsChild.getNamedItem("fixed-background");
-                            
+
                             skin.put("background", bgNode.getTextContent());
                             skin.put("fixedBackground", fixBgNode.getTextContent());
 
@@ -393,7 +395,7 @@ public class SudokuPortlet extends GenericPortlet
             if (name == null || name.isEmpty())
             {
                 name = "Unknown";
-                Logger.getLogger(loggerName).log(Level.WARNING, "Empty skin name");
+                logger.log(Level.WARNING, "Empty skin name");
             }
 
             int counter = 1;
@@ -418,7 +420,7 @@ public class SudokuPortlet extends GenericPortlet
 
         if (defaultSkinName == null)
         {
-            Logger.getLogger(loggerName).log(Level.WARNING, "Undefined default skin");
+            logger.log(Level.WARNING, "Undefined default skin");
 
             // pick a random skin if there is any 
             if (skins.size() > 0)
