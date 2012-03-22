@@ -159,6 +159,7 @@
                         <label>Load a game from remote publishers.</label>
                     </td>
                 </tr>
+                <c:if test="${remotePublisherEnabled}">
                 <tr>
                     <td>
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="generate" />
@@ -167,6 +168,7 @@
                         <label>Generate a new random game.</label>
                     </td>
                 </tr>
+                </c:if>
             </table>
             
         </div>

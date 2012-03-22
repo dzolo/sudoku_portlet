@@ -11,23 +11,38 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd"
              version="2.0">
+    
     <portlet>
+        
         <description>Play a Sudoku game</description>
-        <portlet-name>Sudoku</portlet-name>
+        <portlet-name>Sudoku</portlet-name>    
         <display-name>Sudoku game</display-name>
+        
         <portlet-class>org.gatein.portal.examples.games.sudoku.SudokuPortlet</portlet-class>
+        
         <expiration-cache>0</expiration-cache>
+        
         <supports>
             <mime-type>text/html</mime-type>
             <portlet-mode>VIEW</portlet-mode>
             <portlet-mode>EDIT</portlet-mode>
             <portlet-mode>HELP</portlet-mode>
         </supports>
+        
+        <init-param>
+            <name>remotePublishersEnabled</name>
+            <value>true</value>
+            <description>Enables/Disables remote publishers</description>
+        </init-param>
+        
         <resource-bundle>org.gatein.portal.examples.games.sudoku.messages</resource-bundle>
+        
         <portlet-info>
             <title>Sudoku game</title>
             <short-title>Sudoku game</short-title>
             <keywords>games</keywords>
         </portlet-info>
+    
     </portlet>
+
 </portlet-app>

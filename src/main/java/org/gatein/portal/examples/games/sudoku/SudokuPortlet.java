@@ -59,6 +59,11 @@ public class SudokuPortlet extends GenericPortlet
     private String defaultSkinName;
     
     /**
+     * Enables/disables remote publishers
+     */
+    private boolean remotePublishersEnabled = true;
+    
+    /**
      * @see GenericPortlet#init(javax.portlet.PortletConfig) 
      * @throws PortletException 
      */
@@ -66,6 +71,10 @@ public class SudokuPortlet extends GenericPortlet
     public void init(PortletConfig config) throws PortletException
     {
         super.init(config);
+
+        // enable/disable remote publisher
+        final String rpe = config.getInitParameter("remotePublishersEnabled");
+        remotePublishersEnabled = Boolean.valueOf(rpe);
         
         // init skins
         skins = new LinkedHashMap<String, Map<String, String>>();
@@ -99,6 +108,7 @@ public class SudokuPortlet extends GenericPortlet
         final String prevDolId = request.getPreferences().getValue("game-lastPlayedSolutionId", null);
         
         request.setAttribute("lastPlayedSolutionId", prevDolId);
+        request.setAttribute("remotePublisherEnabled", remotePublishersEnabled);
         response.setContentType("text/html");
         
         PortletRequestDispatcher dispatcher =
@@ -121,6 +131,7 @@ public class SudokuPortlet extends GenericPortlet
         request.setAttribute("defaultSkinName", defaultSkinName);
         request.setAttribute("currentSkin", skin);
         request.setAttribute("currentSkinName", skinName);
+        request.setAttribute("remotePublisherEnabled", remotePublishersEnabled);
         response.setContentType("text/html");
         
         PortletRequestDispatcher dispatcher =
