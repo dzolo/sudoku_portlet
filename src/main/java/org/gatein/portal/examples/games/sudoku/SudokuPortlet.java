@@ -15,9 +15,8 @@ import java.util.logging.Logger;
 import javax.portlet.*;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.gatein.portal.examples.games.sudoku.util.CustomErrorHandler;
 import org.w3c.dom.*;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -31,7 +30,7 @@ public class SudokuPortlet extends GenericPortlet
     /**
      * Path to a document which contains a skin definition
      */
-    private static final String SKIN_DOC_PATH = "/WEB-INF/sudoku-portlet-skins.xml";
+    private static final String skinConfPath = "/WEB-INF/sudoku-portlet-skins.xml";
     
     /**
      * Logger
@@ -316,7 +315,7 @@ public class SudokuPortlet extends GenericPortlet
      */
     private void loadSkins() throws SAXParseException, Exception
     {
-        final String skinDocPath = getPortletContext().getRealPath(SKIN_DOC_PATH);
+        final String skinDocPath = getPortletContext().getRealPath(skinConfPath);
         
         // load a factory
         DocumentBuilderFactory fac = DocumentBuilderFactory.newInstance();
@@ -324,23 +323,7 @@ public class SudokuPortlet extends GenericPortlet
 
         // load a builder
         DocumentBuilder builder = fac.newDocumentBuilder();
-        builder.setErrorHandler(new ErrorHandler()
-        {
-            public void warning(SAXParseException e) throws SAXException
-            {
-                logger.log(Level.WARNING, "Document validation warning", e);
-            }
-
-            public void error(SAXParseException e) throws SAXException
-            {
-                throw e;
-            }
-
-            public void fatalError(SAXParseException e) throws SAXException
-            {
-                throw e;
-            }
-        });
+        builder.setErrorHandler(new CustomErrorHandler(logger));
 
         // load a document
         Document doc = builder.parse(skinDocPath);

@@ -139,7 +139,7 @@
                             <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_own" checked="checked" />
                         </td>
                         <td>
-                            <label for="<portlet:namespace/>_dialog-new-choose">Load from your previously played games which were unfinished.</label>
+                            <label>Load from your previously played games which were unfinished.</label>
                         </td>
                     </tr>
                 </c:if>
@@ -148,7 +148,15 @@
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load" />
                     </td>
                     <td>
-                        <label for="<portlet:namespace/>_dialog-new-choose">Load from games which were played by other players.</label>
+                        <label>Load from games which were played by other players.</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_service" />
+                    </td>
+                    <td>
+                        <label>Load a game from remote publishers.</label>
                     </td>
                 </tr>
                 <tr>
@@ -156,7 +164,7 @@
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="generate" />
                     </td>
                     <td>
-                        <label for="<portlet:namespace/>_dialog-new-choose">Generate a new random game.</label>
+                        <label>Generate a new random game.</label>
                     </td>
                 </tr>
             </table>

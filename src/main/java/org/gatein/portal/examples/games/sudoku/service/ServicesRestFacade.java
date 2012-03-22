@@ -7,12 +7,19 @@
 
 package org.gatein.portal.examples.games.sudoku.service;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.controller.ServicesController;
+import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
+import org.gatein.portal.examples.games.sudoku.provider.publisher.PeriodicalServiceFactory;
+import org.gatein.portal.examples.games.sudoku.provider.publisher.driver.PeriodicalServiceDriver;
 
 /**
  * Services REST Facade Class.
@@ -22,6 +29,10 @@ import org.gatein.portal.examples.games.sudoku.entity.Service;
 @Path("service")
 public class ServicesRestFacade
 {
+    /**
+     * A logger
+     */
+    private static final Logger logger = Logger.getLogger(ServicesRestFacade.class.getName());
     
     /**
      * An instance of the entity manager factory
@@ -63,18 +74,6 @@ public class ServicesRestFacade
         }
     }
 
-    @DELETE
-    @Path("{id}")
-    public Response remove(@PathParam("id") Integer id)
-    {
-        try {
-            servicesController.destroy(id);
-            return Response.ok().build();
-        } catch (Exception ex) {
-            return Response.notModified(ex.getMessage()).build();
-        }
-    }
-
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -82,7 +81,7 @@ public class ServicesRestFacade
     {
         return servicesController.findService(id);
     }
-
+    
     @GET
     @Produces({"application/xml", "application/json"})
     public List<Service> findAll()
@@ -91,20 +90,71 @@ public class ServicesRestFacade
     }
 
     @GET
-    @Path("{max}/{first}")
+    @Path("games/{uid}")
     @Produces({"application/xml", "application/json"})
-    public List<Service> findRange(@PathParam("max") Integer max,
-                                   @PathParam("first") Integer first)
+    public List<Game> findAllGames(@PathParam("uid") String uid)
     {
-        return servicesController.findServiceEntities(max, first);
-    }
+        List<Service> services = servicesController.findServiceEntities();
+        GamesController gameController = new GamesController();
+        Game game, lastGame;
+        
+        try
+        {
+            // search for new games
+            for (Service service : services)
+            {
+                if (service.isEnabled())
+                {
+                    lastGame = gameController.findLastGameOf(service);
+                    game = getRemoteGame(service, lastGame);
 
-    @GET
-    @Path("count")
-    @Produces("text/plain")
-    public String count()
+                    if (game != null)
+                    {
+                        gameController.create(game);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            logger.log(Level.WARNING, null, ex);
+        }
+        finally
+        {
+            return gameController.findServicedGameEntities(uid);
+        }
+    }
+    
+    /**
+     * Gets a remote game from a service
+     * 
+     * @param service       A remote service
+     * @param lastGame      A previous game of service
+     * @return 
+     */
+    private Game getRemoteGame(Service service, Game lastGame)
     {
-        return String.valueOf(servicesController.getServiceCount());
+        PeriodicalServiceFactory fac = new PeriodicalServiceFactory();
+        PeriodicalServiceDriver d = fac.newDriverFor(service);
+        
+        if (d == null)
+        {
+            return null;
+        }
+        
+        try
+        {
+            if (d.isExpirated(lastGame))
+            {
+                return d.getGame(lastGame);
+            }
+        }
+        catch (IOException ex)
+        {
+            logger.log(Level.WARNING, "Error during getting a remote game", ex);
+        }
+        
+        return null;
     }
     
 }

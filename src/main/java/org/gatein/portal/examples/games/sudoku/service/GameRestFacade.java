@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
@@ -21,6 +20,7 @@ import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
+import org.gatein.portal.examples.games.sudoku.provider.generator.Generator;
 import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
@@ -50,7 +50,7 @@ public class GameRestFacade
     {
         try
         {
-            game.setInitValues(GameUtil.generate(game.getTypeDifficulty()));
+            game.setInitValues(Generator.generate(game.getTypeDifficulty()));
             game.setInitDate(new Date());
             game.setType(GameType.GENERATED);
             game.setTypeServiceId(null);

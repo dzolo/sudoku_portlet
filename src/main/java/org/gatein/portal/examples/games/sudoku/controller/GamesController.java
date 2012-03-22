@@ -18,6 +18,7 @@ import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFai
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
+import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 
 /**
  * Games JPA Controller Class
@@ -137,10 +138,35 @@ public class GamesController extends Controller
     }
 
     /**
+     * Gets game entities which was gained from a remote service.
+     * Gained games were not played by the user which is given by uid before.
+     * 
+     * @param uid           Specifies a user
+     * @return              A list of games
+     */
+    public List<Game> findServicedGameEntities(String uid)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findAllByTypeAndNotInUser");
+            q.setParameter("type", GameType.SERVICE);
+            q.setParameter("uid", uid);
+            
+            return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+
+    /**
      * Gets limited count of proposal game entities
      * 
      * @param uid           An indentificator of user who requests proposals
-     * @return 
+     * @return              A list of games
      */
     public List<Game> findGameProposalEntities(String uid)
     {
@@ -178,6 +204,38 @@ public class GamesController extends Controller
             q.setMaxResults(5);
             
             return q.getResultList();
+        }
+        finally
+        {
+            em.close();
+        }
+    }
+    
+    /**
+     * Finds the last obtained game of a given service
+     * 
+     * @param service       A service
+     * @return              The last game or <code>null</code>
+     */
+    public Game findLastGameOf(Service service)
+    {
+        EntityManager em = emf.createEntityManager();
+        
+        try
+        {
+            Query q = em.createNamedQuery("Game.findLastGameOfService");
+            q.setParameter("type", GameType.SERVICE);
+            q.setParameter("service", service);
+            q.setMaxResults(1);
+            
+            try
+            {
+                return (Game) q.getSingleResult();
+            }
+            catch (NoResultException ex)
+            {
+                return null;
+            }
         }
         finally
         {

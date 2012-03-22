@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : sudoku-portlet-periodical-service-drivers.xml
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization  : FIT VUT <http://www.fit.vutbr.cz>
+    DTD           : /WEB-INF/sudoku-portlet-periodical-service-drivers.dtd
+-->
+
+<!DOCTYPE periodical-service-drivers[
+    <!ELEMENT periodical-service-drivers (driver+)>
+    <!ELEMENT driver (class|name)*>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT class (#PCDATA)>
+]>
+
+<periodical-service-drivers>
+    
+    <driver>
+        <name>RahanWzCzPeriodiclServiceDriver</name>
+        <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.RahanWzCzPeriodiclServiceDriver</class>
+    </driver>
+    
+</periodical-service-drivers>

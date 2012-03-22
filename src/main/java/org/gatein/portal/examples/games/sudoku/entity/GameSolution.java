@@ -176,7 +176,7 @@ public class GameSolution implements Serializable
         this.lasting = lasting;
     }
 
-    public boolean getFinished()
+    public boolean isFinished()
     {
         return finished;
     }

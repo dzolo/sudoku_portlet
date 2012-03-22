@@ -30,6 +30,22 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
         query = "SELECT g FROM Game g"
     ),
     @NamedQuery(
+        name = "Game.findAllByTypeAndNotInUser",
+        query = "SELECT g FROM Game g "
+              + "WHERE g.type = :type AND g.id NOT IN ("
+              + "      SELECT gs.gameId.id FROM GameSolution gs "
+              + "      WHERE gs.userId LIKE :uid "
+              + ") "
+              + "GROUP BY g.id "
+              + "ORDER BY g.id DESC"
+    ),
+    @NamedQuery(
+        name = "Game.findLastGameOfService",
+        query = "SELECT g FROM Game g "
+              + "WHERE g.type = :type AND g.typeServiceId = :service "
+              + "ORDER BY g.id DESC"
+    ),
+    @NamedQuery(
         name = "Game.findStatisticsLoggedPlayers",
         query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
               + "FROM GameSolution gs "

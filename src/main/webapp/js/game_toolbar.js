@@ -307,7 +307,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 }
                                 else
                                 {
-                                    t = 'Remote service / x'; // @todo after service implementation
+                                    t = 'Remote publisher / ' + data[i].typeServiceId.name;
                                 }
 
                                 $dialogTableBody.append(
@@ -465,7 +465,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 }
                                 else
                                 {
-                                    t = 'Remote service / x'; // @todo after service implementation
+                                    t = 'Remote publisher / ' + data[i].typeServiceId.name;
                                 }
 
                                 $dialogTableBody.append(
@@ -477,6 +477,95 @@ function SudokuGame_GameToolbar(gameParent)
                                         $('<td>').text(SudokuGame_dateFormat(new Date(data[i].timeStart)))
                                     ).append(
                                         $('<td>').text(SudokuGame_lasting(data[i].lasting))
+                                    )
+                                );
+                            }
+                            
+                            $step2.html($table.append($dialogTableBody));
+                            
+                            // line select
+                            $dialogTableBody.find('tr').click(function()
+                            {
+                                if ($(this).hasClass('row_selected'))
+                                {
+                                    $(this).removeClass('row_selected');
+
+                                    $finishButton.attr('disabled', true)
+                                        .addClass('ui-state-disabled');
+                                }
+                                else
+                                {
+                                    $dialogTableBody.find('tr.row_selected')
+                                        .removeClass('row_selected');
+                                        
+                                    $(this).addClass('row_selected');
+
+                                    $finishButton.removeAttr('disabled')
+                                        .removeClass('ui-state-disabled');
+                                }
+                            }).dblclick(function ()
+                            {
+                                if ($dialogTableBody.find('tr.row_selected').length == 0)
+                                {
+                                    $(this).trigger('click');
+                                }
+
+                                $finishButton.trigger('click');
+                            });
+                            
+                            // init the data table
+                            $table.dataTable({
+                                'sDom'              : 't<"F"fp>',
+                                'aaSorting'         : [[ 2, 'desc' ]],
+                                'sPaginationType'   : 'full_numbers',
+                                'bJQueryUI'         : true
+                            });
+                        }
+                        else if (type == 'load_service')
+                        {
+                            $wizard.dialog('option', 'title', 'Create a new game: Select a game from a remote publisher');
+                            
+                            setTimeout(function ()
+                            {
+                                $finishButton.attr('disabled', true).addClass('ui-state-disabled');
+                            }, 0);
+                            
+                            // get data
+                            try
+                            {
+                                data = request.makeGet('/service/games/' + SudokuGame_userId);
+                            }
+                            catch (e)
+                            {
+                                alert('Can not load games. Error: ' + e.toString());
+                                $wizard.jWizard('firstStep');
+                                return;
+                            }
+                            
+                            $table = $('<table>').addClass('dataTables_display').append(
+                                $('<thead>').append(
+                                    $('<tr>').append(
+                                        $('<th>').attr('width', '15%').text('ID')
+                                    ).append(
+                                        $('<th>').attr('width', '30%').text('Origin')
+                                    ).append(
+                                        $('<th>').attr('width', '40%').text('Time of creation')
+                                    )
+                                )
+                            );
+                                
+                            $dialogTableBody = $('<tbody>');
+                            
+                            // put data into the table
+                            for (i = 0; i < data.length; i++)
+                            {
+                                $dialogTableBody.append(
+                                    $('<tr>').append(
+                                        $('<td>').text(data[i].id)
+                                    ).append(
+                                        $('<td>').text('Remote publisher / ' + data[i].typeServiceId.name)
+                                    ).append(
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initDate)))
                                     )
                                 );
                             }
@@ -605,7 +694,7 @@ function SudokuGame_GameToolbar(gameParent)
                             
                             $wizard.dialog('close');
                         }
-                        else if (type == 'load')
+                        else if (type == 'load' || type == 'load_service')
                         {
                             sel = $dialogTableBody.find('tr.row_selected');
                             id = parseInt($(sel.find('td')[0]).html(), 10);

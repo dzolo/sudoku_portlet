@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Service Entity Class
  *
@@ -49,6 +50,9 @@ public class Service implements Serializable
     @Basic(optional = false)
     @Column(name = "check_time")
     private int checkTime;
+    
+    @Column(name = "enabled")
+    private boolean enabled;
     
     @OneToMany(mappedBy = "typeServiceId")
     private Collection<Game> gamesCollection;
@@ -108,6 +112,16 @@ public class Service implements Serializable
     public void setCheckTime(int checkTime)
     {
         this.checkTime = checkTime;
+    }
+
+    public boolean isEnabled()
+    {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        this.enabled = enabled;
     }
 
     @XmlTransient
