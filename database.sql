@@ -22,7 +22,7 @@ CREATE TABLE `games` (
   `type_service_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_games_services1` (`type_service_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=390 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=0 ;
 
 DROP TABLE IF EXISTS `game_solutions`;
 CREATE TABLE `game_solutions` (
@@ -37,7 +37,7 @@ CREATE TABLE `game_solutions` (
   `rating` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_GAME_SOLUTION_game` (`game_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=376 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=0 ;
 
 DROP TABLE IF EXISTS `saved_games`;
 CREATE TABLE `saved_games` (
@@ -49,7 +49,7 @@ CREATE TABLE `saved_games` (
   `values_` text COLLATE utf8_czech_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_saved_games_game_solutions1` (`game_solution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=0 ;
 
 DROP TABLE IF EXISTS `services`;
 CREATE TABLE `services` (
@@ -59,7 +59,7 @@ CREATE TABLE `services` (
   `check_time` int(11) NOT NULL COMMENT 'Period to another check of this service in seconds.',
   `enabled` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_czech_ci AUTO_INCREMENT=0 ;
 
 
 ALTER TABLE `games`
