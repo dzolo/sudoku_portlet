@@ -177,7 +177,7 @@ var SudokuGame_Request = (function (contextPath)
         
         $.ajax({
             url         : this.getPathOfRestApp() + path,
-            async       : (async === true),
+            async       : false,
             data        : data,
             type        : 'POST',
             dataType    : 'json',

@@ -21,7 +21,6 @@ import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 import org.gatein.portal.examples.games.sudoku.provider.generator.Generator;
-import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
  * Game REST Facade Class

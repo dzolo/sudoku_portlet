@@ -63,21 +63,6 @@ public class SavedGameRestFacade
         }
     }
 
-    @DELETE
-    @Path("{id}")
-    public Response remove(@PathParam("id") Integer id)
-    {
-        try
-        {
-            savedGamesController.destroy(id);
-            return Response.ok().build();
-        }
-        catch (Exception ex)
-        {
-            return Response.notModified(ex.getMessage()).build();
-        }
-    }
-
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})

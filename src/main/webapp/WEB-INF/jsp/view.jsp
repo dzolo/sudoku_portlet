@@ -132,6 +132,11 @@
     
     <div id="<portlet:namespace/>_dialog-new" style="display: none; padding: 0" title="Create a new game">
         <div>
+            <div id="<portlet:namespace/>_dialog-new-first-step-loader" style="display: none">
+                <div class="sudoku-game_dialog-new-first-step-loader">
+                    <img alt="loader" src="${app_path}/images/icons/loader.gif" />
+                </div>
+            </div>
             <table>
                 <c:if test="${not empty pageContext.request.remoteUser}">
                     <tr>
@@ -172,7 +177,7 @@
             </table>
             
         </div>
-        <div class="sg__second"></div>
+        <div id="<portlet:namespace/>_dialog-new-second-step"></div>
     </div>
     
     <div id="<portlet:namespace/>_dialog-end" title="The game was solved!"></div>

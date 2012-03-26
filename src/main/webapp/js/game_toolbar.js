@@ -170,6 +170,7 @@ function SudokuGame_GameToolbar(gameParent)
          * 
          * * load an unfinished game of the logged user (not for anonymous)
          * * create solution of game which was played by another user
+         * * load a game from a remote publisher
          * * generate a new random game
          * 
          * The whole procedure is implemented as a wizard. The first step of
@@ -199,6 +200,7 @@ function SudokuGame_GameToolbar(gameParent)
                 $wizard.dialog('open').jWizard({
                     cancel: function ()
                     {
+                        $('#' + _parent.getNamespace() + '_dialog-new-first-step-loader').hide();
                         $wizard.dialog('close');
                     },
                     previous: function (event, ui)
@@ -208,20 +210,12 @@ function SudokuGame_GameToolbar(gameParent)
                     next: function (event, ui)
                     {
                         var type = $('input[name="' + chooseInputName + '"]:checked').val();
-                        var $step2 = $wizard.find('.sg__second');
-                        var loaderImg = _parent.getAppPath() + '/images/icons/loader.gif';
+                        var $step2 = $wizard.find('#' + _parent.getNamespace() + '_dialog-new-second-step');
+                        var $loader = $('#' + _parent.getNamespace() + '_dialog-new-first-step-loader');
                         var $finishButton = $wizard.find('.jw-button-finish');
 
                         // loader
-
-                        $step2.html(
-                            $('<div>').css({
-                                textAlign   : 'center',
-                                padding     : '20px'
-                            }).append(
-                                $('<img>').attr('src', loaderImg)
-                            )
-                        );
+                        $loader.show();
                         
                         // build next step according to the type
                         
@@ -465,7 +459,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 }
                                 else
                                 {
-                                    t = 'Remote publisher / ' + data[i].typeServiceId.name;
+                                    t = 'Remote publisher / ' + data[i].gameId.typeServiceId.name;
                                 }
 
                                 $dialogTableBody.append(
@@ -610,6 +604,8 @@ function SudokuGame_GameToolbar(gameParent)
                                 'bJQueryUI'         : true
                             });
                         }
+                        
+                        $loader.hide();
                     },
                     finish: function(event, ui)
                     {

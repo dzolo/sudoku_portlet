@@ -183,6 +183,23 @@
     margin: 0.8em 0 0.5em 0;
 }
 
+.sudoku-game_dialog-new-first-step-loader
+{
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 98%;
+    height: 98%;
+    background: white;
+    text-align: center;
+}
+
+.sudoku-game_dialog-new-first-step-loader img
+{
+    margin-top: 20px;
+}
+
 /* <-- VIEW mode - body */
 
 /* VIEW mode - footer --> */
