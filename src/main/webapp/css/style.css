@@ -11,7 +11,6 @@
 {
     width: 100%;
     height: 100%;
-    position: relative; /* because of nonscript element */
 }
 
 /* VIEW mode - toolbar --> */
@@ -54,7 +53,6 @@
 
 .sudoku-game_board
 {
-    position: relative; /* because of .sudoku-game_board-locker */
     border: 2px solid #a6a6a6;
     
     /* CSS3 - border */
@@ -84,11 +82,6 @@
     outline: none;
 }
 
-.sudoku-game_board table td input[disabled="disabled"]
-{
-    background-color: white;
-}
-
 .sudoku-game_board table td.sudoku-game_readonly-input,
 .sudoku-game_board table td.sudoku-game_readonly-input input
 {
@@ -104,17 +97,6 @@
 {
     background-color: #fe9494 ! important;
     color: #870119;
-}
-
-.sudoku-game_board-locker
-{
-    width: 100%;
-    height: 100%;
-    display: none;
-    position: absolute;
-    top: 0; left: 0;
-    z-index: 1;
-    cursor: not-allowed;
 }
 
 .sudoku-game_statistics
@@ -380,26 +362,4 @@ a.sudoku-game_button-disabled:hover
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-}
-
-noscript div.sudoku-game_noscript
-{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1;
-    background-color: red;
-    opacity: 0.90;
-}
-
-noscript div.sudoku-game_noscript p
-{
-    position: relative;
-    top: 30%;
-    margin: 0 auto;
-    padding: 15px 35px;
-    font-size: 175%;
-    color: #870119;
 }

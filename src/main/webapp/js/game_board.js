@@ -157,7 +157,6 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     this.resizeBoard = function ()
     {
         var $board_table = $(_rootName + ' table');
-        var $board_locker = $(_rootName + '-locker');
 
         if ($board_table)
         {
@@ -166,10 +165,6 @@ function SudokuGame_GameBoard(gameParent, rootElement)
             var item_width = Math.floor(width / 9 - 10);
 
             $board_table.css('height', width);
-            $board_locker.css({
-                'width'  : width,
-                'height' : width
-            });
 
             $board_table.find('td input').css({
                 'fontSize' : Math.round(item_width * 2 / 3)
@@ -253,17 +248,17 @@ function SudokuGame_GameBoard(gameParent, rootElement)
 
         if (_enabled)
         {
-            $(_rootName + '-locker').hide();
-            $(_rootName).css('opacity', 1.0);
-            $(_rootName + ' input').removeAttr('disabled');
-            $(_rootName + ' input').unbind('focus');
+            _$root.find('input')
+                    .removeAttr('disabled')
+                    .unbind('focus')
+                    .css('cursor', 'text');
         }
         else
         {
-            $(_rootName + '-locker').show();
-            $(_rootName).css('opacity', 0.5);
-            $(_rootName + ' input').attr('disabled', true);
-            $(_rootName + ' input').blur();
+            _$root.find('input')
+                    .attr('disabled', true)
+                    .css('cursor', 'not-allowed')
+                    .blur();
         }
     }
     

@@ -116,7 +116,13 @@ public class GameSolutionsController extends Controller
                 );
             }
             
-            if (!persGameSolution.getUserId().equals(gameSolution.getUserId()))
+            if ((
+                    persGameSolution.getUserId() == null &&
+                    gameSolution.getUserId() != null
+                ) || (
+                    persGameSolution.getUserId() != null &&
+                    !persGameSolution.getUserId().equals(gameSolution.getUserId())
+                ))
             {
                 throw new ForbiddenChangeOnEntityException(
                         "Forbidden change on the user_id field"

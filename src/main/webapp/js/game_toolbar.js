@@ -413,7 +413,6 @@ function SudokuGame_GameToolbar(gameParent)
                             // init the data table
                             $table.dataTable({
                                 'sDom'              : 't<"F"fp>',
-                                'aaSorting'         : [[ 2, 'desc' ]],
                                 'sPaginationType'   : 'full_numbers',
                                 'bJQueryUI'         : true
                             });
@@ -782,6 +781,8 @@ function SudokuGame_GameToolbar(gameParent)
                     {
                         return false;
                     }
+                    
+                    _parent.getGameBoard().clearErrors();
                     
                     // mark invalid fields
 

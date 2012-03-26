@@ -34,6 +34,8 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     var _gameSolutionId;
     /** A path to the serve resource method for saving the last played solution of a game */
     var _lastPlayedResourceURL;
+    /** An indicator of finished game */
+    var _finished = false;
     
     /**
      * Gets an ID of the game
@@ -138,7 +140,18 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
         
         if (_timer.isPaused())
         {
-            this.pause();
+            if (!_finished)
+            {
+                this.pause();
+            }
+            else
+            {
+                _gameBoard.setEnabled(false);
+                $('#' + _namespace + '_footer-pause').hide();
+                $('#' + _namespace + '_footer-play').hide();
+                $('#' + _namespace + '_footer-timer').hide();
+            }
+            
             _gameBoard.render();
         }
         else if (!_timer.isStarted())
@@ -220,6 +233,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             );
         }
         
+        _finished = false;
         _gameBoard.setEnabled(true);
         _toolbar.setButtonsEnable(1, true);
         _timer.start();
@@ -294,7 +308,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
         }
         else
         {
-            throw new new SudokuGame_IllegalStateException('Can not store game');
+            throw new SudokuGame_IllegalStateException('Can not store game');
         }
     }
     
@@ -364,6 +378,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             $('#' + _namespace + '_footer-play').hide();
             this.getToolbar().setButtonsEnable(0, true);
             this.getToolbar().setButtonsEnable(1, false);
+            _finished = true;
             
             // store the solution
             this.store(true, true);

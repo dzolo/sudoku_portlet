@@ -514,7 +514,7 @@ public class SudokuPortlet extends GenericPortlet
 
             buffer.append(SKIN_CSS_DEFINITIONS[i][0]).append(" { ")
                 .append(SKIN_CSS_DEFINITIONS[i][1]).append(": #")
-                .append(value).append(" ! important } ");
+                .append(value).append(" } ");
 
             i++;
         }

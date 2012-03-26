@@ -14,7 +14,7 @@
     
     <skin name="Default" default="true">
         <game-board font-color="000000" border-color="a6a6a6">
-            <field background="f2f2f2" fixed-background="ffffff"/>
+            <field background="ffffff" fixed-background="f2f2f2"/>
         </game-board>
     </skin>
     
