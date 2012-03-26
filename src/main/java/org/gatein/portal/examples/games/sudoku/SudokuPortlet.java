@@ -132,6 +132,7 @@ public class SudokuPortlet extends GenericPortlet
         request.setAttribute("currentSkin", skin);
         request.setAttribute("currentSkinName", skinName);
         request.setAttribute("remotePublisherEnabled", remotePublishersEnabled);
+        request.setAttribute("isAdmin", request.isUserInRole("administrator"));
         response.setContentType("text/html");
         
         PortletRequestDispatcher dispatcher =

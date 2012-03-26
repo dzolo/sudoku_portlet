@@ -15,6 +15,28 @@
 
     $(document).ready(function ()
     {
+        /** Tabs **************************************************************/
+        
+        $('.sudoku-game_edit-tab-button').click(function ()
+        {
+            var $this = $(this);
+            var id = $this.attr('rel');
+            var $tab = $('#' + id);
+            var activeClass = 'sudoku-game_edit-tab-button-active';
+            
+            if ($tab.length && !$this.hasClass(activeClass))
+            {
+                $this.parent().find('.' + activeClass).removeClass(activeClass);
+                $this.addClass(activeClass);
+                $this.parent().find('.sudoku-game_edit-tab').hide();
+                $tab.show();
+            }
+            
+            return false;
+        });
+        
+        /** Skin **************************************************************/
+        
         // skins data
         window['<portlet:namespace/>_skins'] = {
             <c:forEach var="item" items="${skinsMap}">
@@ -106,10 +128,13 @@
 
 <div class="sudoku-game_edit">
     
-    <a href="" class="sudoku-game_edit-tab-button-active"><b>Skin</b></a>
+    <a href="" class="sudoku-game_edit-tab-button sudoku-game_edit-tab-button-active" rel="<portlet:namespace/>_edit-tab1"><b>Skin</b></a>
     
-    <div class="sudoku-game_edit-tab">
-        
+    <c:if test="${isAdmin}">
+        <a href="" class="sudoku-game_edit-tab-button" rel="<portlet:namespace/>_edit-tab2"><b>Remote publishers</b></a>
+    </c:if>
+    
+    <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab1">
         
         <form action="<portlet:actionURL name="changeSkin"/>" method="post">
         
@@ -177,5 +202,11 @@
         </form>
         
     </div>
+                            
+    <c:if test="${isAdmin}">
+        <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab2" style="display: none">
+            <h1>Not implemeted yet.</h1>
+        </div>
+    </c:if>
     
 </div>

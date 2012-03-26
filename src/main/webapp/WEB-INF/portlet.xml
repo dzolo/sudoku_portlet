@@ -42,6 +42,11 @@
             <short-title>Sudoku game</short-title>
             <keywords>games</keywords>
         </portlet-info>
+        
+        <security-role-ref>
+            <role-name>administrator</role-name>
+            <role-link>administrators</role-link>
+        </security-role-ref>
     
     </portlet>
 

@@ -277,18 +277,22 @@ a.sudoku-game_edit-tab-button, a.sudoku-game_edit-tab-button-active
     float: left;
     position: relative;
     top: 1px;
-    margin-right: 2px;
+    margin-left: 4px;
     padding: 4px 8px 2px 8px;
-    border: 1px solid #ebebeb;
+    border: 1px solid #ccc;
     background: white;
     color: #444;
 }
 
 a.sudoku-game_edit-tab-button:hover, a.sudoku-game_edit-tab-button-active
 {
-    border: 1px solid #ccc;
     border-bottom-color: white;
     color: black;
+}
+
+a.sudoku-game_edit-tab-button-active
+{
+    cursor: default;
 }
 
 .sudoku-game_edit-tab
