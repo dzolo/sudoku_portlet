@@ -135,7 +135,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     this.init = function (lastPlayedSolutionId)
     {
         this.reloadRootElements();
-        _gameBoard.resizeBoard();
+        _gameBoard.init();
         _toolbar.reenableButtons();
         
         if (_timer.isPaused())

@@ -458,6 +458,21 @@ function SudokuGame_GameBoard(gameParent, rootElement)
         }
     }
     
+    /**
+     * Inits the gameboard
+     */
+    this.init = function ()
+    {
+        // activate input check on fields
+        $(_rootName + ' input').keypress(this._digitOnlyEvent)
+        // movement on fields with arrows
+        $(_rootName + ' input').keyup(this._arrowMovement);
+        // validator of each field
+        $(_rootName + ' input').change(this._fieldValidator);
+        // change size of board
+        this.resizeBoard();
+    }
+    
     // CONSTRUCT START /////////////////////////////////////////////////////////
     
     if (!gameParent)
@@ -475,14 +490,6 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     }
     // set root element
     this.setRootElement(rootElement);
-    // activate input check on fields
-    $(_rootName + ' input').keypress(this._digitOnlyEvent)
-    // movement on fields with arrows
-    $(_rootName + ' input').keyup(this._arrowMovement);
-    // validator of each field
-    $(_rootName + ' input').change(this._fieldValidator);
-    // change size of board
-    this.resizeBoard();
     // hack for this in _fieldValidator
     var self = this;
     
