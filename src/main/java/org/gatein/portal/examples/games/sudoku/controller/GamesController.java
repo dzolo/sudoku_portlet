@@ -92,42 +92,11 @@ public class GamesController extends Controller
      */
     public List<Game> findGameEntities()
     {
-        return findGameEntities(true, -1, -1);
-    }
-
-    /**
-     * Gets a limited amount of games.
-     * 
-     * @param maxResults    A maximum count of returned games
-     * @param firstResult   An index of the first returned game
-     * @return              A list of games
-     */
-    public List<Game> findGameEntities(int maxResults, int firstResult)
-    {
-        return findGameEntities(false, maxResults, firstResult);
-    }
-
-    /**
-     * Gets a limited amount of games or all games.
-     * 
-     * @param all           An indicator of all gamens fetch.
-     * @param maxResults    A maximum count of returned games
-     * @param firstResult   An index of the first returned game
-     * @return              A list of games
-     */
-    private List<Game> findGameEntities(boolean all, int maxResults, int firstResult)
-    {
         EntityManager em = emf.createEntityManager();
         
         try
         {
             Query q = em.createNamedQuery("Game.findAll");
-            
-            if (!all)
-            {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
             
             return q.getResultList();
         }

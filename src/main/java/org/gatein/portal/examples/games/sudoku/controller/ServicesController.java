@@ -7,15 +7,11 @@
 
 package org.gatein.portal.examples.games.sudoku.controller;
 
-import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityNotFoundException;
 import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.ForbiddenChangeOnEntityException;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.NonexistentEntityException;
-import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
-import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
 
 /**
@@ -102,112 +98,17 @@ public class ServicesController extends Controller
     }
 
     /**
-     * Destroys a service entity with a specified id.
-     * 
-     * @param id            An identificator
-     * @throws NonexistentEntityException
-     * @throws RollbackFailureException
-     * @throws Exception 
-     */
-    public void destroy(Integer id) throws
-            NonexistentEntityException, RollbackFailureException, Exception
-    {
-        EntityManager em = emf.createEntityManager();
-        
-        try
-        {
-            em.getTransaction().begin();
-            Service service;
-            
-            try
-            {
-                service = em.getReference(Service.class, id);
-                service.getId();
-            }
-            catch (EntityNotFoundException enfe)
-            {
-                throw new NonexistentEntityException(
-                        "The service with id " + id + " no longer exists.", enfe
-                );
-            }
-            
-            Collection<Game> gamesCollection = service.getGamesCollection();
-            
-            for (Game gamesCollectionGames : gamesCollection)
-            {
-                gamesCollectionGames.setTypeServiceId(null);
-                gamesCollectionGames = em.merge(gamesCollectionGames);
-            }
-            
-            em.remove(service);
-            em.getTransaction().commit();
-        }
-        catch (Exception ex)
-        {
-            try
-            {
-                em.getTransaction().rollback();
-            }
-            catch (Exception re)
-            {
-                throw new RollbackFailureException(re);
-            }
-            
-            throw ex;
-        }
-        finally
-        {
-            if (em != null)
-            {
-                em.close();
-            }
-        }
-    }
-
-    /**
      * Gets all services.
      * 
      * @return              A list of services
      */
     public List<Service> findServiceEntities()
     {
-        return findServiceEntities(true, -1, -1);
-    }
-
-    /**
-     * Gets a limited amount of services.
-     * 
-     * @param maxResults    A maximum count of returned services
-     * @param firstResult   An index of the first returned service
-     * @return              A list of services
-     */
-    public List<Service> findServiceEntities(int maxResults, int firstResult)
-    {
-        return findServiceEntities(false, maxResults, firstResult);
-    }
-
-    /**
-     * Gets a limited amount of services or all services.
-     * 
-     * @param all           An indicator of all services fetch.
-     * @param maxResults    A maximum count of returned services
-     * @param firstResult   An index of the first returned service
-     * @return              A list of services
-     */
-    private List<Service> findServiceEntities(boolean all, int maxResults,
-                                               int firstResult)
-    {
         EntityManager em = emf.createEntityManager();
         
         try
         {
-            Query q = em.createQuery("select object(o) from Service as o");
-            
-            if (!all)
-            {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
+            Query q = em.createNamedQuery("Service.findAll");
             
             return q.getResultList();
         }
@@ -230,26 +131,6 @@ public class ServicesController extends Controller
         try
         {
             return em.find(Service.class, id);
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    /**
-     * Gets a count of services.
-     * 
-     * @return              A total count
-     */
-    public int getServiceCount()
-    {
-        EntityManager em = emf.createEntityManager();
-        
-        try
-        {
-            Query q = em.createQuery("select count(o) from Service as o");
-            return ((Long) q.getSingleResult()).intValue();
         }
         finally
         {

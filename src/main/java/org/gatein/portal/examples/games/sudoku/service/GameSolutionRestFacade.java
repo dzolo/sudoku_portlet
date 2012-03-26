@@ -107,9 +107,18 @@ public class GameSolutionRestFacade
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public GameSolution find(@PathParam("id") Integer id)
+    public Response find(@PathParam("id") Integer id)
     {
-        return gameSolutionsController.findGameSolution(id);
+        GameSolution gameSolution= gameSolutionsController.findGameSolution(id);
+        
+        if (gameSolution != null)
+        {    
+            return Response.ok(gameSolution).build(); 
+        }
+        else
+        {
+            return Response.status(Response.Status.NOT_FOUND).build(); 
+        }
     }
 
     @GET

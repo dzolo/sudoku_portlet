@@ -93,13 +93,16 @@ public class GameUtil
         StringBuilder builder = new StringBuilder();
         final String empty = "";
         
-        for (int i = 0; i < array.length; i++)
+        if (array != null)
         {
-            builder.append(array[i] != null ? array[i] : empty);
-            
-            if ((i + 1) < array.length)
+            for (int i = 0; i < array.length; i++)
             {
-                builder.append(delimiter);
+                builder.append(array[i] != null ? array[i] : empty);
+
+                if ((i + 1) < array.length && delimiter != null)
+                {
+                    builder.append(delimiter);
+                }
             }
         }
         

@@ -180,7 +180,12 @@
             <artifactId>jsoup</artifactId>
             <version>1.6.1</version>
         </dependency>
-        
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     
     <name>games</name>
@@ -221,7 +226,12 @@
             <layout>default</layout>
             <name>Repository for library Library[restapi]</name>
         </repository>
-    
+        <repository>
+            <url>http://repo1.maven.org/maven2/</url>
+            <id>junit_4</id>
+            <layout>default</layout>
+            <name>Repository for library Library[junit_4]</name>
+        </repository>
     </repositories>
     
     

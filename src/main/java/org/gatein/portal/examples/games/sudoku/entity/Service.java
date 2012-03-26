@@ -22,11 +22,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "services")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s"),
-    @NamedQuery(name = "Service.findById", query = "SELECT s FROM Service s WHERE s.id = :id"),
-    @NamedQuery(name = "Service.findByName", query = "SELECT s FROM Service s WHERE s.name = :name"),
-    @NamedQuery(name = "Service.findByUrl", query = "SELECT s FROM Service s WHERE s.url = :url"),
-    @NamedQuery(name = "Service.findByCheckTime", query = "SELECT s FROM Service s WHERE s.checkTime = :checkTime")
+    @NamedQuery(
+        name = "Service.findAll",
+        query = "SELECT s FROM Service s"
+    )
 })
 public class Service implements Serializable
 {

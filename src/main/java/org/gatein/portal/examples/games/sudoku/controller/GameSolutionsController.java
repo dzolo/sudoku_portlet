@@ -163,43 +163,12 @@ public class GameSolutionsController extends Controller
      */
     public List<GameSolution> findGameSolutionEntities()
     {
-        return findGameSolutionEntities(true, -1, -1);
-    }
-
-    /**
-     * Gets a limited amount of game solutions.
-     * 
-     * @param maxResults    A maximum count of returned game solutions
-     * @param firstResult   An index of the first returned game solution
-     * @return              A list of game solutions
-     */
-    public List<GameSolution> findGameSolutionEntities(int maxResults, int firstResult)
-    {
-        return findGameSolutionEntities(false, maxResults, firstResult);
-    }
-
-    /**
-     * Gets a limited amount of game solutions or all game solutions.
-     * 
-     * @param all           An indicator of all game solutions fetch.
-     * @param maxResults    A maximum count of returned game solutions
-     * @param firstResult   An index of the first returned game solution
-     * @return              A list of game solutions
-     */
-    private List<GameSolution> findGameSolutionEntities(boolean all, int maxResults,
-                                                        int firstResult)
-    {
+        
         EntityManager em = emf.createEntityManager();
         
         try
         {
             Query q = em.createNamedQuery("GameSolution.findAll");
-            
-            if (!all)
-            {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
             
             return q.getResultList();
         }
@@ -245,26 +214,6 @@ public class GameSolutionsController extends Controller
         try
         {
             return em.find(GameSolution.class, id);
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    /**
-     * Gets a count of game solutions.
-     * 
-     * @return              A total count
-     */
-    public int getGameSolutionCount()
-    {
-        EntityManager em = emf.createEntityManager();
-        
-        try
-        {
-            Query q = em.createNamedQuery("GameSolution.count");
-            return ((Long) q.getSingleResult()).intValue();
         }
         finally
         {

@@ -77,9 +77,18 @@ public class ServicesRestFacade
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public Service find(@PathParam("id") Integer id)
+    public Response find(@PathParam("id") Integer id)
     {
-        return servicesController.findService(id);
+        Service service = servicesController.findService(id);
+        
+        if (service != null)
+        {    
+            return Response.ok(service).build(); 
+        }
+        else
+        {
+            return Response.status(Response.Status.NOT_FOUND).build(); 
+        }
     }
     
     @GET

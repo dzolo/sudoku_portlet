@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.gatein.portal.examples.games.sudoku.controller.GamesController;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
@@ -67,9 +68,18 @@ public class GameRestFacade
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public Game find(@PathParam("id") Integer id)
+    public Response find(@PathParam("id") Integer id)
     {
-        return gamesController.findGame(id);
+        Game game = gamesController.findGame(id);
+        
+        if (game != null)
+        {    
+            return Response.ok(game).build(); 
+        }
+        else
+        { 
+            return Response.status(Status.NOT_FOUND).build(); 
+        }
     }
 
     @GET

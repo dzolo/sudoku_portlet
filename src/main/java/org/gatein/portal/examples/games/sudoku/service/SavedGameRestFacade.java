@@ -66,16 +66,18 @@ public class SavedGameRestFacade
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public SavedGame find(@PathParam("id") Integer id)
+    public Response find(@PathParam("id") Integer id)
     {
-        return savedGamesController.findSavedGame(id);
-    }
-
-    @GET
-    @Produces({"application/xml", "application/json"})
-    public List<SavedGame> findAll()
-    {
-        return savedGamesController.findSavedGameEntities();
+        SavedGame savedGame = savedGamesController.findSavedGame(id);
+        
+        if (savedGame != null)
+        {    
+            return Response.ok(savedGame).build(); 
+        }
+        else
+        {
+            return Response.status(Response.Status.NOT_FOUND).build(); 
+        }
     }
 
     @GET

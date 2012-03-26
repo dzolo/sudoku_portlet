@@ -202,6 +202,11 @@ function SudokuGame_GameToolbar(gameParent)
                     {
                         $('#' + _parent.getNamespace() + '_dialog-new-first-step-loader').hide();
                         $wizard.dialog('close');
+                        
+                        if (start)
+                        {
+                            _parent.start();
+                        }
                     },
                     previous: function (event, ui)
                     {
@@ -857,15 +862,7 @@ function SudokuGame_GameToolbar(gameParent)
                             catch (e)
                             {
                                 m = 'The current game was not saved. Error: ' + e
-                                
-                                $dialogInfo.stateBox('Game not saved', m, 'error', 'alert').fadeIn('slow', function ()
-                                {
-                                    setTimeout(function ()
-                                    {
-                                        $dialog.dialog('close');
-                                    }, 6000);
-                                });
-                                
+                                $dialogInfo.stateBox('Game not saved', m, 'error', 'alert').fadeIn('slow');
                                 return;
                             }
                             
@@ -875,7 +872,7 @@ function SudokuGame_GameToolbar(gameParent)
                                 setTimeout(function ()
                                 {
                                     $dialog.dialog('close');
-                                }, 2000);
+                                }, 600);
                             });
                         }
                     },
