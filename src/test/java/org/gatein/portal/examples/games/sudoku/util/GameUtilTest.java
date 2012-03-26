@@ -1,7 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Project       : Bachelor Thesis - Sudoku game implementation as portlet
+ * Document      : GameUtilTest.java
+ * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+ * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
+
 package org.gatein.portal.examples.games.sudoku.util;
 
 import static org.junit.Assert.assertEquals;
