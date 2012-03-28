@@ -182,6 +182,52 @@
     margin-top: 20px;
 }
 
+table.sudoku-game_input-hint
+{
+    display: none;
+    position: absolute;
+    margin: -19px 0 0 -14px;
+    z-index: 1;
+    font-size: 9px;
+}
+
+table.sudoku-game_input-hint td
+{
+    border-width: 0;
+    vertical-align: middle;
+    text-align: center;
+    background: none ! important;
+}
+
+table.sudoku-game_input-hint td span, 
+table.sudoku-game_input-hint td .sudoku-game_input-hint-close
+{
+    padding: 0 4px;
+    cursor: pointer;
+    background-color: white;
+    font-weight: bold;
+    border: 1px solid #a6a6a6;
+    
+    /* CSS3 - border */
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+table.sudoku-game_input-hint td .sudoku-game_input-hint-close
+{
+    height: 15px;
+    background: url(../images/icons/close_10x10.gif);
+    background-color: white;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+table.sudoku-game_input-hint td span:hover,
+table.sudoku-game_input-hint td .sudoku-game_input-hint-close:hover
+{
+    border-color: black;
+}
+
 /* <-- VIEW mode - body */
 
 /* VIEW mode - footer --> */

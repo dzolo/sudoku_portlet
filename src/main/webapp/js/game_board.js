@@ -156,7 +156,7 @@ function SudokuGame_GameBoard(gameParent, rootElement)
      */
     this.resizeBoard = function ()
     {
-        var $board_table = $(_rootName + ' table');
+        var $board_table = $(_rootName + ' > table');
 
         if ($board_table)
         {
@@ -165,6 +165,17 @@ function SudokuGame_GameBoard(gameParent, rootElement)
             var item_width = Math.floor(width / 9 - 10);
 
             $board_table.css('height', width);
+            
+            $board_table.find('.sudoku-game_input-hint').css({
+                'width'  : item_width + 38,
+                'height' : item_width + 32
+            });
+
+            
+            $board_table.find('.sudoku-game_input-hint-center').css({
+                'width'  : item_width + 2,
+                'height' : item_width + 2
+            });
 
             $board_table.find('td input').css({
                 'fontSize' : Math.round(item_width * 2 / 3)
@@ -238,6 +249,40 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     }
     
     /**
+     * On click event handler. Shows a hint for filling a value of the field.
+     */
+    this._mouseHint = function ()
+    {
+        var $this = $(this);
+        var $hint = $this.parent().find('.sudoku-game_input-hint');
+        
+        if ($hint && $hint.is(':hidden') &&
+            !($this.attr('readonly') || $this.attr('disabled')))
+        {
+            $this.parents('table').find('.sudoku-game_input-hint').hide();
+            $hint.fadeIn(100);
+        }
+    }
+    
+    /**
+     * Makes a hint action.
+     */
+    this._makeHint = function ()
+    {
+        try
+        {
+            var $hint = $(this).parents('.sudoku-game_input-hint');
+            var val = parseInt($(this).text(), 10);
+            
+            $hint.parent().find('input').val(val).trigger('change');
+            $hint.fadeOut(100);
+        }
+        catch (e)
+        {
+        }
+    }
+    
+    /**
      * Sets a state of the game board - capability to play
      * 
      * @param enabled   true for enable, false for disabled
@@ -245,6 +290,8 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     this.setEnabled = function (enabled)
     {
         _enabled = (enabled) ? true : false;
+        
+        $(_rootName + ' .sudoku-game_input-hint').hide();
 
         if (_enabled)
         {
@@ -463,12 +510,22 @@ function SudokuGame_GameBoard(gameParent, rootElement)
      */
     this.init = function ()
     {
+        var $inputs = $(_rootName + ' input');
         // activate input check on fields
-        $(_rootName + ' input').keypress(this._digitOnlyEvent)
+        $inputs.keypress(this._digitOnlyEvent)
         // movement on fields with arrows
-        $(_rootName + ' input').keyup(this._arrowMovement);
+        $inputs.keyup(this._arrowMovement);
         // validator of each field
-        $(_rootName + ' input').change(this._fieldValidator);
+        $inputs.change(this._fieldValidator);
+        // mouse hint
+        $inputs.click(this._mouseHint);
+        // hint action
+        $(_rootName + ' .sudoku-game_input-hint span').click(this._makeHint);
+        // hint closing
+        $(_rootName + ' .sudoku-game_input-hint-close').click(function ()
+        {
+            $(this).parents('.sudoku-game_input-hint').fadeOut(100);
+        });
         // change size of board
         this.resizeBoard();
     }
