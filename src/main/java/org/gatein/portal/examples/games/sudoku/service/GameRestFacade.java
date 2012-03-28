@@ -32,6 +32,11 @@ import org.gatein.portal.examples.games.sudoku.provider.generator.Generator;
 public class GameRestFacade
 {
     /**
+     * Logger
+     */
+    public static final Logger logger = Logger.getLogger(GameRestFacade.class.getName());
+    
+    /**
      * An instance of Games Controller
      */
     private GamesController gamesController;
@@ -59,8 +64,7 @@ public class GameRestFacade
         }
         catch (Exception ex)
         {
-            final String name = GameRestFacade.class.getName();
-            Logger.getLogger(name).log(Level.WARNING, null, ex);
+            logger.log(Level.WARNING, null, ex);
             return Response.notModified(ex.toString()).build();
         }
     }
@@ -130,6 +134,8 @@ public class GameRestFacade
         }
         catch (Exception ex)
         {
+            logger.log(Level.WARNING, null, ex);
+            
             return "{\"state\":false,\"message\":\""
                  + ex.getMessage().replace('"', '\'')
                  + "\"}";
@@ -169,6 +175,8 @@ public class GameRestFacade
         }
         catch (Exception ex)
         {
+            logger.log(Level.WARNING, null, ex);
+            
             return "{\"state\":false,\"message\":\""
                  + ex.getMessage().replace('"', '\'')
                  + "\"}";
@@ -233,6 +241,8 @@ public class GameRestFacade
         }
         catch (Exception ex)
         {
+            logger.log(Level.SEVERE, null, ex);
+            
             return "{\"state\":false,\"message\":\""
                  + ex.getMessage().replace('"', '\'')
                  + "\"}";

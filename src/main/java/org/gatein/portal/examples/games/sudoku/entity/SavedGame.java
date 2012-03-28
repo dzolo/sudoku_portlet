@@ -21,9 +21,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "saved_games")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SavedGame.count", query = "SELECT count(s) FROM SavedGame s"),
-    @NamedQuery(name = "SavedGame.findAll", query = "SELECT s FROM SavedGame s"),
-    @NamedQuery(name = "SavedGame.findByUser", query = "SELECT s FROM SavedGame s WHERE s.gameSolutionId.userId = :uid AND s.gameSolutionId.finished = 0")
+    @NamedQuery(
+        name = "SavedGame.findAll",
+        query = "SELECT s FROM SavedGame s"
+    ),
+    @NamedQuery(
+        name = "SavedGame.findByUser",
+        query = "SELECT s FROM SavedGame s "
+              + "WHERE s.gameSolutionId.userId = :uid AND s.gameSolutionId.finished = 0"
+    )
 })
 public class SavedGame implements Serializable
 {
@@ -37,24 +43,24 @@ public class SavedGame implements Serializable
     private Integer id;
     
     @Basic(optional = false)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     
     @Basic(optional = false)
-    @Column(name = "saved")
+    @Column(name = "saved", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date saved;
     
     @Basic(optional = false)
-    @Column(name = "lasting")
+    @Column(name = "lasting", nullable = false)
     private int lasting;
     
     @Basic(optional = false)
     @Lob
-    @Column(name = "values_")
+    @Column(name = "values_", nullable = false)
     private String values;
     
-    @JoinColumn(name = "game_solution_id", referencedColumnName = "id")
+    @JoinColumn(name = "game_solution_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private GameSolution gameSolutionId;
 

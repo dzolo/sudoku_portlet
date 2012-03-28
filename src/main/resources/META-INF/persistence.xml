@@ -4,16 +4,30 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
                 
-    <persistence-unit name="org.gatein.portal.examples.games.sudoku.1.0.mysql" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="sudoku_db" transaction-type="RESOURCE_LOCAL">
       
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
     
         <properties>
+            
+            <!-- Default HSQL database stored in a file -->
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:../gatein/gatein/data/db/data/sudoku" />
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            
+            <!-- MySQL Configuration - NOT ENABLED BY DEFAULT
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sudoku" />
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
             <property name="javax.persistence.jdbc.user" value="jboss" />
-            <property name="javax.persistence.jdbc.password" value="jboss" />
+            <property name="javax.persistence.jdbc.password" value="jboss" /> -->
+            
+            <!-- EclipseLink should create the database schema automatically -->
+            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            
         </properties>
     
     </persistence-unit>

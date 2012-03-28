@@ -47,7 +47,8 @@ import javax.xml.bind.annotation.XmlTransient;
               + "WHERE g2.id IN ("
               + "   SELECT g.id FROM GameSolution g "
               + "   WHERE g.finished > 0 "
-              + "   GROUP BY g.userId)"
+              + "   GROUP BY g.userId, g.id"
+              + ")"
     )
 })
 public class GameSolution implements Serializable
@@ -61,7 +62,6 @@ public class GameSolution implements Serializable
     @Column(name = "id")
     private Integer id;
     
-    @Basic(optional = false)
     @Column(name = "user_id")
     private String userId;
     
@@ -70,25 +70,25 @@ public class GameSolution implements Serializable
     
     @Basic(optional = false)
     @Lob
-    @Column(name = "values_")
+    @Column(name = "values_", nullable = false)
     private String values;
     
     @Basic(optional = false)
-    @Column(name = "time_start")
+    @Column(name = "time_start", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeStart;
     
     @Basic(optional = false)
-    @Column(name = "lasting")
+    @Column(name = "lasting", nullable = false)
     private int lasting;
     
-    @Column(name = "finished")
+    @Column(name = "finished", nullable = false)
     private boolean finished;
     
     @Column(name = "rating")
     private Integer rating;
     
-    @JoinColumn(name = "game_id", referencedColumnName = "id")
+    @JoinColumn(name = "game_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
     private Game gameId;
     

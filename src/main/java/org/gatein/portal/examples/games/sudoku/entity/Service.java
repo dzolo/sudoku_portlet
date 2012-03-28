@@ -39,18 +39,18 @@ public class Service implements Serializable
     private Integer id;
     
     @Basic(optional = false)
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
     
     @Basic(optional = false)
-    @Column(name = "url")
+    @Column(name = "url", nullable = false)
     private String url;
     
     @Basic(optional = false)
-    @Column(name = "check_time")
+    @Column(name = "check_time", nullable = false)
     private int checkTime;
     
-    @Column(name = "enabled")
+    @Column(name = "enabled", nullable = false)
     private boolean enabled;
     
     @OneToMany(mappedBy = "typeServiceId")

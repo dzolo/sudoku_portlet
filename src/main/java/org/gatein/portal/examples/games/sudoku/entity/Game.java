@@ -36,7 +36,6 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
               + "      SELECT gs.gameId.id FROM GameSolution gs "
               + "      WHERE gs.userId LIKE :uid "
               + ") "
-              + "GROUP BY g.id "
               + "ORDER BY g.id DESC"
     ),
     @NamedQuery(
@@ -52,16 +51,13 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
               + "WHERE gs.finished > 0 AND gs.userId IS NOT NULL"
     ),
     @NamedQuery(
-        name = "Game.findStatisticsNotLoggedPlayers",
-        query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
-              + "FROM GameSolution gs "
-              + "WHERE gs.finished > 0 AND gs.userId IS NULL"
-    ),
-    @NamedQuery(
         name = "Game.findProposals",
-        query = "SELECT gs.gameId FROM GameSolution gs "
-              + "WHERE gs.userId NOT LIKE :uid AND gs.finished > 0 "
-              + "GROUP BY gs.gameId.id "
+        query = "SELECT DISTINCT gs.gameId FROM GameSolution gs "
+              + "WHERE gs.finished > 0 AND gs.gameId.id NOT IN ("
+              + "   SELECT gs1.gameId.id FROM GameSolution gs1 "
+              + "   WHERE gs1.userId LIKE :uid AND gs1.finished > 0"
+              + ") "
+              + "GROUP BY gs.gameId, gs.rating "
               + "ORDER BY COUNT(gs.gameId.id) DESC, AVG(gs.rating) DESC"
     ),
     @NamedQuery(
@@ -75,7 +71,7 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
         query = "SELECT gs.userId, gs.userName, COUNT(gs.id), SUM(gs.lasting), AVG(gs.rating)"
               + "FROM GameSolution gs "
               + "WHERE gs.finished > 0 "
-              + "GROUP BY gs.userId "
+              + "GROUP BY gs.userId, gs.userName "
               + "HAVING gs.userId IS NOT NULL "
               + "ORDER BY COUNT(gs.id) DESC, SUM(gs.lasting) ASC"
     ),
@@ -103,18 +99,18 @@ public class Game implements Serializable
     private Integer id;
     
     @Basic(optional = false)
-    @Column(name = "init_date")
+    @Column(name = "init_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date initDate;
     
     @Basic(optional = false)
     @Lob
-    @Column(name = "init_values")
+    @Column(name = "init_values", nullable = false)
     private String initValues;
     
     @Enumerated(EnumType.STRING)
     @Basic(optional = false)
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private GameType type;
     
     @Enumerated(EnumType.STRING)

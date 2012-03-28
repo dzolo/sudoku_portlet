@@ -219,7 +219,7 @@
                                         'color'      : 'gold'
                                     });
                                     break;
-                                case 0:
+                                case 1:
                                     pos.css({
                                         'fontWeight' : 'bold',
                                         'color'      : 'silver'

@@ -23,8 +23,7 @@ public class Controller implements Serializable
     /**
      * An identificator of the persistence unit for connecting to the database
      */
-    protected static final String PERSISTENCE_UNIT_NAME =
-            "org.gatein.portal.examples.games.sudoku.1.0.mysql";
+    protected static final String PERSISTENCE_UNIT_NAME = "sudoku_db";
 
     /**
      * An instance of the entity manager factory
