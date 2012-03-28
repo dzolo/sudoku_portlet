@@ -37,4 +37,5 @@
 <!ATTLIST field
     fixed-background CDATA #REQUIRED
     background CDATA #REQUIRED
+    font CDATA #REQUIRED
   >

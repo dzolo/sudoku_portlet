@@ -13,11 +13,17 @@
 
 <script type="text/javascript"><!--
 
+    // pause a game if running
+    if (window['<portlet:namespace/>_game'] != undefined)
+    {
+        window['<portlet:namespace/>_game'].getTimer().pause();
+    }
+
     $(document).ready(function ()
     {
         /** Tabs **************************************************************/
         
-        $('.sudoku-game_edit-tab-button').click(function ()
+        $('#<portlet:namespace/>_edit-tab1 .sudoku-game_edit-tab-button').click(function ()
         {
             var $this = $(this);
             var id = $this.attr('rel');
@@ -44,12 +50,13 @@
                     '${item.value.fontColor}',
                     '${item.value.borderColor}',
                     '${item.value.background}',
-                    '${item.value.fixedBackground}'
+                    '${item.value.fixedBackground}',
+                    '${item.value.font}'
                 ],
             </c:forEach>
         };
         // color pickers
-        $('.sudoku-game_edit-colorpicker').each(function (i, v)
+        $('#<portlet:namespace/>_edit-tab1 .sudoku-game_edit-colorpicker').each(function (i, v)
         {
             $(v).ColorPicker({
                 onBeforeShow: function ()
@@ -73,7 +80,8 @@
         $('#<portlet:namespace/>_edit-skin-current').change(function ()
         {
             var name = $(this).attr('value');
-            var ps = $('.sudoku-game_edit-colorpicker');
+            var ps = $('#<portlet:namespace/>_edit-tab1 .sudoku-game_edit-colorpicker');
+            var fontChooser = $('#<portlet:namespace/>_edit-skin-field-font');
             var skin;
             
             if (name != null && name.length > 0)
@@ -99,6 +107,18 @@
                         ).addClass('sudoku-game_edit-colorpicker-disabled');
                     }
                 });
+            
+                fontChooser.css({
+                    'fontFamily' : skin[skin.length - 1],
+                    'padding'    : '8px 4px 4px 6px',
+                    'width'      : '152px',
+                    'height'     : '25px',
+                    'overflow'   : 'hidden'
+                }).text(skin[skin.length - 1]).append(
+                    $('<input>').attr('type', 'hidden')
+                        .attr('name', 'field-font')
+                        .val(skin[skin.length - 1])
+                );
             }
             else
             {
@@ -106,11 +126,21 @@
                     '${currentSkin['fontColor']}',
                     '${currentSkin['borderColor']}',
                     '${currentSkin['background']}',
-                    '${currentSkin['fixedBackground']}'
+                    '${currentSkin['fixedBackground']}',
+                    '${currentSkin['font']}'
                 ];
                 
                 ps.removeClass('sudoku-game_edit-colorpicker-disabled');
                 ps.find('span').remove();
+            
+                fontChooser.html(
+                    $('<input>').attr('type', 'text').attr('name', 'field-font').css({
+                        'width'      : '150px',
+                        'padding'    : '0 0 0 0',
+                        'fontFamily' : skin[skin.length - 1],
+                        'fontSize'   : '10px'
+                    }).val(skin[skin.length - 1]).fontSelector()
+                );
             }
             
             var counter = 0;
@@ -175,6 +205,12 @@
                     <td colspan="2"><b>Fields prefrences</b></td>
                 </tr>
                 <tr>
+                    <td>Font of field:</td>
+                    <td>
+                        <div id="<portlet:namespace/>_edit-skin-field-font"></div>
+                    </td>
+                </tr>
+                <tr>
                     <td>Backgroud color:</td>
                     <td>
                         <div id="<portlet:namespace/>_edit-skin-field-bg-color" class="sudoku-game_edit-colorpicker">
@@ -184,7 +220,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Background color fo fixed field:</td>
+                    <td>Background color of fixed field:</td>
                     <td>
                         <div id="<portlet:namespace/>_edit-skin-field-bg-fixed-color" class="sudoku-game_edit-colorpicker">
                             <div style="background-color: white"></div>

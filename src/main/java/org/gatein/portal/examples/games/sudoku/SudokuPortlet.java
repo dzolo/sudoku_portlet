@@ -45,7 +45,8 @@ public class SudokuPortlet extends GenericPortlet
         { ".sudoku-game_board table td", "border-color" },
         { ".sudoku-game_board table td, .sudoku-game_board table td input", "background-color" },
         { ".sudoku-game_board table td.sudoku-game_readonly-input, .sudoku-game"
-        + "_board table td.sudoku-game_readonly-input input", "background-color"}
+        + "_board table td.sudoku-game_readonly-input input", "background-color"},
+        { ".sudoku-game_board table td input", "font-family" }
     };
     
     /**
@@ -171,6 +172,7 @@ public class SudokuPortlet extends GenericPortlet
             p.setValue("skin-borderColor", request.getParameter("board-border-color"));
             p.setValue("skin-background", request.getParameter("field-bg-color"));
             p.setValue("skin-fixedBackground", request.getParameter("field-bg-fixed-color"));
+            p.setValue("skin-font", request.getParameter("field-font"));
             p.store();
         }
         catch (ReadOnlyException ex)
@@ -374,9 +376,11 @@ public class SudokuPortlet extends GenericPortlet
                         {
                             Node bgNode = attrsChild.getNamedItem("background");
                             Node fixBgNode = attrsChild.getNamedItem("fixed-background");
+                            Node fontNode = attrsChild.getNamedItem("font");
 
                             skin.put("background", bgNode.getTextContent());
                             skin.put("fixedBackground", fixBgNode.getTextContent());
+                            skin.put("font", fontNode.getTextContent());
 
                             break;
                         }
@@ -492,6 +496,7 @@ public class SudokuPortlet extends GenericPortlet
             ret.put("borderColor", preferences.getValue("skin-borderColor", null));
             ret.put("background", preferences.getValue("skin-background", null));
             ret.put("fixedBackground", preferences.getValue("skin-fixedBackground", null));
+            ret.put("font", preferences.getValue("skin-font", null));
         }
         
         return ret;
@@ -514,8 +519,14 @@ public class SudokuPortlet extends GenericPortlet
             String value = preferences.getValue("skin-" + key, skin.get(key));
 
             buffer.append(SKIN_CSS_DEFINITIONS[i][0]).append(" { ")
-                .append(SKIN_CSS_DEFINITIONS[i][1]).append(": #")
-                .append(value).append(" } ");
+                .append(SKIN_CSS_DEFINITIONS[i][1]).append(": ");
+
+            if (!key.equals("font"))
+            {
+                buffer.append("#");
+            }
+
+            buffer.append(value).append(" } ");
 
             i++;
         }

@@ -363,3 +363,8 @@ button.ui-button::-moz-focus-inner { border: 0; padding: 0; } /* reset extra pad
 .ui-tabs .ui-tabs-nav li a, .ui-tabs.ui-tabs-collapsible .ui-tabs-nav li.ui-tabs-selected a { cursor: pointer; } /* first selector in group seems obsolete, but required to overcome bug in Opera applying cursor: text overall if defined elsewhere... */
 .ui-tabs .ui-tabs-panel { display: block; border-width: 0; padding: 1em 1.4em; background: none; }
 .ui-tabs .ui-tabs-hide { display: none !important; }
+
+ul.sg_fontselector { width: 150px; background: white; border: 1px solid #ccc; border-top: 0; font-size: 10px; float: left; list-style: none; margin: 0; padding:0; line-height: 1.2; z-index: 10; position: absolute; }
+ul.sg_fontselector li { margin: 0; padding: 0; list-style: none; }
+ul.sg_fontselector a {display: block; padding: 3px; color: black; text-decoration: none; }
+ul.sg_fontselector a:hover { background: #ddd; cursor: pointer; }
