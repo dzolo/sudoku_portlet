@@ -156,6 +156,13 @@
 
             return false;
         });
+    
+        // reloads statistics on demand
+        $('#<portlet:namespace/>_statistics-reloadbutton').click(function ()
+        {
+            SudokuGame_loadStatistics('<portlet:namespace/>');
+            return false;
+        });
        
     });
     
@@ -604,6 +611,9 @@
                 <div class="sudoku-game_statistics-item-header">
                     <img alt="Stat icon" src="${app_path}/images/icons/stats_12x12.png" />
                     <span>Statistics of this game</span>
+                    <a href="#" id="<portlet:namespace/>_statistics-reloadbutton" title="Reload statistics" style="float: right">
+                        <img alt="Reload icon" src="${app_path}/images/icons/reload_12x12.png" />
+                    </a>
                 </div>
                 <div class="sudoku-game_statistics-item-body">
                     <strong>Best solvers</strong>
