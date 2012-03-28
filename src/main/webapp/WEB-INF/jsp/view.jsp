@@ -170,13 +170,13 @@
         var $game_stats_body = $game_stats.find('.sudoku-game_statistics-item-body:eq(0)');
         var $global_stats_body = $game_stats.find('.sudoku-game_statistics-item-body:eq(1)');
         var game = window[namespace + '_game'];
-        var gameId = game.getGameId()
+        var gameObj = game.getGame()
         var table = $game_stats_body.find('table');
         var ul = $game_stats_body.find('ul');
         var request = new SudokuGame_Request(game.getAppPath());
 
         // empty stats
-        if (!gameId)
+        if (!gameObj || !gameObj.id)
         {
             table.html('<tr><td>Statistics of the current game are not available.</td></tr>');
             ul.html('<li>Statistics of the current game are not available.</li>');
@@ -189,7 +189,7 @@
             {
                 try
                 {
-                    var solvers = request.makeGet('/game/stats/best_solvers/' + gameId);
+                    var solvers = request.makeGet('/game/stats/best_solvers/' + gameObj.id);
 
                     if (solvers.length == 0)
                     {
@@ -278,7 +278,7 @@
             {
                 try
                 {
-                    var stats = request.makeGet('/game/stats/' + gameId);
+                    var stats = request.makeGet('/game/stats/' + gameObj.id);
 
                     if (!stats.state)
                     {
@@ -287,7 +287,23 @@
                     
                     var lasting = parseInt(stats.stats.a_lasting, 10);
 
-                    ul.html(
+                    if (gameObj.type == 'GENERATED')
+                    {
+                        ul.html(
+                            $('<li>').html('The generated game with ')
+                                .append($('<b>').text(gameObj.typeDifficulty.toLowerCase()))
+                                .append(' difficulty.')
+                        );
+                    }
+                    else
+                    {
+                        ul.html(
+                            $('<li>').html('The game was obtained from ')
+                                .append($('<b>').text(gameObj.typeService.name))
+                        );
+                    }
+                    
+                    ul.append(
                         $('<li>').html('The game was played by ')
                             .append($('<b>').text(stats.stats.c_played))
                             .append(' players and solved by ')

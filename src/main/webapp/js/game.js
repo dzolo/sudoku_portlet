@@ -29,7 +29,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     /** A path to the web application */
     var _appPath;
     /** An identificator of the game in the database */
-    var _gameId;
+    var _game;
     /** An identificator of the solution in the database */
     var _gameSolutionId;
     /** A path to the serve resource method for saving the last played solution of a game */
@@ -38,13 +38,13 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     var _finished = false;
     
     /**
-     * Gets an ID of the game
+     * Gets the game
      * 
-     * @return          An identificator of the game in the database
+     * @return          The game
      */
-    this.getGameId = function ()
+    this.getGame = function ()
     {
-        return _gameId;
+        return _game;
     }
     
     /**
@@ -213,7 +213,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             {
                 _gameBoard.setInitFields(obj.gameId.initValues);
                 _gameBoard.setFields(obj.values);
-                _gameId = obj.gameId.id;
+                _game = obj.gameId;
                 this.setGameSolutionId(obj.id);
             }
             // game saved
@@ -221,7 +221,7 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             {
                 _gameBoard.setInitFields(obj.gameSolutionId.gameId.initValues);
                 _gameBoard.setFields(obj.values);
-                _gameId = obj.gameSolutionId.gameId.id;
+                _game = obj.gameSolutionId.gameId;
                 this.setGameSolutionId(obj.gameSolutionId.id);
             }
             
