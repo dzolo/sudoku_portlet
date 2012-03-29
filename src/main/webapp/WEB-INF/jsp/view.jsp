@@ -86,6 +86,12 @@
             closeOnEscape   : true
         });
         
+        // checks an input after clicking on its label
+        $('#<portlet:namespace/>_dialog-new-first-step label').click(function ()
+        {
+            $(this).parents('tr').find('input').attr('checked', true)
+        });
+        
         /** Statistics ********************************************************/
         
         // load content
@@ -506,7 +512,7 @@
     </div>
     
     <div id="<portlet:namespace/>_dialog-new" style="display: none; padding: 0" title="Create a new game">
-        <div>
+        <div id="<portlet:namespace/>_dialog-new-first-step">
             <div id="<portlet:namespace/>_dialog-new-first-step-loader" style="display: none">
                 <div class="sudoku-game_dialog-new-first-step-loader">
                     <img alt="loader" src="${app_path}/images/icons/loader.gif" />
@@ -519,7 +525,7 @@
                             <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_own" checked="checked" />
                         </td>
                         <td>
-                            <label>Load from your previously played games which were unfinished.</label>
+                            <label>Load from <b>your previously played games</b> which were unfinished.</label>
                         </td>
                     </tr>
                 </c:if>
@@ -528,7 +534,7 @@
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load"<c:if test="${empty pageContext.request.remoteUser}">checked="checked"</c:if> />
                     </td>
                     <td>
-                        <label>Load from games which were played by other players.</label>
+                        <label>Load from games which were <b>played by other players</b>.</label>
                     </td>
                 </tr>
                 <tr>
@@ -536,7 +542,7 @@
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="load_service" />
                     </td>
                     <td>
-                        <label>Load a game from remote publishers.</label>
+                        <label>Load a game from <b>remote publishers</b>.</label>
                     </td>
                 </tr>
                 <c:if test="${remotePublisherEnabled}">
@@ -545,7 +551,7 @@
                         <input type="radio" name="<portlet:namespace/>_dialog-new-choose" value="generate" />
                     </td>
                     <td>
-                        <label>Generate a new random game.</label>
+                        <label>Generate a new <b>random game</b>.</label>
                     </td>
                 </tr>
                 </c:if>

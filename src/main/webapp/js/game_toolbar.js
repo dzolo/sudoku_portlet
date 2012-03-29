@@ -230,10 +230,10 @@ function SudokuGame_GameToolbar(gameParent)
                             $finishButton.removeAttr('disabled').removeClass('ui-state-disabled');
                             
                             var diffs = {
-                                EASY        : 'An easy game for begginers', 
-                                MODERATE    : 'A moderate game for less skilled players',
-                                HARD        : 'A hard game for good players',
-                                EXPERT      : 'A very hard game for brilliant players'
+                                EASY        : 'An <b>easy game</b> for begginers', 
+                                MODERATE    : 'A <b>moderate game</b> for less skilled players',
+                                HARD        : 'A <b>hard game</b> for good players',
+                                EXPERT      : 'A <b>very hard game</b> for brilliant players'
                             };
                             
                             var $table = $('<table>');
@@ -251,7 +251,10 @@ function SudokuGame_GameToolbar(gameParent)
                                         )
                                     ).append(
                                         $('<td>').append(
-                                            $('<label>').text(diffs[k])
+                                            $('<label>').html(diffs[k]).click(function ()
+                                            {
+                                                $(this).parents('tr').find('input').attr('checked', true)
+                                            })
                                         )
                                     )
                                 );
