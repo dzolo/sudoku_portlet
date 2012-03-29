@@ -80,6 +80,7 @@ var SudokuGame_Request = (function (contextPath)
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
+            cache       : false,
             dataType    : 'json',
             type        : 'GET',
             success     : function (data, textStatus, jqXHR)
@@ -118,13 +119,14 @@ var SudokuGame_Request = (function (contextPath)
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : (async != undefined && async === true),
+            cache       : false,
             data        : JSON.stringify(data),
             type        : 'POST',
             dataType    : 'json',
             contentType : 'application/json',
             success     : function (data, textStatus, jqXHR)
             {
-                if (jqXHR.status != 201)
+                if (jqXHR.status != 200 && jqXHR.status != 201)
                 {
                     throw new SudokuGame_RequestFailedException(textStatus);
                 }
@@ -166,13 +168,14 @@ var SudokuGame_Request = (function (contextPath)
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
+            cache       : false,
             data        : data,
             type        : 'POST',
             dataType    : 'json',
             contentType : 'text/plain',
             success     : function (data, textStatus, jqXHR)
             {
-                if (jqXHR.status != 201)
+                if (jqXHR.status != 200 && jqXHR.status != 201)
                 {
                     throw new SudokuGame_RequestFailedException(textStatus);
                 }
@@ -207,6 +210,7 @@ var SudokuGame_Request = (function (contextPath)
         $.ajax({
             url         : this.getPathOfRestApp() + path,
             async       : false,
+            cache       : false,
             data        : JSON.stringify(data),
             type        : 'PUT',
             dataType    : 'json',

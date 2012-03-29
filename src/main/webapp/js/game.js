@@ -177,8 +177,6 @@ function SudokuGame_Game(namespace, appPath)
                     }
                     catch (e)
                     {
-                        console.log('Error during the initialization of a game.\nError: ' + e);_gameBoard.setEnabled(false);
-                        
                         _gameBoard.setEnabled(false);
                         $('#' + _namespace + '_footer-pause').hide();
                         $('#' + _namespace + '_footer-play').hide();
@@ -426,7 +424,6 @@ function SudokuGame_Game(namespace, appPath)
                         }
                         catch (ignore)
                         {
-                            console.log(ignore);
                         }
                     }
                     

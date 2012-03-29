@@ -131,7 +131,6 @@ function SudokuGame_GameBoard(gameParent, rootElement)
                 }
                 catch (ignore)
                 {
-                    console.log(ignore);
                 }
             }
             

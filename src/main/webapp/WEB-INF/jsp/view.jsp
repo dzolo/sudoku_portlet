@@ -489,7 +489,7 @@
 
 <div class="sudoku-game_container">
     
-    <div id="<portlet:namespace/>_dialog-save" style="display: none" title="Save the current game">
+    <div id="<portlet:namespace/>_dialog-save" style="display: none; overflow: hidden" title="Save the current game">
         
         <div class="ui-state-box"></div>
         
@@ -500,7 +500,7 @@
         
     </div>
     
-    <div id="<portlet:namespace/>_dialog-load" style="display: none; padding: 0" title="Load a saved game">
+    <div id="<portlet:namespace/>_dialog-load" style="display: none; padding: 0; overflow: hidden" title="Load a saved game">
         <table cellpadding="0" cellspacing="0" border="0" class="dataTables_display">
             <thead>
                 <tr>
@@ -514,7 +514,7 @@
         </table>
     </div>
     
-    <div id="<portlet:namespace/>_dialog-new" style="display: none; padding: 0" title="Create a new game">
+    <div id="<portlet:namespace/>_dialog-new" style="display: none; padding: 0; overflow: hidden" title="Create a new game">
         <div id="<portlet:namespace/>_dialog-new-first-step">
             <div id="<portlet:namespace/>_dialog-new-first-step-loader" style="display: none">
                 <div class="sudoku-game_dialog-new-first-step-loader">

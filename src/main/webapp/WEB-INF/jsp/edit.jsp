@@ -45,14 +45,14 @@
         
         // skins data
         window['<portlet:namespace/>_skins'] = {
-            //<c:forEach var="item" items="${skinsMap}">
+            //<c:forEach var="item" items="${skinsMap}" varStatus="status">
                 '${item.key}': [
                     '${item.value.fontColor}',
                     '${item.value.borderColor}',
                     '${item.value.background}',
                     '${item.value.fixedBackground}',
                     '${item.value.font}'
-                ],
+                ]${not status.last ? ',' : ''}
             //</c:forEach>
         };
         // color pickers
@@ -62,8 +62,16 @@
                 onBeforeShow: function ()
                 {
                     var rgbString = $(this).find('div').css('backgroundColor');
-                    var r = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-                    $(this).ColorPickerSetColor({ r : r[1], g : r[2], b : r[3] });
+                    
+                    if (rgbString.search('rgb') == -1)
+                    {
+                        $(this).ColorPickerSetColor(rgbString);
+                    }
+                    else
+                    {
+                        var r = rgbString.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+                        $(this).ColorPickerSetColor({ r : r[1], g : r[2], b : r[3] });
+                    }
                 },
                 onChange: function (hsb, hex, rgb)
                 {
@@ -373,8 +381,6 @@
                             d.checkTime = $checkTimeI.val();
                             d.enabled = isEnabled;
                             
-                            console.log(d);
-                            
                             request.makePut('/service', d);
                         }
                     }
@@ -435,7 +441,7 @@
     
     <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab1">
         
-        <form action="<portlet:actionURL name="changeSkin"/>" method="post">
+        <form action="<portlet:actionURL name="changeSkin" portletMode="view"/>" method="post">
         
             <table id="<portlet:namespace/>_edit-table">
                 <tr>
