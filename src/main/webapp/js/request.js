@@ -65,29 +65,6 @@ var SudokuGame_Request = (function (contextPath)
     }
     
     /**
-     * Makes an DELETE request to a given path.
-     * The path does not contains the context path of the application. 
-     *
-     * @example request.makeDelete("/service/")
-     * @param path          A path of a request
-     * @throws SudokuGame_RequestFailedException
-     */
-    this.makeDelete = function (path)
-    {
-        $.ajax({
-            url         : this.getPathOfRestApp() + path,
-            async       : false,
-            dataType    : 'json',
-            type        : 'DELETE',
-            success     : function (data, textStatus, jqXHR) {},
-            error       : function (jqXHR, textStatus, et)
-            {
-                throw new SudokuGame_RequestFailedException(textStatus, et);
-            }
-        });
-    }
-    
-    /**
      * Makes an GET request to a given path.
      * The path does not contains the context path of the application. 
      *
@@ -107,6 +84,11 @@ var SudokuGame_Request = (function (contextPath)
             type        : 'GET',
             success     : function (data, textStatus, jqXHR)
             {
+                if (jqXHR.status != 200)
+                {
+                    throw new SudokuGame_RequestFailedException(textStatus);
+                }
+                
                 returnObj = data;
             },
             error       : function (jqXHR, textStatus, et)
@@ -125,22 +107,28 @@ var SudokuGame_Request = (function (contextPath)
      * @example request.makePost("/service/", {name: Ondrej, surname: Fibich})
      * @param path          A path of a request
      * @param data          An input data object of a request
+     * @param async         An indicator of async [optional]
      * @return              A returned data object
      * @throws SudokuGame_RequestFailedException
      */
-    this.makePost = function (path, data)
+    this.makePost = function (path, data, async)
     {
         var returnObj = null;
         
         $.ajax({
             url         : this.getPathOfRestApp() + path,
-            async       : false,
+            async       : (async != undefined && async === true),
             data        : JSON.stringify(data),
             type        : 'POST',
             dataType    : 'json',
             contentType : 'application/json',
             success     : function (data, textStatus, jqXHR)
             {
+                if (jqXHR.status != 201)
+                {
+                    throw new SudokuGame_RequestFailedException(textStatus);
+                }
+                
                 if (data)
                 {
                     returnObj = data;
@@ -184,6 +172,11 @@ var SudokuGame_Request = (function (contextPath)
             contentType : 'text/plain',
             success     : function (data, textStatus, jqXHR)
             {
+                if (jqXHR.status != 201)
+                {
+                    throw new SudokuGame_RequestFailedException(textStatus);
+                }
+                
                 returnObj = data;
             },
             error       : function (jqXHR, textStatus, et)
@@ -195,28 +188,6 @@ var SudokuGame_Request = (function (contextPath)
         });
         
         return returnObj;
-    }
-    
-    /**
-     * Makes an asynchronous POST request to a given path with text/plain data.
-     * The path does not contains the context path of the application. 
-     *
-     * @example request.makePostText("/service/", "data")
-     * @param path          A path of a request
-     * @param data          An input data string of a request
-     * @return              A returned data string
-     * @throws SudokuGame_RequestFailedException
-     */
-    this.makeAsynPostTextToAbsolutePath = function (path, data)
-    {
-        $.ajax({
-            url         : path,
-            async       : true,
-            data        : data,
-            type        : 'POST',
-            dataType    : 'text',
-            contentType : 'application/x-www-form-urlencoded'
-        });
     }
     
     /**
@@ -242,6 +213,11 @@ var SudokuGame_Request = (function (contextPath)
             contentType : 'application/json',
             success     : function (data, textStatus, jqXHR)
             {
+                if (jqXHR.status != 200)
+                {
+                    throw new SudokuGame_RequestFailedException(textStatus);
+                }
+                
                 return data;
             },
             error       : function (jqXHR, textStatus, et)

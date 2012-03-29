@@ -10,7 +10,6 @@
 <%@taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <portlet:defineObjects />
 <c:set var="app_path" value="${pageContext.request.contextPath}" />
-<portlet:resourceURL var="rURLchangeLastPlayedGame" id="changeLastPlayedGame" />
 
 <script type="text/javascript"><!--
     
@@ -29,13 +28,10 @@
         if (window['<portlet:namespace/>_game'] == undefined)
         {
             window['<portlet:namespace/>_game'] = new SudokuGame_Game(
-                    '<portlet:namespace/>', '${app_path}',
-                    '${rURLchangeLastPlayedGame}'
+                    '<portlet:namespace/>', '${app_path}'
             );
-                
-            var sID = (SudokuGame_userId) ? '${lastPlayedSolutionId}' : null;
             
-            window['<portlet:namespace/>_game'].init(sID);
+            window['<portlet:namespace/>_game'].init(SudokuGame_userId != null);
         }
         else
         {

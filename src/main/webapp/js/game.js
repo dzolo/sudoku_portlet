@@ -10,13 +10,10 @@
  * 
  * @param namespace        A namespace identificator of the portlet
  * @param appPath          A path to the web application
- * @param lastPlayedResourceURL
- *                         A path to the serve resource method for saving the last
- *                         played solution of a game
  * @return SudokuGame_Game
  * @example game = new SudokuGame_Game('namespace', '/sudoku');
  */
-function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
+function SudokuGame_Game(namespace, appPath)
 {
     /** An instance of the timer */
     var _timer;
@@ -32,8 +29,6 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     var _game;
     /** An identificator of the solution in the database */
     var _gameSolutionId;
-    /** A path to the serve resource method for saving the last played solution of a game */
-    var _lastPlayedResourceURL;
     /** An indicator of finished game */
     var _finished = false;
     
@@ -130,9 +125,9 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     /**
      * Inits an instantized game
      * 
-     * @param lastPlayedSolutionId   An identifcator of the last played solution [optional]
+     * @param loadLastPlayedSolutionId   An indicator of loading last played game [optional]
      */
-    this.init = function (lastPlayedSolutionId)
+    this.init = function (loadLastPlayedSolutionId)
     {
         this.reloadRootElements();
         _gameBoard.init();
@@ -162,39 +157,45 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             }
             else
             {
-                _gameBoard.setEnabled(false);
-                $('#' + _namespace + '_footer-pause').hide();
-                $('#' + _namespace + '_footer-play').hide();
-                $('#' + _namespace + '_footer-timer').hide();
+                if (loadLastPlayedSolutionId)
+                {
+                    var request = new SudokuGame_Request(_appPath);
+
+                    try
+                    {
+                        var data = request.makeGet('/last_played_game_solution/' + SudokuGame_userId);
+                        
+                        if (data.gameSolutionId.finished > 0)
+                        {
+                            this.getGameBoard().setFields(data.gameSolutionId.values);
+                            this.setGameSolutionId(data.gameSolutionId.id);
+                        }
+                        else
+                        {
+                            this.start(data);
+                        }
+                    }
+                    catch (e)
+                    {
+                        console.log('Error during the initialization of a game.\nError: ' + e);_gameBoard.setEnabled(false);
+                        
+                        _gameBoard.setEnabled(false);
+                        $('#' + _namespace + '_footer-pause').hide();
+                        $('#' + _namespace + '_footer-play').hide();
+                        $('#' + _namespace + '_footer-timer').hide();
+                    }
+                }
+                else
+                {
+                    _gameBoard.setEnabled(false);
+                    $('#' + _namespace + '_footer-pause').hide();
+                    $('#' + _namespace + '_footer-play').hide();
+                    $('#' + _namespace + '_footer-timer').hide();
+                }
             }
         }
         else
         {
-            var id = parseInt(lastPlayedSolutionId, 10); 
-            
-            if (!isNaN(id))
-            {
-                var request = new SudokuGame_Request(_appPath);
-                
-                try
-                {
-                    var data = request.makeGet('/game_solution/' + id);
-                    
-                    if (data.finished == 0)
-                    {
-                        this.getGameBoard().setFields(data.values);
-                        this.setGameSolutionId(id);
-                    }
-                    else
-                    {
-                        this.start(data);
-                    }
-                }
-                catch (ignore)
-                {
-                }
-            }
-            
             _gameBoard.render();
         }
     }
@@ -220,17 +221,23 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
             else if (obj['gameSolutionId'] != undefined)
             {
                 _gameBoard.setInitFields(obj.gameSolutionId.gameId.initValues);
-                _gameBoard.setFields(obj.values);
+                _gameBoard.setFields(obj.gameSolutionId.values);
                 _game = obj.gameSolutionId.gameId;
                 this.setGameSolutionId(obj.gameSolutionId.id);
+                this.getTimer().setTimeout(obj.gameSolutionId.lasting);
             }
             
             _gameBoard.clearErrors();
             
             // change the last played game for a user
-            (new SudokuGame_Request(_appPath)).makeAsynPostTextToAbsolutePath(
-                _lastPlayedResourceURL, 'last-played-id=' + _gameSolutionId
-            );
+            if (SudokuGame_userId != null)
+            {
+                (new SudokuGame_Request(_appPath)).makePost(
+                    '/last_played_game_solution/' + _gameSolutionId, {
+                        'userId' : SudokuGame_userId
+                    }
+                );
+            }
         }
         
         _finished = false;
@@ -455,7 +462,6 @@ function SudokuGame_Game(namespace, appPath, lastPlayedResourceURL)
     
     _namespace = namespace;
     _appPath = appPath;
-    _lastPlayedResourceURL = lastPlayedResourceURL;
     _timer = new SudokuGame_Timer(this, '#' + namespace + '_footer-timer');
     _gameBoard = new SudokuGame_GameBoard(this, '#' + namespace + '_board');
     _toolbar = new SudokuGame_GameToolbar(this);

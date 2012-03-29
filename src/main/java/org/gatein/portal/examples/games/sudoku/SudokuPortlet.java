@@ -180,37 +180,6 @@ public class SudokuPortlet extends GenericPortlet
             logger.log(Level.SEVERE, null, ex);
         }
     }
-
-    /**
-     * @see GenericPortlet#serveResource(javax.portlet.ResourceRequest, javax.portlet.ResourceResponse) 
-     */
-    @Override
-    public void serveResource(ResourceRequest request, ResourceResponse response)
-            throws PortletException, IOException
-    {
-        // a change last game action invoked by POST method
-        if ("changeLastPlayedGame".equals(request.getResourceID()) &&
-            "POST".equals(request.getMethod()))
-        {
-            PortletPreferences p = request.getPreferences();
-            int id;
-
-            try
-            {
-                id = Integer.parseInt(request.getParameter("last-played-id"));
-                p.setValue("game-lastPlayedSolutionId", String.valueOf(id));                
-                p.store();
-            }
-            catch (NumberFormatException nfex)
-            {
-                logger.log(Level.SEVERE, "Wrong id of a game solution", nfex);
-            }
-            catch (ReadOnlyException ex)
-            {
-                logger.log(Level.SEVERE, null, ex);
-            }
-        }
-    }
     
     /**
      * @see GenericPortlet#doHeaders(javax.portlet.RenderRequest, javax.portlet.RenderResponse) 

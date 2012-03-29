@@ -10,8 +10,6 @@ package org.gatein.portal.examples.games.sudoku.controller;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import org.gatein.portal.examples.games.sudoku.controller.exceptions.ForbiddenChangeOnEntityException;
-import org.gatein.portal.examples.games.sudoku.controller.exceptions.NonexistentEntityException;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.SavedGame;
@@ -69,65 +67,6 @@ public class SavedGamesController extends Controller
             catch (Exception re)
             {
                 throw new RollbackFailureException(re);
-            }
-            
-            throw ex;
-        }
-        finally
-        {
-            em.close();
-        }
-    }
-
-    /**
-     * Merges a saved game entity to the database.
-     * 
-     * @param savedGame      A service to merge
-     * @throws NonexistentEntityException
-     * @throws Exception 
-     */
-    public void edit(SavedGame savedGame) throws NonexistentEntityException,
-            ForbiddenChangeOnEntityException, Exception
-    {
-        EntityManager em = emf.createEntityManager();
-        SavedGame persistentSavedGame;
-        GameSolution gameSolution;
-        
-        try
-        {
-            persistentSavedGame = em.find(SavedGame.class, savedGame.getId());
-            gameSolution = savedGame.getGameSolutionId();
-            
-            if (!persistentSavedGame.getGameSolutionId().equals(gameSolution))
-            {
-                throw new ForbiddenChangeOnEntityException(
-                        "Forbidden change on relatation to a game solution"
-                );
-            }
-            
-            if (gameSolution != null)
-            {
-                gameSolution = em.getReference(gameSolution.getClass(),
-                                               gameSolution.getId());
-                
-                savedGame.setGameSolutionId(gameSolution);
-            }
-            
-            em.merge(savedGame);
-        }
-        catch (Exception ex)
-        {
-            String msg = ex.getLocalizedMessage();
-            
-            if (msg == null || msg.length() == 0)
-            {
-                if (findSavedGame(savedGame.getId()) == null)
-                {
-                    throw new NonexistentEntityException(
-                            "The savedGames with id " + savedGame.getId() +
-                            " no longer exists."
-                    );
-                }
             }
             
             throw ex;
