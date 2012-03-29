@@ -8,10 +8,12 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.List;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.ForbiddenChangeOnEntityException;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.NonexistentEntityException;
+import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
 
 /**
@@ -35,7 +37,22 @@ public class ServicesController extends Controller
 
         try
         {
+            em.getTransaction().begin();
             em.persist(service);
+            em.getTransaction().commit();
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                em.getTransaction().rollback();
+            }
+            catch (Exception re)
+            {
+                throw new RollbackFailureException(re);
+            }
+            
+            throw ex;
         }
         finally
         {
@@ -56,37 +73,22 @@ public class ServicesController extends Controller
             ForbiddenChangeOnEntityException, Exception
     {
         EntityManager em = emf.createEntityManager();
-        Service persistedService;
 
         try
         {
-            persistedService = em.find(Service.class, service.getId());
-            
-            if (!persistedService.getGamesCollection().equals(service.getGamesCollection()))
-            {
-                throw new ForbiddenChangeOnEntityException(
-                        "Forbidden change on related games"
-                );
-            }
-            
             em.getTransaction().begin();
-            em.persist(service);
+            em.merge(service);
             em.getTransaction().commit();
         }
         catch (Exception ex)
-        {            
-            String msg = ex.getLocalizedMessage();
-            
-            if (msg == null || msg.length() == 0)
+        {
+            try
             {
-                Integer id = service.getId();
-                
-                if (findService(id) == null)
-                {
-                    throw new NonexistentEntityException(
-                            "The service with id " + id + " no longer exists."
-                    );
-                }
+                em.getTransaction().rollback();
+            }
+            catch (Exception re)
+            {
+                throw new RollbackFailureException(re);
             }
             
             throw ex;

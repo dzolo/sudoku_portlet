@@ -58,6 +58,7 @@ public class ServicesRestFacade
         }
         catch (Exception ex)
         {
+            logger.log(Level.WARNING, null, ex);
             return Response.notModified(ex.getMessage()).build();
         }
     }
@@ -66,10 +67,14 @@ public class ServicesRestFacade
     @Consumes({"application/xml", "application/json"})
     public Response edit(Service entity)
     {
-        try {
+        try
+        {
             servicesController.edit(entity);
             return Response.ok().build();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
+            logger.log(Level.WARNING, null, ex);
             return Response.notModified(ex.getMessage()).build();
         }
     }

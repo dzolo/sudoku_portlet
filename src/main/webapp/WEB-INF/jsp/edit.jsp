@@ -23,7 +23,7 @@
     {
         /** Tabs **************************************************************/
         
-        $('#<portlet:namespace/>_edit-tab1 .sudoku-game_edit-tab-button').click(function ()
+        $('#<portlet:namespace/>_edit_mode .sudoku-game_edit-tab-button').click(function ()
         {
             var $this = $(this);
             var id = $this.attr('rel');
@@ -45,7 +45,7 @@
         
         // skins data
         window['<portlet:namespace/>_skins'] = {
-            <c:forEach var="item" items="${skinsMap}">
+            //<c:forEach var="item" items="${skinsMap}">
                 '${item.key}': [
                     '${item.value.fontColor}',
                     '${item.value.borderColor}',
@@ -53,7 +53,7 @@
                     '${item.value.fixedBackground}',
                     '${item.value.font}'
                 ],
-            </c:forEach>
+            //</c:forEach>
         };
         // color pickers
         $('#<portlet:namespace/>_edit-tab1 .sudoku-game_edit-colorpicker').each(function (i, v)
@@ -152,16 +152,282 @@
             });
             
         }).trigger('change');
+        
+        //<c:if test="${isAdmin}">
+        /** Services **********************************************************/
+        
+        /**
+         * Loads services to a data table
+         */
+        function SudokuGame_loadServices()
+        {
+            var $table = $('#<portlet:namespace/>_edit-tab2 table.dataTables_display');
+            var $tableBody = $table.find('tbody');
+            var request = new SudokuGame_Request('${app_path}');
+            var data;
+            
+            window['<portlet:namespace/>_publishers'] = null;
+            
+            try
+            {
+                window['<portlet:namespace/>_publishers'] = data = request.makeGet('/service');
+            }
+            catch (e)
+            {
+                $tableBody.html($('<tr>').append(
+                    $('<td>').stateBox('Error during loading', e, 'error', 'alert')
+                ));
+                return;
+            }
+            
+            // clear the table
+            if (this.oTable)
+            {
+                this.oTable.fnClearTable();
+            }
+            
+            // put data into the table
+            for (var i = 0; i < data.length; i++)
+            {
+                var url = data[i].url;
+                var state = data[i].enabled ? 'enabled' : 'disabled';
+                
+                if (url.length > 20)
+                {
+                    url = url.substr(0, 17) + '..';
+                }
+                
+                $tableBody.append(
+                    $('<tr>').append(
+                        $('<td>').css('cursor', 'default').text(data[i].name)
+                    ).append(
+                        $('<td>').css('cursor', 'default').html(
+                            $('<img>').attr('src', '${app_path}/images/icons/' + state + '_12x12.png')
+                        )
+                    ).append(
+                        $('<td>').css('cursor', 'default').html(
+                            $('<a>').attr('href', data[i].url).attr('target', '_blank').text(url)
+                        )
+                    ).append(
+                        $('<td>').css('cursor', 'default').text(SudokuGame_lasting(new Date(data[i].checkTime)))
+                    ).append(
+                        $('<td>').css('cursor', 'default').html(
+                            $('<a>').click(SudokuGame_prepareEditPublisher)
+                                .attr('rel', i)
+                                .attr('href', '#')
+                                .html($('<img>').attr('src', '${app_path}/images/icons/edit_12x12.png'))
+                        )
+                    )
+                );
+            }
+            
+            // init datatable
+            this.oTable = $table.dataTable({
+                'aoColumns'         : [
+                    null, { 'bSortable' : false }, null,
+                    { 'bSortable' : false }, { 'bSortable' : false }
+                ],
+                'sDom'              : 't<"F"p>',
+                'sPaginationType'   : 'full_numbers',
+                'bJQueryUI'         : true,
+                'bDestroy'          : true
+            });
+        }
+        
+        // add new
+        $('#<portlet:namespace/>_edit-tab2-link-add-service').click(function ()
+        {
+            var $dialog = $('#<portlet:namespace/>_dialog-publisher');
+            
+            $('#<portlet:namespace/>_dialog-publisher-name').val('');
+            $('#<portlet:namespace/>_dialog-publisher-url').val('');
+            $('#<portlet:namespace/>_dialog-publisher-checktime').val('');
+            $('#<portlet:namespace/>_dialog-publisher-enabled').attr('checked', true);
+                    
+            $dialog.dialog('option', 'title', 'Add a new publisher')
+                .attr('publisherIndex', '')
+                .dialog('open');
+            
+            return false;
+        });
+        
+        /**
+         * Prepares the dialog for an editation and opens it.
+         */
+        function SudokuGame_prepareEditPublisher()
+        {
+            var publisherIndex = $(this).attr('rel');
+            var $dialog = $('#<portlet:namespace/>_dialog-publisher');
+            var publisher = window['<portlet:namespace/>_publishers'][publisherIndex];
+            
+            if (publisher)
+            {
+                $('#<portlet:namespace/>_dialog-publisher-name').val(publisher.name);
+                $('#<portlet:namespace/>_dialog-publisher-url').val(publisher.url);
+                $('#<portlet:namespace/>_dialog-publisher-checktime').val(publisher.checkTime);
+
+                if (publisher.enabled)
+                {
+                    $('#<portlet:namespace/>_dialog-publisher-enabled').attr('checked', true);
+                }
+                else
+                {
+                    $('#<portlet:namespace/>_dialog-publisher-enabled').removeAttr('checked');
+                }
+
+                $dialog.dialog('option', 'title', 'Edit the ' + publisher.name + ' publisher')
+                    .attr('publisherIndex', publisherIndex)
+                    .dialog('open');
+            }
+            
+            return false;
+        }
+        
+        // load services at start
+        SudokuGame_loadServices();
+        
+        // add dialog
+        $('#<portlet:namespace/>_dialog-publisher').dialog({
+            width           : 300,
+            height          : 'auto',
+            modal           : true,
+            autoOpen        : false,
+            closeOnEscape   : true,
+            buttons: [{
+                text    : 'Save',
+                click   : function()
+                {
+                    var $dialog = $('#<portlet:namespace/>_dialog-publisher');
+                    var $nameI = $('#<portlet:namespace/>_dialog-publisher-name');
+                    var $urlI = $('#<portlet:namespace/>_dialog-publisher-url');
+                    var $checkTimeI = $('#<portlet:namespace/>_dialog-publisher-checktime');
+                    var isEnabled = $('#<portlet:namespace/>_dialog-publisher-checked').is(':checked');
+                    var valid = true;
+                    
+                    // check
+                    if (!$nameI.val().length) 
+                    {
+                        $nameI.css('border', '1px solid red');
+                        $nameI.focus();
+                        valid = false;
+                    }
+                    else
+                    {
+                        $nameI.css('border', '1px solid #ccc');
+                    }
+                    
+                    if (!$urlI.val().match(/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi)) 
+                    {
+                        $urlI.css('border', '1px solid red');
+                        if (valid)
+                            $urlI.focus();
+                        valid = false;
+                    }
+                    else
+                    {
+                        $urlI.css('border', '1px solid #ccc');
+                    }
+                    
+                    if (!$checkTimeI.val().match(/^[1-9][0-9]*$/)) 
+                    {
+                        $checkTimeI.css('border', '1px solid red');
+                        if (valid)
+                            $checkTimeI.focus();
+                        valid = false;
+                    }
+                    else
+                    {
+                        $checkTimeI.css('border', '1px solid #ccc');
+                    }
+                    
+                    if (!valid) return;
+
+                    // save
+                    var request = new SudokuGame_Request('${app_path}');
+                    var publisherIndex = $dialog.attr('publisherIndex');
+
+                    try
+                    {
+                        // create
+                        if (!publisherIndex)
+                        {
+                            var d = {
+                                name        : $nameI.val(),
+                                url         : $urlI.val(),
+                                checkTime   : $checkTimeI.val(),
+                                enabled     : isEnabled
+                            };
+                            
+                            request.makePost('/service', d);
+                        }
+                        // edit
+                        else
+                        {
+                            d = window['<portlet:namespace/>_publishers'][publisherIndex];
+                            
+                            d.name = $nameI.val();
+                            d.url = $urlI.val();
+                            d.checkTime = $checkTimeI.val();
+                            d.enabled = isEnabled;
+                            
+                            console.log(d);
+                            
+                            request.makePut('/service', d);
+                        }
+                    }
+                    catch (e)
+                    {
+                        alert('The publisher was not saved. Error: ' + e);
+                        return;
+                    }
+
+                    $dialog.dialog('close');
+                    SudokuGame_loadServices();
+                }
+            },
+            {
+                text    : 'Cancel',
+                click   : function()
+                {
+                    $(this).dialog('close');
+                }
+            }]
+        });
+        
+        //</c:if>
     });
 
 --></script>
 
-<div class="sudoku-game_edit">
+<div id="<portlet:namespace/>_dialog-publisher" style="display: none">
+
+    <table>
+        <tr>
+            <td><label>Name:</label></td>
+            <td><input type="text" id="<portlet:namespace/>_dialog-publisher-name" style="width: 150px; margin: 2px; border: 1px solid #ccc" /></td>
+        </tr>
+        <tr>
+            <td><label>URL:</label></td>
+            <td><input type="text" id="<portlet:namespace/>_dialog-publisher-url" style="width: 150px; margin: 2px; border: 1px solid #ccc" /></td>
+        </tr>
+        <tr>
+            <td><label>Check time (s):</label></td>
+            <td><input type="text" id="<portlet:namespace/>_dialog-publisher-checktime" style="width: 40px; margin: 2px; border: 1px solid #ccc" /></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="checkbox" checked="checked" id="<portlet:namespace/>_dialog-publisher-checked" style="margin: 2px" /> <label>Enable obtaining of games?</label></td>
+        </tr>
+    </table>
+
+</div>
+
+<div class="sudoku-game_edit" id="<portlet:namespace/>_edit_mode">
     
-    <a href="" class="sudoku-game_edit-tab-button sudoku-game_edit-tab-button-active" rel="<portlet:namespace/>_edit-tab1"><b>Skin</b></a>
+    <a href="#" class="sudoku-game_edit-tab-button sudoku-game_edit-tab-button-active" rel="<portlet:namespace/>_edit-tab1"><b>Skin</b></a>
     
     <c:if test="${isAdmin}">
-        <a href="" class="sudoku-game_edit-tab-button" rel="<portlet:namespace/>_edit-tab2"><b>Remote publishers</b></a>
+        <a href="#" class="sudoku-game_edit-tab-button" rel="<portlet:namespace/>_edit-tab2"><b>Remote publishers</b></a>
     </c:if>
     
     <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab1">
@@ -241,7 +507,20 @@
                             
     <c:if test="${isAdmin}">
         <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab2" style="display: none">
-            <h1>Not implemeted yet.</h1>
+            
+            <a href="#" id="<portlet:namespace/>_edit-tab2-link-add-service" class="sudoku-game_button" style="margin: 5px 0; padding: 2px; display: block; float: left;">
+                <img alt="New icon" src="${app_path}/images/icons/new_16x16.png" /> Add a new publisher
+            </a>
+            
+            <table cellpadding="0" cellspacing="0" border="0" class="dataTables_display">
+                <thead>
+                    <tr>
+                        <th>Name</th><th>State</th><th>URL</th><th>Expiration</th><th></th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
         </div>
     </c:if>
     
