@@ -308,7 +308,10 @@
                     {
                         ul.html(
                             $('<li>').html('The game was obtained from ')
-                                .append($('<b>').text(gameObj.typeService.name))
+                                .append($('<b>').html($('<a>').attr({
+                                    'href'   : gameObj.typeServiceId.url,
+                                    'target' : '_blank'  
+                                }).text(gameObj.typeServiceId.name)))
                         );
                     }
                     

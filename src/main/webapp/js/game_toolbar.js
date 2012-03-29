@@ -662,8 +662,6 @@ function SudokuGame_GameToolbar(gameParent)
                                     _parent.start();
                                 }
                             }
-                            
-                            $wizard.dialog('close');
                         }
                         else if (type == 'load_own')
                         {
@@ -694,8 +692,6 @@ function SudokuGame_GameToolbar(gameParent)
                                     _parent.start();
                                 }
                             }
-                            
-                            $wizard.dialog('close');
                         }
                         else if (type == 'load' || type == 'load_service')
                         {
@@ -737,8 +733,14 @@ function SudokuGame_GameToolbar(gameParent)
                                     _parent.start();
                                 }
                             }
+                        }
                             
-                            $wizard.dialog('close');
+                        $wizard.dialog('close');
+                        
+                        // switch from stats?
+                        if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
+                        {
+                            $('#' + _parent.getNamespace() + '_footer-show-game').trigger('click');
                         }
                     }
                 }).jWizard('firstStep').dialog('option', 'title', 'Create a new game');
@@ -1043,6 +1045,12 @@ function SudokuGame_GameToolbar(gameParent)
                             // close dialog without an event
                             $(this).unbind('dialogclose');
                             $(this).dialog('close');
+                            
+                            // switch from stats?
+                            if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
+                            {
+                                $('#' + _parent.getNamespace() + '_footer-show-game').trigger('click');
+                            }
                         }
                     },
                     {
