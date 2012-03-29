@@ -239,9 +239,9 @@
         {
             var $dialog = $('#<portlet:namespace/>_dialog-publisher');
             
-            $('#<portlet:namespace/>_dialog-publisher-name').val('');
-            $('#<portlet:namespace/>_dialog-publisher-url').val('');
-            $('#<portlet:namespace/>_dialog-publisher-checktime').val('');
+            $('#<portlet:namespace/>_dialog-publisher-name').val('').css('border', '1px solid #ccc');
+            $('#<portlet:namespace/>_dialog-publisher-url').val('').css('border', '1px solid #ccc');
+            $('#<portlet:namespace/>_dialog-publisher-checktime').val('').css('border', '1px solid #ccc');
             $('#<portlet:namespace/>_dialog-publisher-enabled').attr('checked', true);
                     
             $dialog.dialog('option', 'title', 'Add a new publisher')
@@ -262,9 +262,12 @@
             
             if (publisher)
             {
-                $('#<portlet:namespace/>_dialog-publisher-name').val(publisher.name);
-                $('#<portlet:namespace/>_dialog-publisher-url').val(publisher.url);
-                $('#<portlet:namespace/>_dialog-publisher-checktime').val(publisher.checkTime);
+                $('#<portlet:namespace/>_dialog-publisher-name').val(publisher.name)
+                    .css('border', '1px solid #ccc');
+                $('#<portlet:namespace/>_dialog-publisher-url').val(publisher.url)
+                    .css('border', '1px solid #ccc');
+                $('#<portlet:namespace/>_dialog-publisher-checktime').val(publisher.checkTime)
+                    .css('border', '1px solid #ccc');
 
                 if (publisher.enabled)
                 {
