@@ -137,6 +137,29 @@ public class GameSolutionRestFacade
     }
     
     @POST
+    @Path("check")
+    @Consumes({"text/plain"})
+    @Produces({"application/json"})
+    public String checkWithoutNote(String gameSolutionValues)
+    {
+        try
+        {
+            List<Integer> incorrectFields = GameUtil.check(gameSolutionValues);
+            
+            return "{\"state\":true, \"check\": {\"valid\":"
+                    + incorrectFields.isEmpty() + ",\"fields\":["
+                    + GameUtil.join(incorrectFields.toArray(), ",")
+                    + "]}}";
+        }
+        catch (Exception ex)
+        {
+            return "{\"state\":false,\"message\":\""
+                    + ex.getMessage().replace('"', '\'')
+                    + "\"}";
+        }
+    }
+    
+    @POST
     @Path("check/{id}")
     @Consumes({"text/plain"})
     @Produces({"application/json"})
