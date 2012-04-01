@@ -20,6 +20,12 @@
         
         <portlet-class>org.gatein.portal.examples.games.sudoku.SudokuPortlet</portlet-class>
         
+        <init-param>
+            <description>Enables/Disables remote publishers</description>
+            <name>remotePublishersEnabled</name>
+            <value>true</value>
+        </init-param>
+        
         <expiration-cache>0</expiration-cache>
         
         <supports>
@@ -29,11 +35,7 @@
             <portlet-mode>HELP</portlet-mode>
         </supports>
         
-        <init-param>
-            <name>remotePublishersEnabled</name>
-            <value>true</value>
-            <description>Enables/Disables remote publishers</description>
-        </init-param>
+        <supported-locale>en</supported-locale>
         
         <resource-bundle>org.gatein.portal.examples.games.sudoku.messages</resource-bundle>
         
