@@ -756,6 +756,12 @@ function SudokuGame_GameToolbar(gameParent)
             action      : function ()
             {
                 _parent.reset();
+                    
+                // switch from stats?
+                if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
+                {
+                    $('#' + _parent.getNamespace() + '_footer-show-game').trigger('click');
+                }
             }
         },
         
@@ -798,8 +804,8 @@ function SudokuGame_GameToolbar(gameParent)
 
                         if (!_parent.getGameBoard().getField(index).isFixed())
                         {
-                            var id = '#' + _parent.getNamespace() + '_board ' +
-                                     'input[name="board_field[' + index + ']"]';
+                            id = '#' + _parent.getNamespace() + '_board ' +
+                                 'input[name="board_field[' + index + ']"]';
 
                             _parent.getGameBoard().addErrorToField($(id), false);
                         }
@@ -812,6 +818,12 @@ function SudokuGame_GameToolbar(gameParent)
                 finally
                 {
                     _parent.start();
+                    
+                    // switch from stats?
+                    if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
+                    {
+                        $('#' + _parent.getNamespace() + '_footer-show-game').trigger('click');
+                    }
                 }
             }
         },
