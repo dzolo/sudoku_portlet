@@ -329,6 +329,16 @@ function SudokuGame_GameBoard(gameParent, rootElement)
     }
     
     /**
+     * Sets a state of the game board - a game is on
+     * 
+     * @param played      true for on, false for off
+     */
+    this.setGamePlayed = function (played)
+    {
+        _gamePlayed = (played === true);
+    }
+    
+    /**
      * Gets a state of the game board - a game is on
      * 
      * @return           true for a game is on, false for otherwise

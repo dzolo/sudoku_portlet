@@ -84,6 +84,11 @@ public class GameSolutionRestFacade
             
             if (merged.isFinished())
             {
+                if (!gameSolution.isFinished())
+                {
+                    throw new IllegalStateException("Changing of finished game is not enabled");
+                }
+                
                 merged.setRating(gameSolution.getRating());
             }
             else
@@ -175,13 +180,13 @@ public class GameSolutionRestFacade
                 throw new Exception("An incorrect identificator of the solution");
             }
             
-            if (gameSolution.getCheckLeft() >= GameSolution.MAX_CHECK_COUNT)
+            if (gameSolution.getCheckCount() >= GameSolution.MAX_CHECK_COUNT)
             {
                 throw new Exception("You can check each game solution just 3 times");
             }
             else
             {
-                gameSolution.setCheckLeft(gameSolution.getCheckLeft() + 1);
+                gameSolution.setCheckCount(gameSolution.getCheckCount() + 1);
                 gameSolutionsController.edit(gameSolution);
             }
             

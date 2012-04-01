@@ -125,9 +125,9 @@ function SudokuGame_Game(namespace, appPath)
     /**
      * Inits an instantized game
      * 
-     * @param loadLastPlayedSolutionId   An indicator of loading last played game [optional]
+     * @param loadLastPlayedSolution   An indicator of loading last played game [optional]
      */
-    this.init = function (loadLastPlayedSolutionId)
+    this.init = function (loadLastPlayedSolution)
     {
         this.reloadRootElements();
         _gameBoard.init();
@@ -157,7 +157,7 @@ function SudokuGame_Game(namespace, appPath)
             }
             else
             {
-                if (loadLastPlayedSolutionId)
+                if (loadLastPlayedSolution)
                 {
                     var request = new SudokuGame_Request(_appPath);
 
@@ -167,29 +167,29 @@ function SudokuGame_Game(namespace, appPath)
                         
                         if (data.gameSolutionId.finished > 0)
                         {
-                            this.getGameBoard().setFields(data.gameSolutionId.values);
+                            this.getGameBoard().setInitFields(data.gameSolutionId.gameId.initValues);
+                            this.getGameBoard().setFields(data.gameSolutionId.values, false);
+                            this.getGameBoard().setGamePlayed(false);
                             this.setGameSolutionId(data.gameSolutionId.id);
+                            _game = data.gameSolutionId.gameId;
+                            _finished = true;
                         }
                         else
                         {
                             this.start(data);
+                            return;
                         }
                     }
                     catch (e)
                     {
-                        _gameBoard.setEnabled(false);
-                        $('#' + _namespace + '_footer-pause').hide();
-                        $('#' + _namespace + '_footer-play').hide();
-                        $('#' + _namespace + '_footer-timer').hide();
+                        alert('Error during loading of a previous played game. Error: ' + e);
                     }
                 }
-                else
-                {
-                    _gameBoard.setEnabled(false);
-                    $('#' + _namespace + '_footer-pause').hide();
-                    $('#' + _namespace + '_footer-play').hide();
-                    $('#' + _namespace + '_footer-timer').hide();
-                }
+                
+                _gameBoard.setEnabled(false);
+                $('#' + _namespace + '_footer-pause').hide();
+                $('#' + _namespace + '_footer-play').hide();
+                $('#' + _namespace + '_footer-timer').hide();
             }
         }
         else

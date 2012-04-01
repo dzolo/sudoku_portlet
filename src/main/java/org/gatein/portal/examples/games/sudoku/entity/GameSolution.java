@@ -91,7 +91,7 @@ public class GameSolution implements Serializable
     private boolean finished;
     
     @Column(name = "check_left", nullable = false)
-    private int checkLeft;
+    private int checkCount;
     
     @Column(name = "rating")
     private Integer rating;
@@ -217,14 +217,14 @@ public class GameSolution implements Serializable
         this.rating = rating;
     }
 
-    public int getCheckLeft()
+    public int getCheckCount()
     {
-        return checkLeft;
+        return checkCount;
     }
 
-    public void setCheckLeft(int checkLeft)
+    public void setCheckCount(int checkCount)
     {
-        this.checkLeft = checkLeft;
+        this.checkCount = checkCount;
     }
 
     @XmlTransient
