@@ -182,7 +182,10 @@ function SudokuGame_Game(namespace, appPath)
                     }
                     catch (e)
                     {
-                        alert('Error during loading of a previous played game. Error: ' + e);
+                        if (!(e.cause && e.cause == 'Not Found'))
+                        {
+                            alert('Error during loading of a previous played game. Error: ' + e);
+                        }
                     }
                 }
                 
