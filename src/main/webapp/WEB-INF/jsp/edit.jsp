@@ -161,7 +161,7 @@
             
         }).trigger('change');
         
-        //<c:if test="${isAdmin}">
+        //<c:if test="${isAdmin and remotePublisherEnabled}">
         /** Services **********************************************************/
         
         /**
@@ -435,7 +435,7 @@
     
     <a href="#" class="sudoku-game_edit-tab-button sudoku-game_edit-tab-button-active" rel="<portlet:namespace/>_edit-tab1"><b>Skin</b></a>
     
-    <c:if test="${isAdmin}">
+    <c:if test="${isAdmin and remotePublisherEnabled}">
         <a href="#" class="sudoku-game_edit-tab-button" rel="<portlet:namespace/>_edit-tab2"><b>Remote publishers</b></a>
     </c:if>
     
@@ -514,7 +514,7 @@
         
     </div>
                             
-    <c:if test="${isAdmin}">
+    <c:if test="${isAdmin and remotePublisherEnabled}">
         <div class="sudoku-game_edit-tab" id="<portlet:namespace/>_edit-tab2" style="display: none">
             
             <a href="#" id="<portlet:namespace/>_edit-tab2-link-add-service" class="sudoku-game_button" style="margin: 5px 0; padding: 2px; display: block; float: left;">

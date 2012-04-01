@@ -34,7 +34,7 @@
     
     <persistence-unit-ref>
         <persistence-unit-ref-name>persistence-factory</persistence-unit-ref-name>
-        <persistence-unit-name>org.gatein.portal.examples.games.sudoku.1.0.mysql</persistence-unit-name>
+        <persistence-unit-name>sudoku_db</persistence-unit-name>
     </persistence-unit-ref>
     
     <jsp-config>

@@ -226,14 +226,15 @@
             <layout>default</layout>
             <name>Repository for library Library[restapi]</name>
         </repository>
+        
         <repository>
             <url>http://repo1.maven.org/maven2/</url>
             <id>junit_4</id>
             <layout>default</layout>
             <name>Repository for library Library[junit_4]</name>
         </repository>
-    </repositories>
     
+    </repositories>
     
     <properties>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
