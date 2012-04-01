@@ -273,7 +273,7 @@ function SudokuGame_GameBoard(gameParent, rootElement)
             var $hint = $(this).parents('.sudoku-game_input-hint');
             var val = parseInt($(this).text(), 10);
             
-            $hint.parent().find('input').val(val).trigger('change');
+            $hint.parent().find('input').val(val).trigger('change').trigger('focus');
             $hint.fadeOut(100);
         }
         catch (e)
@@ -298,6 +298,16 @@ function SudokuGame_GameBoard(gameParent, rootElement)
                     .removeAttr('disabled')
                     .unbind('focus')
                     .css('cursor', 'text');
+                    
+            // finds the first unfilled field and gains him focus
+            for (var i = 0; i < _fields.length; i++)
+            {
+                if (!_fields[i].isFixed() && !_fields[i].getValue())
+                {
+                    _$root.find('input[name="board_field[' + i + ']"]').trigger('focus');
+                    break;
+                }
+            }
         }
         else
         {
@@ -518,12 +528,18 @@ function SudokuGame_GameBoard(gameParent, rootElement)
         $inputs.change(this._fieldValidator);
         // mouse hint
         $inputs.click(this._mouseHint);
+        // hide mouse hind
+        $inputs.blur(function ()
+        {
+            $(this).parent().find('.sudoku-game_input-hint').fadeOut(100);
+        });
         // hint action
         $(_rootName + ' .sudoku-game_input-hint span').click(this._makeHint);
         // hint closing
         $(_rootName + ' .sudoku-game_input-hint-close').click(function ()
         {
-            $(this).parents('.sudoku-game_input-hint').fadeOut(100);
+            $(this).parents('.sudoku-game_input-hint').fadeOut(100)
+                .parent().find('input').trigger('focus');
         });
         // change size of board
         this.resizeBoard();
