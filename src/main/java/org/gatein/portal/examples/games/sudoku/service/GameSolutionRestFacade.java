@@ -109,7 +109,7 @@ public class GameSolutionRestFacade
     @Produces({"application/xml", "application/json"})
     public Response find(@PathParam("id") Integer id)
     {
-        GameSolution gameSolution= gameSolutionsController.findGameSolution(id);
+        GameSolution gameSolution = gameSolutionsController.findGameSolution(id);
         
         if (gameSolution != null)
         {    
@@ -137,18 +137,36 @@ public class GameSolutionRestFacade
     }
     
     @POST
-    @Path("check")
+    @Path("check/{id}")
     @Consumes({"text/plain"})
     @Produces({"application/json"})
-    public String check(String gameSolutionValues)
+    public String check(String gameSolutionValues, @PathParam("id") Integer id)
     {
+        GameSolution gameSolution = gameSolutionsController.findGameSolution(id);
+        List<Integer> incorrectFields;
+        
         try
         {
-            final List<Integer> incorrect = GameUtil.check(gameSolutionValues);
+            if (gameSolution == null)
+            {
+                throw new Exception("An incorrect identificator of the solution");
+            }
+            
+            if (gameSolution.getCheckLeft() >= GameSolution.MAX_CHECK_COUNT)
+            {
+                throw new Exception("You can check each game solution just 3 times");
+            }
+            else
+            {
+                gameSolution.setCheckLeft(gameSolution.getCheckLeft() + 1);
+                gameSolutionsController.edit(gameSolution);
+            }
+            
+            incorrectFields = GameUtil.check(gameSolutionValues);
             
             return "{\"state\":true, \"check\": {\"valid\":"
-                    + incorrect.isEmpty() + ",\"fields\":["
-                    + GameUtil.join(incorrect.toArray(), ",")
+                    + incorrectFields.isEmpty() + ",\"fields\":["
+                    + GameUtil.join(incorrectFields.toArray(), ",")
                     + "]}}";
         }
         catch (Exception ex)

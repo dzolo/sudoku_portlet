@@ -56,6 +56,11 @@ public class GameSolution implements Serializable
 
     private static final long serialVersionUID = 1L;
     
+    /**
+     * Defines a count for which a game solution may be checked 
+     */
+    public static final int MAX_CHECK_COUNT = 3;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
@@ -84,6 +89,9 @@ public class GameSolution implements Serializable
     
     @Column(name = "finished", nullable = false)
     private boolean finished;
+    
+    @Column(name = "check_left", nullable = false)
+    private int checkLeft;
     
     @Column(name = "rating")
     private Integer rating;
@@ -207,6 +215,16 @@ public class GameSolution implements Serializable
     public void setRating(Integer rating)
     {
         this.rating = rating;
+    }
+
+    public int getCheckLeft()
+    {
+        return checkLeft;
+    }
+
+    public void setCheckLeft(int checkLeft)
+    {
+        this.checkLeft = checkLeft;
     }
 
     @XmlTransient

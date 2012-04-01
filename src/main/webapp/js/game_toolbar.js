@@ -772,10 +772,11 @@ function SudokuGame_GameToolbar(gameParent)
                 
                 var request = new SudokuGame_Request(_parent.getAppPath());
                 var game = _parent.getGameBoard().getFieldsValues();
+                var id = _parent.getGameSolutionId();
 
                 try
                 {
-                    var respObj = request.makePostText('/game_solution/check', game);
+                    var respObj = request.makePostText('/game_solution/check/' + id, game);
 
                     if (!respObj.state)
                     {
