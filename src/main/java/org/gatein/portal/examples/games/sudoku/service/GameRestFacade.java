@@ -56,7 +56,7 @@ public class GameRestFacade
         try
         {
             game.setInitValues(Generator.generate(game.getTypeDifficulty()));
-            game.setInitDate(new Date());
+            game.setInitTime(new Date());
             game.setType(GameType.GENERATED);
             game.setTypeServiceId(null);
             gamesController.create(game);

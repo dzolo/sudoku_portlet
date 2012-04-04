@@ -129,7 +129,7 @@ public class GameSolutionsController extends Controller
                 );
             }
             
-            if (!persGameSolution.getTimeStart().equals(gameSolution.getTimeStart()))
+            if (!persGameSolution.getStartTime().equals(gameSolution.getStartTime()))
             {
                 throw new ForbiddenChangeOnEntityException(
                         "Forbidden change on the time_start field"

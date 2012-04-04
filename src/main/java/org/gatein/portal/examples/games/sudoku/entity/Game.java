@@ -99,9 +99,9 @@ public class Game implements Serializable
     private Integer id;
     
     @Basic(optional = false)
-    @Column(name = "init_date", nullable = false)
+    @Column(name = "init_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date initDate;
+    private Date initTime;
     
     @Basic(optional = false)
     @Lob
@@ -136,7 +136,7 @@ public class Game implements Serializable
     public Game(Integer id, Date initDate, String initValues, GameType type)
     {
         this.id = id;
-        this.initDate = initDate;
+        this.initTime = initDate;
         this.initValues = initValues;
         this.type = type;
     }
@@ -151,14 +151,14 @@ public class Game implements Serializable
         this.id = id;
     }
 
-    public Date getInitDate()
+    public Date getInitTime()
     {
-        return initDate;
+        return initTime;
     }
 
-    public void setInitDate(Date initDate)
+    public void setInitTime(Date initTime)
     {
-        this.initDate = initDate;
+        this.initTime = initTime;
     }
 
     public String getInitValues()

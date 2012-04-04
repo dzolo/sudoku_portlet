@@ -52,7 +52,7 @@ public class GameSolutionRestFacade
         {
             gamesController = new GamesController();
             gameSolution.setGameId(gamesController.findGame(gameId));
-            gameSolution.setTimeStart(new Date());
+            gameSolution.setStartTime(new Date());
             gameSolution.setFinished(false);
             gameSolution.setLasting(0);
             gameSolutionsController.create(gameSolution);

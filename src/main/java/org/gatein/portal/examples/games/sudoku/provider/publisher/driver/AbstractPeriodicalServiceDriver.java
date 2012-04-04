@@ -73,7 +73,7 @@ public abstract class AbstractPeriodicalServiceDriver implements PeriodicalServi
             return true;
         }
         
-        final long diff = (new Date()).getTime() - lastGame.getInitDate().getTime();
+        final long diff = (new Date()).getTime() - lastGame.getInitTime().getTime();
         return (diff >= service.getCheckTime());
     }
 

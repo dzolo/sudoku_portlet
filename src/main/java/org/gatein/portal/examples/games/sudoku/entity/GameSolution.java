@@ -79,9 +79,9 @@ public class GameSolution implements Serializable
     private String values;
     
     @Basic(optional = false)
-    @Column(name = "time_start", nullable = false)
+    @Column(name = "start_time", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date timeStart;
+    private Date startTime;
     
     @Basic(optional = false)
     @Column(name = "lasting", nullable = false)
@@ -90,7 +90,7 @@ public class GameSolution implements Serializable
     @Column(name = "finished", nullable = false)
     private boolean finished;
     
-    @Column(name = "check_left", nullable = false)
+    @Column(name = "check_count", nullable = false)
     private int checkCount;
     
     @Column(name = "rating")
@@ -122,7 +122,7 @@ public class GameSolution implements Serializable
         this.userId = userId;
         this.userName = userName;
         this.values = values;
-        this.timeStart = timeStart;
+        this.startTime = timeStart;
         this.lasting = lasting;
         this.finished = finished;
     }
@@ -167,14 +167,14 @@ public class GameSolution implements Serializable
         this.values = values;
     }
 
-    public Date getTimeStart()
+    public Date getStartTime()
     {
-        return timeStart;
+        return startTime;
     }
 
-    public void setTimeStart(Date timeStart)
+    public void setStartTime(Date startTime)
     {
-        this.timeStart = timeStart;
+        this.startTime = startTime;
     }
 
     public int getLasting()
