@@ -8,12 +8,8 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.LastPlayedGameSolution;
@@ -25,6 +21,23 @@ import org.gatein.portal.examples.games.sudoku.entity.LastPlayedGameSolution;
  */
 public class LastPlayedGameSolutionsController extends Controller
 {
+
+    /**
+     * An empty constructor. Creates entity manager factory.
+     */
+    public LastPlayedGameSolutionsController()
+    {
+    }
+
+    /**
+     * A constructor with a given unit. Creates entity manager factory.
+     * 
+     * @param unitName      Name of persistence unit defined in persistence.xml
+     */
+    public LastPlayedGameSolutionsController(String unitName)
+    {
+        super(unitName);
+    }
 
     /**
      * Persists (add or update) a last played solution entity to the database.
@@ -124,19 +137,5 @@ public class LastPlayedGameSolutionsController extends Controller
             em.close();
         }
     }
-    public List<LastPlayedGameSolution> findAll()
-    {
-        EntityManager em = emf.createEntityManager();
-        
-        try
-        {
-            Query q = em.createQuery("SELECT object(g) FROM LastPlayedGameSolution g");
-            
-            return q.getResultList();
-        }
-        finally
-        {
-            em.close();
-        }
-    }
+    
 }

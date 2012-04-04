@@ -8,7 +8,6 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.List;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.ForbiddenChangeOnEntityException;
@@ -23,6 +22,23 @@ import org.gatein.portal.examples.games.sudoku.entity.Service;
  */
 public class ServicesController extends Controller
 {
+
+    /**
+     * An empty constructor. Creates entity manager factory.
+     */
+    public ServicesController()
+    {
+    }
+
+    /**
+     * A constructor with a given unit. Creates entity manager factory.
+     * 
+     * @param unitName      Name of persistence unit defined in persistence.xml
+     */
+    public ServicesController(String unitName)
+    {
+        super(unitName);
+    }
 
     /**
      * Persists a service entity to the database.

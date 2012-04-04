@@ -1,32 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- 
+    Project       : Bachelor Thesis - Sudoku game implementation as portlet
+    Document      : persistence.xml
+    Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+    Organization: : FIT VUT <http://www.fit.vutbr.cz>
+-->
+
 <persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-                
+    
     <persistence-unit name="sudoku_db" transaction-type="RESOURCE_LOCAL">
       
+        <description>Default HSQL database stored in a file</description>
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
     
         <properties>
             
-            <!-- Default HSQL database stored in a file -->
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform" />
             <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:..%DIR%gatein%DIR%data%DIR%db%DIR%data%DIR%sudoku" />
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
-            
-            <!-- MySQL Configuration - NOT ENABLED BY DEFAULT
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/sudoku" />
-            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
-            <property name="javax.persistence.jdbc.user" value="jboss" />
-            <property name="javax.persistence.jdbc.password" value="jboss" /> -->
-            
-            <!-- EclipseLink should create the database schema automatically -->
             <property name="eclipselink.ddl-generation" value="create-tables" />
             <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.canonicalmodel.subpackage" value="product" />
+            
+        </properties>
+    
+    </persistence-unit>
+    
+    <persistence-unit name="sudoku_db_testing" transaction-type="RESOURCE_LOCAL">
+      
+        <description>HSQL database for unit testing stored in memory</description>
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    
+        <properties>
+            
+            <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:mem:sudoku_testing;shutdown=true" />
+            <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
+            <property name="javax.persistence.jdbc.user" value="sa" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="eclipselink.ddl-generation" value="create-tables" />
+            <property name="eclipselink.ddl-generation.output-mode" value="database" />
+            <property name="eclipselink.canonicalmodel.subpackage" value="debug" />
             
         </properties>
     

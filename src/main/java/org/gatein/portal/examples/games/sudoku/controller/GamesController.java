@@ -29,6 +29,23 @@ public class GamesController extends Controller
 {
 
     /**
+     * An empty constructor. Creates entity manager factory.
+     */
+    public GamesController()
+    {
+    }
+
+    /**
+     * A constructor with a given unit. Creates entity manager factory.
+     * 
+     * @param unitName      Name of persistence unit defined in persistence.xml
+     */
+    public GamesController(String unitName)
+    {
+        super(unitName);
+    }
+
+    /**
      * Persists a game entity to the database.
      * Does not save game solutions of the game.
      * 
@@ -264,7 +281,7 @@ public class GamesController extends Controller
     {
         Map<String, Object> stats = new HashMap<String, Object>();
         EntityManager em = emf.createEntityManager();
-        GameSolutionsController gsc = new GameSolutionsController();
+        GameSolutionsController gsc = new GameSolutionsController(this.unitName);
         
         try
         {

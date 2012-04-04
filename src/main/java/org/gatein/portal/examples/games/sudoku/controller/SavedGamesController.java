@@ -23,6 +23,23 @@ public class SavedGamesController extends Controller
 {
 
     /**
+     * An empty constructor. Creates entity manager factory.
+     */
+    public SavedGamesController()
+    {
+    }
+
+    /**
+     * A constructor with a given unit. Creates entity manager factory.
+     * 
+     * @param unitName      Name of persistence unit defined in persistence.xml
+     */
+    public SavedGamesController(String unitName)
+    {
+        super(unitName);
+    }
+
+    /**
      * Persists a service entity to the database.
      *
      * @param savedGame      A saved game to persist

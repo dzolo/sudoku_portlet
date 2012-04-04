@@ -93,12 +93,5 @@ public class LastPlayedGameSolutionRestFacade
             return Response.status(Response.Status.NOT_FOUND).build(); 
         }
     }
-
-    @GET
-    @Produces({"application/xml", "application/json"})
-    public List<LastPlayedGameSolution> findAll()
-    {
-        return lastPlayedGameSolutionsController.findAll();
-    }
     
 }

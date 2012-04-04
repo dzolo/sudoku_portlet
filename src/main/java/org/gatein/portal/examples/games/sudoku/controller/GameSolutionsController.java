@@ -27,6 +27,23 @@ public class GameSolutionsController extends Controller
 {
 
     /**
+     * An empty constructor. Creates entity manager factory.
+     */
+    public GameSolutionsController()
+    {
+    }
+
+    /**
+     * A constructor with a given unit. Creates entity manager factory.
+     * 
+     * @param unitName      Name of persistence unit defined in persistence.xml
+     */
+    public GameSolutionsController(String unitName)
+    {
+        super(unitName);
+    }
+
+    /**
      * Persists a game solution entity to the database.
      * Does not save saved games of the game solution.
      * 
@@ -105,14 +122,6 @@ public class GameSolutionsController extends Controller
             {
                 throw new ForbiddenChangeOnEntityException(
                         "Forbidden change on the game_id field"
-                );
-            }
-            
-            if (!persGameSolution.getSavedGamesCollection().equals(
-                    gameSolution.getSavedGamesCollection()))
-            {
-                throw new ForbiddenChangeOnEntityException(
-                        "Forbidden change on related saved games"
                 );
             }
             
