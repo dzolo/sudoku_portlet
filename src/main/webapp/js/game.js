@@ -86,7 +86,7 @@ function SudokuGame_Game(namespace, appPath)
     /**
      * Gets a timer of the game 
      * 
-     * @return SudokuGame_Timer
+     * @return SudokuGame_GameTimer
      */
     this.getTimer = function ()
     {
@@ -462,7 +462,7 @@ function SudokuGame_Game(namespace, appPath)
     
     _namespace = namespace;
     _appPath = appPath;
-    _timer = new SudokuGame_Timer(this, '#' + namespace + '_footer-timer');
+    _timer = new SudokuGame_GameTimer(this, '#' + namespace + '_footer-timer');
     _gameBoard = new SudokuGame_GameBoard(this, '#' + namespace + '_board');
     _toolbar = new SudokuGame_GameToolbar(this);
     

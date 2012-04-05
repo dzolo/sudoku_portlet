@@ -261,7 +261,7 @@ public class SudokuPortlet extends GenericPortlet
 
         script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/timer.js");
+        script.setAttribute("src", path + "/js/game_timer.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
 
         script = response.createElement("script");

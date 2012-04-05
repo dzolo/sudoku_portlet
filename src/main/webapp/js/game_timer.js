@@ -1,6 +1,6 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : timer.js
+ * Document      : game_timer.js
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
@@ -10,11 +10,9 @@
  * 
  * @param gameParent        An instance of game which is a parent of the toolbar
  * @param rootElement   A root element of the timer
- * @param startEvent    A start event function
- * @param pauseEvent    A pause event function
- * @return SudokuGame_Timer
+ * @return SudokuGame_GameTimer
  */
-function SudokuGame_Timer(gameParent, rootElement, startEvent, pauseEvent)
+function SudokuGame_GameTimer(gameParent, rootElement)
 {
     /** Root element of the game board */
     var _$root = null;
