@@ -23,14 +23,14 @@ import org.junit.Test;
  * @see GamesController
  * @see GameSolutionsController
  * @see ServicesController
- * @see SavedGamesController
+ * @see SavedGameSolutionsController
  * @see LastPlayedGameSolutionsController
  */
 public class ControllersTest
 {
     private GamesController gamesController;
     private GameSolutionsController gameSolutionsController;
-    private SavedGamesController savedGamesController;
+    private SavedGameSolutionsController savedGamesController;
     private LastPlayedGameSolutionsController lastPlayedGameSolutionsController;
     private ServicesController servicesController;
     
@@ -41,7 +41,7 @@ public class ControllersTest
         {
             gamesController = new GamesController("sudoku_db_testing");
             gameSolutionsController = new GameSolutionsController("sudoku_db_testing");
-            savedGamesController = new SavedGamesController("sudoku_db_testing");
+            savedGamesController = new SavedGameSolutionsController("sudoku_db_testing");
             lastPlayedGameSolutionsController = new LastPlayedGameSolutionsController("sudoku_db_testing");
             servicesController = new ServicesController("sudoku_db_testing");
         }
@@ -106,7 +106,7 @@ public class ControllersTest
             System.out.println("GameSolutionsController#findUnfinishedGameSolutionEntitiesOfUser");
             gameSolutionsController.findUnfinishedGameSolutionEntitiesOfUser("user");
             
-            SavedGame sg = new SavedGame(null, 150, "empty");
+            SavedGameSolution sg = new SavedGameSolution(null, 150, "empty");
             sg.setName("a new saved game");
             sg.setSaved(new Date());
             sg.setGameSolutionId(gs);

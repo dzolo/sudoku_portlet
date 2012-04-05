@@ -1,6 +1,6 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : SavedGamesController.java
+ * Document      : SavedGameSolutionsController.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
@@ -12,20 +12,20 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
-import org.gatein.portal.examples.games.sudoku.entity.SavedGame;
+import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
- * Saved Games JPA Controller Class
+ * Saved Game Solutions JPA Controller Class
  *
  * @author Ondřej Fibich
  */
-public class SavedGamesController extends Controller
+public class SavedGameSolutionsController extends Controller
 {
 
     /**
      * An empty constructor. Creates entity manager factory.
      */
-    public SavedGamesController()
+    public SavedGameSolutionsController()
     {
     }
 
@@ -34,7 +34,7 @@ public class SavedGamesController extends Controller
      * 
      * @param unitName      Name of persistence unit defined in persistence.xml
      */
-    public SavedGamesController(String unitName)
+    public SavedGameSolutionsController(String unitName)
     {
         super(unitName);
     }
@@ -46,7 +46,7 @@ public class SavedGamesController extends Controller
      * @throws RollbackFailureException
      * @throws Exception
      */
-    public void create(SavedGame savedGame) throws RollbackFailureException,Exception
+    public void create(SavedGameSolution savedGame) throws RollbackFailureException,Exception
     {
         EntityManager em = emf.createEntityManager();
         GameSolution gameSolution;
@@ -69,7 +69,7 @@ public class SavedGamesController extends Controller
             
             if (gameSolution != null)
             {
-                gameSolution.getSavedGamesCollection().add(savedGame);
+                gameSolution.getSavedGameSolutionsCollection().add(savedGame);
                 em.merge(gameSolution);
             }
             
@@ -99,13 +99,13 @@ public class SavedGamesController extends Controller
      * 
      * @return              A list of saved games
      */
-    public List<SavedGame> findSavedGameEntities()
+    public List<SavedGameSolution> findSavedGameEntities()
     {
         EntityManager em = emf.createEntityManager();
         
         try
         {
-            Query q = em.createNamedQuery("SavedGame.findAll");
+            Query q = em.createNamedQuery("SavedGameSolution.findAll");
             
             return q.getResultList();
         }
@@ -121,13 +121,13 @@ public class SavedGamesController extends Controller
      * @param uid           An identificator of a user
      * @return              A list of saved games
      */
-    public List<SavedGame> findSavedGameEntitiesOfUser(String uid)
+    public List<SavedGameSolution> findSavedGameEntitiesOfUser(String uid)
     {
         EntityManager em = emf.createEntityManager();
         
         try
         {
-            Query q = em.createNamedQuery("SavedGame.findByUser");
+            Query q = em.createNamedQuery("SavedGameSolution.findByUser");
             q.setParameter("uid", uid);
             
             return q.getResultList();
@@ -144,13 +144,13 @@ public class SavedGamesController extends Controller
      * @param id            An identificator
      * @return              A found entity
      */
-    public SavedGame findSavedGame(Integer id)
+    public SavedGameSolution findSavedGame(Integer id)
     {
         EntityManager em = emf.createEntityManager();
         
         try
         {
-            return em.find(SavedGame.class, id);
+            return em.find(SavedGameSolution.class, id);
         }
         finally
         {

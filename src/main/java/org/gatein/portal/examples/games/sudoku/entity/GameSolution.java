@@ -101,7 +101,7 @@ public class GameSolution implements Serializable
     private Game gameId;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameSolutionId")
-    private Collection<SavedGame> savedGamesCollection;
+    private Collection<SavedGameSolution> savedGameSolutionsCollection;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameSolutionId")
     private Collection<LastPlayedGameSolution> lastPlayedGameSolutionCollection;
@@ -228,14 +228,14 @@ public class GameSolution implements Serializable
     }
 
     @XmlTransient
-    public Collection<SavedGame> getSavedGamesCollection()
+    public Collection<SavedGameSolution> getSavedGameSolutionsCollection()
     {
-        return savedGamesCollection;
+        return savedGameSolutionsCollection;
     }
 
-    public void setSavedGamesCollection(Collection<SavedGame> savedGamesCollection)
+    public void setSavedGameSolutionsCollection(Collection<SavedGameSolution> savedGamesCollection)
     {
-        this.savedGamesCollection = savedGamesCollection;
+        this.savedGameSolutionsCollection = savedGamesCollection;
     }
 
     @XmlTransient

@@ -15,8 +15,8 @@ import java.util.logging.Logger;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import org.gatein.portal.examples.games.sudoku.controller.GameSolutionsController;
-import org.gatein.portal.examples.games.sudoku.controller.SavedGamesController;
-import org.gatein.portal.examples.games.sudoku.entity.SavedGame;
+import org.gatein.portal.examples.games.sudoku.controller.SavedGameSolutionsController;
+import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
  * Saved Game REST Facade Class
@@ -29,20 +29,20 @@ public class SavedGameRestFacade
     /**
      * An instance of Game Solutions Controller
      */
-    private SavedGamesController savedGamesController;
+    private SavedGameSolutionsController savedGamesController;
 
     /**
      * A construct of the class - creates an instance of the Saved Games Controller
      */
     public SavedGameRestFacade()
     {
-        savedGamesController = new SavedGamesController();
+        savedGamesController = new SavedGameSolutionsController();
     }
 
     @POST
     @Path("{gameSolutionId}")
     @Consumes({"application/xml", "application/json"})
-    public Response create(SavedGame savedGame,
+    public Response create(SavedGameSolution savedGame,
                            @PathParam("gameSolutionId") Integer gameSolutionId)
     {
         GameSolutionsController gameSolutionsController;
@@ -68,7 +68,7 @@ public class SavedGameRestFacade
     @Produces({"application/xml", "application/json"})
     public Response find(@PathParam("id") Integer id)
     {
-        SavedGame savedGame = savedGamesController.findSavedGame(id);
+        SavedGameSolution savedGame = savedGamesController.findSavedGame(id);
         
         if (savedGame != null)
         {    
@@ -83,7 +83,7 @@ public class SavedGameRestFacade
     @GET
     @Path("user/{userId}")
     @Produces({"application/xml", "application/json"})
-    public List<SavedGame> findAllOfUser(@PathParam("userId") String userId)
+    public List<SavedGameSolution> findAllOfUser(@PathParam("userId") String userId)
     {
         return savedGamesController.findSavedGameEntitiesOfUser(userId);
     }

@@ -1,6 +1,6 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : SavedGame.java
+ * Document      : SavedGameSolution.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
@@ -13,25 +13,25 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * SavedGame Entity Class
+ * SavedGameSolution Entity Class
  *
  * @author Ondřej Fibich
  */
 @Entity
-@Table(name = "saved_games")
+@Table(name = "saved_game_solutions")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(
-        name = "SavedGame.findAll",
-        query = "SELECT s FROM SavedGame s"
+        name = "SavedGameSolution.findAll",
+        query = "SELECT s FROM SavedGameSolution s"
     ),
     @NamedQuery(
-        name = "SavedGame.findByUser",
-        query = "SELECT s FROM SavedGame s "
+        name = "SavedGameSolution.findByUser",
+        query = "SELECT s FROM SavedGameSolution s "
               + "WHERE s.gameSolutionId.userId = :uid AND s.gameSolutionId.finished = 0"
     )
 })
-public class SavedGame implements Serializable
+public class SavedGameSolution implements Serializable
 {
 
     private static final long serialVersionUID = 1L;
@@ -64,16 +64,16 @@ public class SavedGame implements Serializable
     @ManyToOne(optional = false)
     private GameSolution gameSolutionId;
 
-    public SavedGame()
+    public SavedGameSolution()
     {
     }
 
-    public SavedGame(Integer id)
+    public SavedGameSolution(Integer id)
     {
         this.id = id;
     }
 
-    public SavedGame(Integer id, int lasting, String values)
+    public SavedGameSolution(Integer id, int lasting, String values)
     {
         this.id = id;
         this.lasting = lasting;
@@ -149,12 +149,12 @@ public class SavedGame implements Serializable
     @Override
     public boolean equals(Object object)
     {
-        if (!(object instanceof SavedGame))
+        if (!(object instanceof SavedGameSolution))
         {
             return false;
         }
         
-        SavedGame other = (SavedGame) object;
+        SavedGameSolution other = (SavedGameSolution) object;
         
         if ((this.id == null && other.id != null) ||
             (this.id != null && !this.id.equals(other.id)))

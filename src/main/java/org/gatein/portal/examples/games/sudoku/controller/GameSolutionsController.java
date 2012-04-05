@@ -16,7 +16,7 @@ import org.gatein.portal.examples.games.sudoku.controller.exceptions.Nonexistent
 import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFailureException;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
-import org.gatein.portal.examples.games.sudoku.entity.SavedGame;
+import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
  * Game solutions JPA Controller Class
@@ -53,9 +53,9 @@ public class GameSolutionsController extends Controller
      */
     public void create(GameSolution gameSolution) throws RollbackFailureException, Exception
     {
-        if (gameSolution.getSavedGamesCollection() == null)
+        if (gameSolution.getSavedGameSolutionsCollection() == null)
         {
-            gameSolution.setSavedGamesCollection(new ArrayList<SavedGame>());
+            gameSolution.setSavedGameSolutionsCollection(new ArrayList<SavedGameSolution>());
         }
         
         EntityManager em = emf.createEntityManager();
