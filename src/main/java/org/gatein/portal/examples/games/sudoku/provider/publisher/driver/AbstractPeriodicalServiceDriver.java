@@ -10,16 +10,17 @@ package org.gatein.portal.examples.games.sudoku.provider.publisher.driver;
 import java.util.Date;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
+import org.gatein.portal.examples.games.sudoku.provider.publisher.PeriodicalServiceFactory;
 
 /**
- * Period Service Driver Abstract Class.
- * 
- * Allows obtaining of games from remote services identified by a
- * <code>Service</code> entity.
+ * The Period Service Driver Abstract class provides an partialy implementation
+ * for obtaining of games from remote services identified by
+ * a <code>Service</code>entity.
  * 
  * An instance of this abstract class must be obtained from the
  * <code>PeriodicalServiceFactory</code>.
  *
+ * @see PeriodicalServiceFactory
  * @author Ondřej Fibich
  */
 public abstract class AbstractPeriodicalServiceDriver implements PeriodicalServiceDriver

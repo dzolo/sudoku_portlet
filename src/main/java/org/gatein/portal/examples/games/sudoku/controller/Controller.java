@@ -12,8 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
- * Controller Class.
- * The controller class is the ancestor of all controllers.
+ * The Controller class is an ancestor of all controllers.
  * It provides the entity manager connector.
  *
  * @author Ondřej Fibich

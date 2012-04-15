@@ -8,8 +8,7 @@
 package org.gatein.portal.examples.games.sudoku.entity.datatype;
 
 /**
- * Game Type Class
- * Specifies types of a game
+ * The Game Type class specifies types of a game.
  *
  * @author Ondřej Fibich
  */

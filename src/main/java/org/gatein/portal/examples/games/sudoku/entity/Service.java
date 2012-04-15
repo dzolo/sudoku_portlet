@@ -14,7 +14,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- * Service Entity Class
+ * The service entity encases information about a periodically remote service,
+ * such as a name, a URL, an expiration time and an indicator for enabling/disabling.
+ * 
+ * The expiration time, stored in the check time attribute, contains lasting in
+ * seconds after which the service, located at the URL, should be checked for
+ * a new game.
  *
  * @author Ondřej Fibich
  */
@@ -56,15 +61,21 @@ public class Service implements Serializable
     @OneToMany(mappedBy = "typeServiceId")
     private Collection<Game> gamesCollection;
 
+    /**
+     * An empty constructor of the entity
+     */
     public Service()
     {
     }
 
-    public Service(Integer id)
-    {
-        this.id = id;
-    }
-
+    /**
+     * A constructor of the entity
+     * 
+     * @param id        An indetificator of the entity
+     * @param name      A name
+     * @param url       A URL
+     * @param checkTime A check time
+     */
     public Service(Integer id, String name, String url, int checkTime)
     {
         this.id = id;
@@ -73,62 +84,124 @@ public class Service implements Serializable
         this.checkTime = checkTime;
     }
 
+    /**
+     * Gets the identificator 
+     * 
+     * @return          Identificator
+     */
     public Integer getId()
     {
         return id;
     }
 
+    /**
+     * Sets the idetificator
+     * 
+     * @param id        New identificator
+     */
     public void setId(Integer id)
     {
         this.id = id;
     }
 
+    /**
+     * Gets the name of the service
+     * 
+     * @return          Name
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Sets the name of the service
+     * 
+     * @param name      New name
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Gets the URL of the service
+     * 
+     * @return          URL as a string
+     */
     public String getUrl()
     {
         return url;
     }
 
+    /**
+     * Sets the URL of the service
+     * 
+     * @param url       New URL as a string
+     */
     public void setUrl(String url)
     {
         this.url = url;
     }
 
+    /**
+     * Gets the check time after which the service should be checked for a new game.
+     * 
+     * @return          Check time in seconds
+     */
     public int getCheckTime()
     {
         return checkTime;
     }
 
+    /**
+     * Sets the check time after which the service should be checked for a new game.
+     * 
+     * @param checkTime New check time in seconds
+     */
     public void setCheckTime(int checkTime)
     {
         this.checkTime = checkTime;
     }
 
+    /**
+     * Gets the state of the service.
+     * New games may be obtained only from enabled services.
+     * 
+     * @return          Is the service enabled?
+     */
     public boolean isEnabled()
     {
         return enabled;
     }
 
+    /**
+     * Sets the state of the service.
+     * New games may be obtained only from enabled services.
+     * 
+     * @param enabled   enable/disable service
+     */
     public void setEnabled(boolean enabled)
     {
         this.enabled = enabled;
     }
 
+    /**
+     * Gets the collection of game which were obtained from the service
+     * 
+     * @return          Collection of games 
+     */
     @XmlTransient
     public Collection<Game> getGamesCollection()
     {
         return gamesCollection;
     }
 
+    /**
+     * Sets the collection of game which were obtained from the service
+     * 
+     * @param gamesCollection Collection of games 
+     */
     public void setGamesCollection(Collection<Game> gamesCollection)
     {
         this.gamesCollection = gamesCollection;

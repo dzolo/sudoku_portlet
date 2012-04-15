@@ -8,7 +8,6 @@
 package org.gatein.portal.examples.games.sudoku.provider.publisher;
 
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,10 +22,9 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Periodical Service Factory Class.
- * 
- * Obtains an instance of the periodical services.
+ * The Periodical Service Factory class obtains instances of the periodical services.
  *
+ * @see PeriodicalServiceDriver
  * @author Ondřej Fibich
  */
 public class PeriodicalServiceFactory

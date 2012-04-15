@@ -22,7 +22,8 @@ import org.gatein.portal.examples.games.sudoku.provider.publisher.PeriodicalServ
 import org.gatein.portal.examples.games.sudoku.provider.publisher.driver.PeriodicalServiceDriver;
 
 /**
- * Services REST Facade Class.
+ * The Service Rest Facade class provides obtaining of games from periodically
+ * remote services and the encased functionality of the Services Controller class.
  *
  * @author Ondřej Fibich
  */
@@ -47,6 +48,12 @@ public class ServicesRestFacade
         servicesController = new ServicesController();
     }
 
+    /**
+     * Persists the given service.
+     * 
+     * @param service   A service entity
+     * @return          OK response on success, NOT MODIFIED on failiture
+     */
     @POST
     @Consumes({"application/xml", "application/json"})
     public Response create(Service entity)
@@ -63,6 +70,12 @@ public class ServicesRestFacade
         }
     }
 
+    /**
+     * Merges the given service.
+     * 
+     * @param service       A service entity
+     * @return              OK response on success, NOT MODIFIED on failiture
+     */
     @PUT
     @Consumes({"application/xml", "application/json"})
     public Response edit(Service entity)
@@ -79,6 +92,12 @@ public class ServicesRestFacade
         }
     }
 
+    /**
+     * Finds a service by its identificator
+     * 
+     * @param id        An identificator of a service entity
+     * @return          OK response with the entity on success, NOT FOUND on failiture
+     */
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -96,6 +115,11 @@ public class ServicesRestFacade
         }
     }
     
+    /**
+     * Finds all services.
+     * 
+     * @return          A list of service entities 
+     */
     @GET
     @Produces({"application/xml", "application/json"})
     public List<Service> findAll()
@@ -103,6 +127,12 @@ public class ServicesRestFacade
         return servicesController.findServiceEntities();
     }
 
+    /**
+     * Finds all games with service type for the given user.
+     * 
+     * @param uid       An identificator of a user
+     * @return          A list of service entities 
+     */
     @GET
     @Path("games/{uid}")
     @Produces({"application/xml", "application/json"})
@@ -144,7 +174,7 @@ public class ServicesRestFacade
      * 
      * @param service       A remote service
      * @param lastGame      A previous game of service
-     * @return 
+     * @return              A new game or null
      */
     private Game getRemoteGame(Service service, Game lastGame)
     {

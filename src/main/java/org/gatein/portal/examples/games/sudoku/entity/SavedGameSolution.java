@@ -13,7 +13,11 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * SavedGameSolution Entity Class
+ * The game solution can be saved during the solving, using a saved game
+ * solution entity.
+ * 
+ * The saved game solution entity contains an image of the current state of
+ * solution, identified by a name.
  *
  * @author Ondřej Fibich
  */
@@ -64,15 +68,20 @@ public class SavedGameSolution implements Serializable
     @ManyToOne(optional = false)
     private GameSolution gameSolutionId;
 
+    /**
+     * An empty constructor of the entity
+     */
     public SavedGameSolution()
     {
     }
 
-    public SavedGameSolution(Integer id)
-    {
-        this.id = id;
-    }
-
+    /**
+     * A constructor of the entity
+     * 
+     * @param id        An identificator of the entity
+     * @param lasting   A lasting of the game solution
+     * @param values    Values of the game solution
+     */
     public SavedGameSolution(Integer id, int lasting, String values)
     {
         this.id = id;
@@ -80,61 +89,123 @@ public class SavedGameSolution implements Serializable
         this.values = values;
     }
 
+    /**
+     * Gets the identificator 
+     * 
+     * @return          Identificator
+     */
     public Integer getId()
     {
         return id;
     }
 
+    /**
+     * Sets the idetificator
+     * 
+     * @param id        New identificator
+     */
     public void setId(Integer id)
     {
         this.id = id;
     }
 
+    /**
+     * Gets the name of the saved game solution
+     * 
+     * @return          Name
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Sets the nam of the saved game solution
+     * 
+     * @param name      New name
+     */
     public void setName(String name)
     {
         this.name = name;
     }
 
+    /**
+     * Gets the datetime of saving of the saved game solution
+     * 
+     * @return          Date object
+     */
     public Date getSaved()
     {
         return saved;
     }
 
+    /**
+     * Sets the datetime of saving of the saved game solution
+     * 
+     * @param saved     Date object
+     */
     public void setSaved(Date saved)
     {
         this.saved = saved;
     }
 
+    /**
+     * Gets the lasting of the saved game solution
+     * 
+     * @return          Lasting in seconds
+     */
     public int getLasting()
     {
         return lasting;
     }
 
+    /**
+     * Sets the lasting of the game solution
+     * 
+     * @param lasting   Lasting in seconds
+     */
     public void setLasting(int lasting)
     {
         this.lasting = lasting;
     }
 
+    /**
+     * Gets values of the saved game solution.
+     * 
+     * @return          Values as a string, separated by commas.
+     *                  Empty values are replaced by an empty string.
+     */
     public String getValues()
     {
         return values;
     }
 
+    /**
+     * Sets values of the game solution.
+     * 
+     * @param values    Values as a string, separated by commas.
+     *                  Empty values are replaced by an empty string.
+     */
     public void setValues(String values)
     {
         this.values = values;
     }
 
+    /**
+     * Gets the parent game solution of the saved game solution
+     * 
+     * @return          GameSoltion object
+     */
     public GameSolution getGameSolutionId()
     {
         return gameSolutionId;
     }
 
+    /**
+     * Sets the parent game solution of the saved game solution
+     * 
+     * @param gameSolutionId New GameSolution object
+     */
     public void setGameSolutionId(GameSolution gameSolutionId)
     {
         this.gameSolutionId = gameSolutionId;

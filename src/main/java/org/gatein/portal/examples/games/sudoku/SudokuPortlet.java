@@ -20,7 +20,13 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXParseException;
 
 /**
- * Sudoku Portlet Class
+ * The Sudoku Portlet Class implements view, edit and help modes of portlet.
+ * The content of the portlet in the view mode contains an JavaScript application
+ * for playing of games and statistics.
+ * The content of the portlet in the edit mode allows to change a skin of the
+ * game. Services may be also managed from this mode if an admin if logged in.
+ * The content of the portlet in the help mode contains a link to an end-user
+ * documentation.
  * 
  * @author Ondřej Fibich
  * @version 1.0
@@ -444,7 +450,7 @@ public class SudokuPortlet extends GenericPortlet
     }
     
     /**
-     * Gets current skin of a user
+     * Gets the current skin of a user
      * 
      * @param preferences       Preferences of a user
      * @return                  The current skin

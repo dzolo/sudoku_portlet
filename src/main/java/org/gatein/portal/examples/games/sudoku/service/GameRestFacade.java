@@ -24,8 +24,9 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 import org.gatein.portal.examples.games.sudoku.provider.generator.Generator;
 
 /**
- * Game REST Facade Class
- *
+ * The Game REST Facade class provides the generation of games and the encased
+ * functionality of the Games Controller class.
+ * 
  * @author Ondřej Fibich
  */
 @Path("game")
@@ -49,6 +50,13 @@ public class GameRestFacade
         gamesController = new GamesController();
     }
 
+    /**
+     * Persists the given game. Values of the game are generated.
+     * 
+     * @see Generator#generate(org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty) 
+     * @param game      A game entity
+     * @return          OK response on success, NOT MODIFIED on failiture
+     */
     @POST
     @Consumes({"application/xml", "application/json"})
     public Response create(Game game)
@@ -69,6 +77,12 @@ public class GameRestFacade
         }
     }
 
+    /**
+     * Finds a game by its identificator
+     * 
+     * @param id        An identificator of a game entity
+     * @return          OK response with the entity on success, NOT FOUND on failiture
+     */
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -85,7 +99,12 @@ public class GameRestFacade
             return Response.status(Status.NOT_FOUND).build(); 
         }
     }
-
+    
+    /**
+     * Finds all games.
+     * 
+     * @return          A list of game entities 
+     */
     @GET
     @Produces({"application/xml", "application/json"})
     public List<Game> findAll()
@@ -93,6 +112,14 @@ public class GameRestFacade
         return gamesController.findGameEntities();
     }
 
+    /**
+     * Finds proposed games for a user which is identified by a UID. A proposed
+     * game is a game that was finished by other players and not played by the
+     * given user.
+     * 
+     * @param id        A UID
+     * @return          A list of proposed game entities
+     */
     @GET
     @Path("proposals/{uid}")
     @Produces({"application/xml", "application/json"})
@@ -101,10 +128,15 @@ public class GameRestFacade
         return gamesController.findGameProposalEntities(id);
     }
     
+    /**
+     * Gets a JSON with statistics properties of all games.
+     * 
+     * @return          A JSON String with statistics
+     */
     @GET
     @Path("stats")
     @Produces({"application/json"})
-    public String statsOfGames(@PathParam("id") Integer id)
+    public String statsOfGames()
     {
         StringBuilder b = new StringBuilder();
         Map<String, Object> totalStats;
@@ -142,6 +174,13 @@ public class GameRestFacade
         }
     }
     
+    /**
+     * Gets a JSON with statistics properties of the game which is identified
+     * by the given identificator.
+     * 
+     * @param id        An identificator of a game
+     * @return          A JSON String with statistics
+     */
     @GET
     @Path("stats/{id}")
     @Produces({"application/json"})
@@ -183,6 +222,13 @@ public class GameRestFacade
         }
     }
     
+    /**
+     * Gets a list of top five best solvers of the game which is identified by
+     * the given identificator.
+     * 
+     * @param id        An identificator of a game
+     * @return          A list of the game solution entities
+     */
     @GET
     @Path("stats/best_solvers/{id}")
     @Produces({"application/json"})
@@ -191,6 +237,11 @@ public class GameRestFacade
         return gamesController.findBestSolvedGameSolutionEntities(id);
     }
     
+    /**
+     * Gets a JSON of top five best solvers of all games.
+     * 
+     * @return          A JSON String with statistics
+     */
     @GET
     @Path("stats/best_solvers")
     @Produces({"application/json"})

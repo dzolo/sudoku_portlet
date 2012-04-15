@@ -12,7 +12,8 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * LastPlayedGameSolution Entity Class
+ * A last played game solution is an association between a user and one of his/her
+ * game solutions which is persisted in the last played game solution entity.
  *
  * @author Ondřej Fibich
  */
@@ -33,30 +34,58 @@ public class LastPlayedGameSolution implements Serializable
     @ManyToOne(optional = false)
     private GameSolution gameSolutionId;
 
+    /**
+     * An an empty constructor
+     */
     public LastPlayedGameSolution()
     {
     }
 
+    /**
+     * A constructor
+     * 
+     * @param userId        An indetificator of a user 
+     */
     public LastPlayedGameSolution(String userId)
     {
         this.userId = userId;
     }
 
+    /**
+     * Gets the identificator of a user who owns this last played game solution
+     * 
+     * @return              A string identificator 
+     */
     public String getUserId()
     {
         return userId;
     }
 
+    /**
+     * Sets the identificator of a user who owns this last played game solution
+     * 
+     * @param userId         A string identificator 
+     */
     public void setUserId(String userId)
     {
         this.userId = userId;
     }
 
+    /**
+     * Gets the parent game solution of this last played game solution
+     * 
+     * @return              GameSolution entity
+     */
     public GameSolution getGameSolutionId()
     {
         return gameSolutionId;
     }
 
+    /**
+     * Sets the parent game solution of this last played game solution
+     * 
+     * @param gameSolutionId GameSolution entity
+     */
     public void setGameSolutionId(GameSolution gameSolutionId)
     {
         this.gameSolutionId = gameSolutionId;

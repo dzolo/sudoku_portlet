@@ -12,10 +12,8 @@ import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
 
 /**
- * Period Service Driver Interface.
- * 
- * Allows obtaining of games from remote services identified by a
- * <code>Service</code> entity.
+ * The period Service Driver Interface allows obtaining of games from remote
+ * services identified by a <code>Service</code> entity.
  * 
  * An instance of this interface may be obtained from the
  * <code>PeriodicalServiceFactory</code>.

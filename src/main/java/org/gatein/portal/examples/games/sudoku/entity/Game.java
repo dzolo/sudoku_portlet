@@ -17,8 +17,19 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 
 /**
- * Game Entity Class
+ * The Game entity contains initialization values, such as a time stamp of
+ * a game creation and initialization field values that contain fixed values of
+ * a Sudoku puzzle.
+ * Game types specify how a game was created. There are two types: generated and
+ * service. A game with the generated type was algorithmically generated within
+ * this application with a difficulty, specified by a difficulty attribute.
+ * On the other hand a game with the service type was obtained from a periodically
+ * remote service. If the game is of the service type, it will contain a reference
+ * to a service entity.
  *
+ * @see GameType
+ * @see GameDifficulty
+ * @see Service
  * @author Ondřej Fibich
  */
 @Entity
@@ -46,7 +57,8 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
     ),
     @NamedQuery(
         name = "Game.findStatisticsLoggedPlayers",
-        query = "SELECT AVG(gs.rating), AVG(gs.lasting), SUM(gs.lasting), COUNT(gs.id) "
+        query = "SELECT AVG(gs.rating), AVG(gs.lasting),"
+              + "       SUM(gs.lasting), COUNT(gs.id) "
               + "FROM GameSolution gs "
               + "WHERE gs.finished > 0 AND gs.userId IS NOT NULL"
     ),
@@ -68,7 +80,8 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
     ),
     @NamedQuery(
         name = "Game.findBestSolvers",
-        query = "SELECT gs.userId, gs.userName, COUNT(gs.id), SUM(gs.lasting), AVG(gs.rating)"
+        query = "SELECT gs.userId, gs.userName, COUNT(gs.id),"
+              + "       SUM(gs.lasting), AVG(gs.rating)"
               + "FROM GameSolution gs "
               + "WHERE gs.finished > 0 "
               + "GROUP BY gs.userId, gs.userName "
@@ -124,89 +137,169 @@ public class Game implements Serializable
     @ManyToOne
     private Service typeServiceId;
 
+    /**
+     * An empty constructor of the entity
+     */
     public Game()
     {
     }
 
-    public Game(Integer id)
+    /**
+     * A contructor of thes entity
+     * 
+     * @param id        An identificator of the entity
+     * @param initTime  A time of the creation of the game
+     * @param initValues Init values of the game (fixed values)
+     * @param type      A type of the game
+     */
+    public Game(Integer id, Date initTime, String initValues, GameType type)
     {
         this.id = id;
-    }
-
-    public Game(Integer id, Date initDate, String initValues, GameType type)
-    {
-        this.id = id;
-        this.initTime = initDate;
+        this.initTime = initTime;
         this.initValues = initValues;
         this.type = type;
     }
 
+    /**
+     * Gets the identificator 
+     * 
+     * @return          Identificator
+     */
     public Integer getId()
     {
         return id;
     }
 
+    /**
+     * Sets the idetificator
+     * 
+     * @param id        New identificator
+     */
     public void setId(Integer id)
     {
         this.id = id;
     }
 
+    /**
+     * Gets the datetime of the creation of the game 
+     * 
+     * @return          Date object
+     */
     public Date getInitTime()
     {
         return initTime;
     }
 
+    /**
+     * Sets the datetime of the creation of the game
+     * 
+     * @param initTime  Date object
+     */
     public void setInitTime(Date initTime)
     {
         this.initTime = initTime;
     }
 
+    /**
+     * Gets init values of the game (fixed values)
+     * 
+     * @return          Init values as a string, separated by commas.
+     *                  Empty values are replaced by an empty string.  
+     */
     public String getInitValues()
     {
         return initValues;
     }
 
+    /**
+     * Sets init values of the game (fixed values)
+     * 
+     * @param initValues Init values as a string, separated by commas.
+     *                  Empty values are replaced by an empty string. 
+     */
     public void setInitValues(String initValues)
     {
         this.initValues = initValues;
     }
 
+    /**
+     * Gets the type of the game
+     * 
+     * @return          Game type
+     */
     public GameType getType()
     {
         return type;
     }
 
+    /**
+     * Sets the type of the game
+     * 
+     * @param type      New game type
+     */
     public void setType(GameType type)
     {
         this.type = type;
     }
 
+    /**
+     * Gets the difficulty of the game (only for <code>GENERATED</code> games) 
+     * 
+     * @return          Game difficulty
+     */
     public GameDifficulty getTypeDifficulty()
     {
         return typeDifficulty;
     }
 
+    /**
+     * Sets the difficulty of the game (only for <code>GENERATED</code> games)
+     * 
+     * @param typeDificulty New game difficulty
+     */
     public void setTypeDifficulty(GameDifficulty typeDificulty)
     {
         this.typeDifficulty = typeDificulty;
     }
 
+    /**
+     * Gets a collenction of game solutions of the game
+     * 
+     * @return              Collection of game solutions
+     */
     @XmlTransient
     public Collection<GameSolution> getGameSolutionsCollection()
     {
         return gameSolutionsCollection;
     }
 
+    /**
+     * Sets a collenction of game solutions of the game
+     * 
+     * @param gameSolutionsCollection New collection of game solutions
+     */
     public void setGameSolutionsCollection(Collection<GameSolution> gameSolutionsCollection)
     {
         this.gameSolutionsCollection = gameSolutionsCollection;
     }
 
+    /**
+     * Gets the service from which the game was obtained (only for
+     * <code>REMOTE</code> games) 
+     * 
+     * @return          Service entity        
+     */
     public Service getTypeServiceId()
     {
         return typeServiceId;
     }
 
+    /**
+     * Sets the service from which the game was obtained (only for
+     * <code>REMOTE</code> games) 
+     * 
+     * @param typeServiceId Service entity        
+     */
     public void setTypeServiceId(Service typeServiceId)
     {
         this.typeServiceId = typeServiceId;

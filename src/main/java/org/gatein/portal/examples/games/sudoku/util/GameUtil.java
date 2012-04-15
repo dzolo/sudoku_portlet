@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Game Util Class
- * Provides a checker of game solution, a join method, etc.
+ * The Game Util class provides a checker of a game solution, a join method, etc.
  *
  * @author Ondřej Fibich
  */

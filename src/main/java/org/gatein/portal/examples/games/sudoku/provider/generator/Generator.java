@@ -15,7 +15,7 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
 import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
- * Generator Class provides functionality for generating sudoku games.
+ * The Generator class provides a functionality for generating sudoku games.
  *
  * @author Ondřej Fibich
  */

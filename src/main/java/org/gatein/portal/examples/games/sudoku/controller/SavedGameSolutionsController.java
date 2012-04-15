@@ -15,7 +15,8 @@ import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
- * Saved Game Solutions JPA Controller Class
+ * The SavedGameSolutionsController creates and gets saved game solution
+ * entities of user.
  *
  * @author Ondřej Fibich
  */

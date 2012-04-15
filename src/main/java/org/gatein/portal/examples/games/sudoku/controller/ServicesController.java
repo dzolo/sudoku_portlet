@@ -16,7 +16,7 @@ import org.gatein.portal.examples.games.sudoku.controller.exceptions.RollbackFai
 import org.gatein.portal.examples.games.sudoku.entity.Service;
 
 /**
- * Services JPA Controller Class
+ * The ServicesController creates, edits and gets service entities.
  *
  * @author Ondřej Fibich
  */

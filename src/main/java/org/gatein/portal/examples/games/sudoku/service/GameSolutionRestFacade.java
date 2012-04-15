@@ -20,8 +20,9 @@ import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 
 /**
- * Game Solution REST Facade Class
- *
+ * The Game Solution REST Facade provides the game checking capability and
+ * the encased functionality of the Game Solutions Controller class.
+ * 
  * @author Ondřej Fibich
  */
 @Path("game_solution")
@@ -40,6 +41,13 @@ public class GameSolutionRestFacade
         gameSolutionsController = new GameSolutionsController();
     }
 
+    /**
+     * Persists the given game solution with the given parent game.
+     * 
+     * @param gameSolution  A game solution entity
+     * @param gameId        An identificator of a parent game
+     * @return              OK response on success, NOT MODIFIED on failiture
+     */
     @POST
     @Path("{gameId}")
     @Consumes({"application/xml", "application/json"})
@@ -66,6 +74,12 @@ public class GameSolutionRestFacade
         }
     }
     
+    /**
+     * Merges the given game solution.
+     * 
+     * @param gameSolution      A game solution entity
+     * @return                  OK response on success, NOT MODIFIED on failiture
+     */
     @PUT
     @Consumes({"application/xml", "application/json"})
     public Response edit(GameSolution gameSolution)
@@ -109,6 +123,12 @@ public class GameSolutionRestFacade
         }
     }
 
+    /**
+     * Finds a game solution by its identificator
+     * 
+     * @param id        An identificator of a game solution entity
+     * @return          OK response with the entity on success, NOT FOUND on failiture
+     */
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -126,6 +146,11 @@ public class GameSolutionRestFacade
         }
     }
 
+    /**
+     * Finds all game solutions.
+     * 
+     * @return          A list of game solution entities 
+     */
     @GET
     @Produces({"application/xml", "application/json"})
     public List<GameSolution> findAll()
@@ -133,6 +158,12 @@ public class GameSolutionRestFacade
         return gameSolutionsController.findGameSolutionEntities();
     }
 
+    /**
+     * Finds all unifished game solutions of the given user.
+     * 
+     * @param uid       An identificator of a user   
+     * @return          A list of game solution entities 
+     */
     @GET
     @Path("unfinished/{uid}")
     @Produces({"application/xml", "application/json"})
@@ -141,6 +172,14 @@ public class GameSolutionRestFacade
         return gameSolutionsController.findUnfinishedGameSolutionEntitiesOfUser(uid);
     }
     
+    /**
+     * Checks the game solution. Checking is not increasing the checked count.
+     * 
+     * @see GameUtil#check(java.lang.String) 
+     * @param id            An identificator of a game solution
+     * @return              A JSON String with the return state of check and
+     *                      with possible errors.
+     */
     @POST
     @Path("check")
     @Consumes({"text/plain"})
@@ -164,6 +203,16 @@ public class GameSolutionRestFacade
         }
     }
     
+    /**
+     * Check the game solution
+     * 
+     * @see GameUtil#check(java.lang.String) 
+     * @param gameSolutionValues The values of fields of a game solution to check,
+     *                      separated by commas
+     * @param id            An identificator of a game solution
+     * @return              A JSON String with the return state of check and
+     *                      with possible errors.
+     */
     @POST
     @Path("check/{id}")
     @Consumes({"text/plain"})

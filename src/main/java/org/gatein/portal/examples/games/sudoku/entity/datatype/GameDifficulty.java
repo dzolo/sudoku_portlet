@@ -10,8 +10,7 @@ package org.gatein.portal.examples.games.sudoku.entity.datatype;
 import java.util.Random;
 
 /**
- * Game Difficulty Class
- * Specifies levels of a game difficulty
+ * The Game Difficulty class specifies levels of a game difficulty
  *
  * @author Ondřej Fibich
  */

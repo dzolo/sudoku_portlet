@@ -15,7 +15,8 @@ import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.LastPlayedGameSolution;
 
 /**
- * Last Played Game Solutions JPA Controller Class
+ * The LastPlayedGameSolutionsController modifies and gets last played game
+ * solution entities of users.
  *
  * @author Ondřej Fibich
  */

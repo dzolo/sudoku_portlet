@@ -8,7 +8,6 @@
 package org.gatein.portal.examples.games.sudoku.service;
 
 import java.net.URI;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ws.rs.*;
@@ -19,7 +18,8 @@ import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.LastPlayedGameSolution;
 
 /**
- * last Played Game Solution REST Facade Class
+ * The Last Played Game Solution REST Facade class encases the functionality of
+ * the Last Played Game Solutions class.
  *
  * @author Ondřej Fibich
  */
@@ -39,6 +39,13 @@ public class LastPlayedGameSolutionRestFacade
         lastPlayedGameSolutionsController = new LastPlayedGameSolutionsController();
     }
 
+    /**
+     * Persists the last played game solution.
+     * 
+     * @param lastPlayedGameSolution A last played game solution entity
+     * @param gameSolutionId An identificator of a game solution 
+     * @return          OK response on success, NOT MODIFIED on failiture
+     */
     @POST
     @Path("{gameSolutionId}")
     @Consumes({"application/xml", "application/json"})
@@ -76,6 +83,12 @@ public class LastPlayedGameSolutionRestFacade
         }
     }
 
+    /**
+     * Finds a last played game solution by its identificator
+     * 
+     * @param id        An identificator of a last played game solution entity
+     * @return          OK response with the entity on success, NOT FOUND on failiture
+     */
     @GET
     @Path("{uid}")
     @Produces({"application/xml", "application/json"})

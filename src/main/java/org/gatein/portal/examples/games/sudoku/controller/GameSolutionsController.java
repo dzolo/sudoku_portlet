@@ -19,7 +19,8 @@ import org.gatein.portal.examples.games.sudoku.entity.GameSolution;
 import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
- * Game solutions JPA Controller Class
+ * An instance of the GameSolutionsController class creates, edits and gets
+ * game solution entities. Entities may be filtered by a solver.
  *
  * @author Ondřej Fibich
  */

@@ -1,6 +1,6 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : SavedGameRestFacade.java
+ * Document      : SavedGameSolutionRestFacade.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
@@ -19,12 +19,13 @@ import org.gatein.portal.examples.games.sudoku.controller.SavedGameSolutionsCont
 import org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution;
 
 /**
- * Saved Game REST Facade Class
+ * The Saved Game Solution REST Facade class encases the functionality of
+ * the Saved Game Solutions Controller class.
  *
  * @author Ondřej Fibich
  */
 @Path("saved_game")
-public class SavedGameRestFacade
+public class SavedGameSolutionRestFacade
 {
     /**
      * An instance of Game Solutions Controller
@@ -34,11 +35,18 @@ public class SavedGameRestFacade
     /**
      * A construct of the class - creates an instance of the Saved Games Controller
      */
-    public SavedGameRestFacade()
+    public SavedGameSolutionRestFacade()
     {
         savedGamesController = new SavedGameSolutionsController();
     }
 
+    /**
+     * Persists the given saved game solution with the given parent game solution.
+     * 
+     * @param savedGame     A saved game solution entity
+     * @param gameSolutionId An identificator of a parent game solution
+     * @return              OK response on success, NOT MODIFIED on failiture
+     */
     @POST
     @Path("{gameSolutionId}")
     @Consumes({"application/xml", "application/json"})
@@ -57,12 +65,18 @@ public class SavedGameRestFacade
         }
         catch (Exception ex)
         {
-            final String name = SavedGameRestFacade.class.getName();
+            final String name = SavedGameSolutionRestFacade.class.getName();
             Logger.getLogger(name).log(Level.WARNING, null, ex);
             return Response.notModified(ex.toString()).build();
         }
     }
 
+    /**
+     * Finds a saved game solution by its identificator
+     * 
+     * @param id        An identificator of a saved game solution entity
+     * @return          OK response with the entity on success, NOT FOUND on failiture
+     */
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
@@ -80,12 +94,18 @@ public class SavedGameRestFacade
         }
     }
 
+    /**
+     * Finds all unifished saved game solutions of the given user.
+     * 
+     * @param uid       An identificator of a user
+     * @return          A list of saved game solution entities 
+     */
     @GET
-    @Path("user/{userId}")
+    @Path("user/{uid}")
     @Produces({"application/xml", "application/json"})
-    public List<SavedGameSolution> findAllOfUser(@PathParam("userId") String userId)
+    public List<SavedGameSolution> findAllOfUser(@PathParam("uid") String uid)
     {
-        return savedGamesController.findSavedGameEntitiesOfUser(userId);
+        return savedGamesController.findSavedGameEntitiesOfUser(uid);
     }
     
 }

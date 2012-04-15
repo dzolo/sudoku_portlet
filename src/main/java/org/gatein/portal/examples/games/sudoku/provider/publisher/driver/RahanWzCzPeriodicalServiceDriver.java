@@ -12,6 +12,7 @@ import java.util.Date;
 import org.gatein.portal.examples.games.sudoku.entity.Game;
 import org.gatein.portal.examples.games.sudoku.entity.Service;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
+import org.gatein.portal.examples.games.sudoku.provider.publisher.PeriodicalServiceFactory;
 import org.gatein.portal.examples.games.sudoku.util.GameUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -19,12 +20,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * A driver for daily released sudoku games in server Rahan.wz.cz
+ * A driver for daily released sudoku games from server Rahan.wz.cz.
  *
- * @author Ondřej Fibich
  * @see http://rahan.wz.cz/daily_sudoku.php
+ * @see PeriodicalServiceFactory
+ * @author Ondřej Fibich
  */
-public class RahanWzCzPeriodiclServiceDriver extends AbstractPeriodicalServiceDriver
+public class RahanWzCzPeriodicalServiceDriver extends AbstractPeriodicalServiceDriver
 {
     /**
      * URL for which the service is capable to work with

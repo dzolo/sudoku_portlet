@@ -21,7 +21,8 @@ import org.gatein.portal.examples.games.sudoku.entity.Service;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 
 /**
- * Games JPA Controller Class
+ * The GamesController class enables to create and to get game entities,
+ * moreover it includes operations for getting of statistics.
  *
  * @author Ondřej Fibich
  */

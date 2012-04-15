@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * Custom Error Handler Class
+ * The custom Error Handler Class provides an default error handler.
  *
  * @author Ondřej Fibich
  */
