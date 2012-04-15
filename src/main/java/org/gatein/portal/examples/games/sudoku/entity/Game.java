@@ -219,6 +219,11 @@ public class Game implements Serializable
      */
     public void setInitValues(String initValues)
     {
+        if (initValues == null || !initValues.matches("^([1-9]?,){80}[1-9]?$"))
+        {
+            throw new IllegalArgumentException("Wrong init values: " + initValues);
+        }
+        
         this.initValues = initValues;
     }
 

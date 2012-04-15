@@ -188,6 +188,11 @@ public class SavedGameSolution implements Serializable
      */
     public void setValues(String values)
     {
+        if (values == null || !values.matches("^([1-9]?,){80}[1-9]?$"))
+        {
+            throw new IllegalArgumentException("Wrong values: " + values);
+        }
+        
         this.values = values;
     }
 

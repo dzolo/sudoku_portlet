@@ -18,8 +18,13 @@
 <periodical-service-drivers>
     
     <driver>
-        <name>RahanWzCzPeriodiclServiceDriver</name>
-        <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.RahanWzCzPeriodiclServiceDriver</class>
+        <name>RahanWzCzPeriodicalServiceDriver</name>
+        <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.RahanWzCzPeriodicalServiceDriver</class>
+    </driver>
+    
+    <driver>
+        <name>DailysudokuComPeriodicalServiceDriver</name>
+        <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.DailysudokuComPeriodicalServiceDriver</class>
     </driver>
     
 </periodical-service-drivers>

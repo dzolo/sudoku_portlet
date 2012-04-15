@@ -1,6 +1,6 @@
 /* 
  * Project       : Bachelor Thesis - Sudoku game implementation as portlet
- * Document      : AbstractPeriodicalServiceDriver.java
+ * Document      : RahanWzCzPeriodicalServiceDriver.java
  * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
  * Organization  : FIT VUT <http://www.fit.vutbr.cz>
  */

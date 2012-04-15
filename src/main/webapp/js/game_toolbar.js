@@ -318,7 +318,7 @@ function SudokuGame_GameToolbar(gameParent)
                                     ).append(
                                         $('<td>').text(t)
                                     ).append(
-                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initDate)))
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initTime)))
                                     )
                                 );
                             }
@@ -475,7 +475,7 @@ function SudokuGame_GameToolbar(gameParent)
                                     ).append(
                                         $('<td>').text(t)
                                     ).append(
-                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].timeStart)))
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].startTime)))
                                     ).append(
                                         $('<td>').text(SudokuGame_lasting(data[i].lasting))
                                     )
@@ -566,7 +566,7 @@ function SudokuGame_GameToolbar(gameParent)
                                     ).append(
                                         $('<td>').text('Remote publisher / ' + data[i].typeServiceId.name)
                                     ).append(
-                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initDate)))
+                                        $('<td>').text(SudokuGame_dateFormat(new Date(data[i].initTime)))
                                     )
                                 );
                             }

@@ -126,18 +126,18 @@ public class GameSolution implements Serializable
      * @param userId    An identificator of a user who own this game solution
      * @param userName  A name of a user who own this game solution
      * @param values    Values of the game solution
-     * @param timeStart A datetime of the start of the game solution  
+     * @param startTime A datetime of the start of the game solution  
      * @param lasting   A lasting of the game solution
      * @param finished  Was the game solution finished yet?
      */
     public GameSolution(Integer id, String userId, String userName,
-            String values, Date timeStart, int lasting, boolean finished)
+            String values, Date startTime, int lasting, boolean finished)
     {
         this.id = id;
         this.userId = userId;
         this.userName = userName;
         this.values = values;
-        this.startTime = timeStart;
+        this.startTime = startTime;
         this.lasting = lasting;
         this.finished = finished;
     }
@@ -221,6 +221,11 @@ public class GameSolution implements Serializable
      */
     public void setValues(String values)
     {
+        if (values == null || !values.matches("^([1-9]?,){80}[1-9]?$"))
+        {
+            throw new IllegalArgumentException("Wrong values: " + values);
+        }
+        
         this.values = values;
     }
 
