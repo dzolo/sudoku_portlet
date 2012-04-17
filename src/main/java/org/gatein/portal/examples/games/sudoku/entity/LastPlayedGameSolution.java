@@ -107,8 +107,8 @@ public class LastPlayedGameSolution implements Serializable
         
         LastPlayedGameSolution other = (LastPlayedGameSolution) object;
         
-        if ((this.userId == null && other.userId != null) ||
-            (this.userId != null && !this.userId.equals(other.userId)))
+        if ((this.userId == null && other.getUserId() != null) ||
+            (this.userId != null && !this.userId.equals(other.getUserId())))
         {
             return false;
         }

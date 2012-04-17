@@ -8,6 +8,7 @@
 package org.gatein.portal.examples.games.sudoku.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -65,7 +66,7 @@ public class GameSolutionsController extends Controller
         {
             em.getTransaction().begin();
             Game game = gameSolution.getGameId();
-            
+        
             if (game != null)
             {
                 game = em.getReference(game.getClass(), game.getId());
@@ -119,7 +120,7 @@ public class GameSolutionsController extends Controller
         {
             persGameSolution = em.find(GameSolution.class, gameSolution.getId());
             
-            if (!persGameSolution.getGameId().equals(gameSolution.getGameId()))
+            if (!gameSolution.getGameId().equals(persGameSolution.getGameId()))
             {
                 throw new ForbiddenChangeOnEntityException(
                         "Forbidden change on the game_id field"
@@ -131,7 +132,7 @@ public class GameSolutionsController extends Controller
                     gameSolution.getUserId() != null
                 ) || (
                     persGameSolution.getUserId() != null &&
-                    !persGameSolution.getUserId().equals(gameSolution.getUserId())
+                    !gameSolution.getUserId().equals(persGameSolution.getUserId())
                 ))
             {
                 throw new ForbiddenChangeOnEntityException(
@@ -139,7 +140,7 @@ public class GameSolutionsController extends Controller
                 );
             }
             
-            if (!persGameSolution.getStartTime().equals(gameSolution.getStartTime()))
+            if (!gameSolution.getStartTime().equals(persGameSolution.getStartTime()))
             {
                 throw new ForbiddenChangeOnEntityException(
                         "Forbidden change on the time_start field"

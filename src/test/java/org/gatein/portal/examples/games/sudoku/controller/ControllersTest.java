@@ -66,7 +66,7 @@ public class ControllersTest
             System.out.println("GamesController#create");
             gamesController.create(g);
             
-            System.out.println("GamesController#");
+            System.out.println("GamesController#findGame");
             assertEquals(g, gamesController.findGame(g.getId()));
             assertEquals(null, gamesController.findGame(Integer.MAX_VALUE));
             System.out.println("GamesController#getGameCount");
@@ -125,7 +125,7 @@ public class ControllersTest
             gs.setLasting(200);
             gs.setFinished(true);
             
-            System.out.println("SavedGamesController#edit");
+            System.out.println("GameSolutionsController#edit");
             gameSolutionsController.edit(gs);
             
             System.out.println("GameSolutionsController#getSolverCount");
@@ -138,7 +138,12 @@ public class ControllersTest
             
             System.out.println("LastPlayedGameSolutionsController#put");
             lastPlayedGameSolutionsController.put(lpgs);
-            lastPlayedGameSolutionsController.put(lpgs);
+            
+            LastPlayedGameSolution lpgs2 = new LastPlayedGameSolution("user");
+            lpgs2.setGameSolutionId(gs);
+            
+            System.out.println("LastPlayedGameSolutionsController#put");
+            lastPlayedGameSolutionsController.put(lpgs2);
             
             System.out.println("LastPlayedGameSolutionsController#findLastPlayedGameSolution");
             assertEquals(null, lastPlayedGameSolutionsController.findLastPlayedGameSolution("user2"));

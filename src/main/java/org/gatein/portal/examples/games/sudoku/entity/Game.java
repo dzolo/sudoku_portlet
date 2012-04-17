@@ -64,13 +64,16 @@ import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
     ),
     @NamedQuery(
         name = "Game.findProposals",
-        query = "SELECT DISTINCT gs.gameId FROM GameSolution gs "
-              + "WHERE gs.finished > 0 AND gs.gameId.id NOT IN ("
-              + "   SELECT gs1.gameId.id FROM GameSolution gs1 "
-              + "   WHERE gs1.userId LIKE :uid AND gs1.finished > 0"
-              + ") "
-              + "GROUP BY gs.gameId, gs.rating "
-              + "ORDER BY COUNT(gs.gameId.id) DESC, AVG(gs.rating) DESC"
+        query = "SELECT g FROM Game g "
+              + "WHERE g.id IN ("
+              + "   SELECT gs.gameId.id FROM GameSolution gs"
+              + "   WHERE gs.finished > 0 AND gs.gameId.id NOT IN ("
+              + "       SELECT gs1.gameId.id FROM GameSolution gs1"
+              + "       WHERE gs1.userId LIKE :uid AND gs1.finished > 0"
+              + "   )"
+              + "   GROUP BY gs.gameId.id, gs.rating"
+              + "   ORDER BY COUNT(gs.gameId.id) DESC, AVG(gs.rating) DESC"
+              + ")"
     ),
     @NamedQuery(
         name = "Game.findStatisticsOfGame",
@@ -328,8 +331,8 @@ public class Game implements Serializable
         
         Game other = (Game) object;
         
-        if ((this.id == null && other.id != null) ||
-            (this.id != null && !this.id.equals(other.id)))
+        if ((this.id == null && other.getId() != null) ||
+            (this.id != null && !this.id.equals(other.getId())))
         {
             return false;
         }

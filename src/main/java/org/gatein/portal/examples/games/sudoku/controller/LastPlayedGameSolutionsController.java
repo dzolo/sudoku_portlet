@@ -48,18 +48,25 @@ public class LastPlayedGameSolutionsController extends Controller
      * @throws Exception
      */
     public void put(LastPlayedGameSolution lastPlayedGameSolution)
-            throws RollbackFailureException,Exception
+            throws RollbackFailureException, Exception
     {
         EntityManager em = emf.createEntityManager();
         GameSolution gameSolution;
-        LastPlayedGameSolution lastPlayedGameSolutionOld;
-        EntityTransaction ts = null;
+        LastPlayedGameSolution lastPlayedGSOld;
+        String userId = lastPlayedGameSolution.getUserId();
+        EntityTransaction ts = em.getTransaction();
         
         try
         {
-            lastPlayedGameSolutionOld = findLastPlayedGameSolution(
-                    lastPlayedGameSolution.getUserId());
+            ts.begin();
+                
+            lastPlayedGSOld = em.find(LastPlayedGameSolution.class, userId);
             
+            if (lastPlayedGSOld != null)
+            {
+                em.remove(lastPlayedGSOld);
+            }
+        
             gameSolution = lastPlayedGameSolution.getGameSolutionId();
             
             if (gameSolution != null)
@@ -70,36 +77,20 @@ public class LastPlayedGameSolutionsController extends Controller
                 lastPlayedGameSolution.setGameSolutionId(gameSolution);
             }
             
-            ts = em.getTransaction();
-            ts.begin();
+            em.persist(lastPlayedGameSolution);
             
-            if (lastPlayedGameSolutionOld == null)
-            {
-                em.persist(lastPlayedGameSolution);
-            }
-            else
-            {
-                lastPlayedGameSolutionOld.setGameSolutionId(gameSolution);
-                em.merge(lastPlayedGameSolutionOld);
-            }
-            
-            ts.commit();
-                
             if (gameSolution != null)
             {
                 Collection<LastPlayedGameSolution> col = gameSolution.getLastPlayedGameSolutionCollection();
-
-                if (col.contains(lastPlayedGameSolution))
-                {
-                    col.remove(lastPlayedGameSolution);
-                }
-                
+                col.clear();
                 col.add(lastPlayedGameSolution);
             }
+            
+            ts.commit();
         }
         catch (Exception ex)
         {
-            if (ts != null)
+            if (ts != null && ts.isActive())
             {
                 try
                 {
