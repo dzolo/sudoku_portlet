@@ -20,7 +20,7 @@
         <properties>
             
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:..%DIR%gatein%DIR%data%DIR%db%DIR%data%DIR%sudoku;shutdown=true" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:../gatein/data/db/data/sudoku;shutdown=true" />
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
