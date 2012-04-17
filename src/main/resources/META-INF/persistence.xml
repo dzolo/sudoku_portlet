@@ -15,15 +15,12 @@
       
         <description>Default HSQL database stored in a file</description>
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>org.gatein.portal.examples.games.sudoku.entity.Service</class>
-        <class>org.gatein.portal.examples.games.sudoku.entity.Game</class>
-        <class>org.gatein.portal.examples.games.sudoku.entity.GameSolution</class>
-        <class>org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution</class>
-        <class>org.gatein.portal.examples.games.sudoku.entity.LastPlayedGameSolution</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        
         <properties>
             
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.HSQLPlatform" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/opt/GateIn_3.2.0_Final_tomcat7/gatein/data/db/data/sudoku;shutdown=true" /><!--..%DIR%gatein%DIR%data%DIR%db%DIR%data%DIR%sudoku;shutdown=true-->
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:..%DIR%gatein%DIR%data%DIR%db%DIR%data%DIR%sudoku;shutdown=true" />
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
