@@ -37,8 +37,6 @@
         
         <supported-locale>en</supported-locale>
         
-        <resource-bundle>org.gatein.portal.examples.games.sudoku.messages</resource-bundle>
-        
         <portlet-info>
             <title>Sudoku game</title>
             <short-title>Sudoku game</short-title>

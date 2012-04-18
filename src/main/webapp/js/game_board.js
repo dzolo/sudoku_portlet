@@ -538,11 +538,6 @@ function SudokuGame_GameBoard(gameParent, rootElement)
         $inputs.change(this._fieldValidator);
         // mouse hint
         $inputs.click(this._mouseHint);
-        // hide mouse hind
-        $inputs.blur(function ()
-        {
-            $(this).parent().find('.sudoku-game_input-hint').fadeOut(100);
-        });
         // hint action
         $(_rootName + ' .sudoku-game_input-hint span').click(this._makeHint);
         // hint closing

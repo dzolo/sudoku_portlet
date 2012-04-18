@@ -10,9 +10,10 @@
 
 <!DOCTYPE periodical-service-drivers[
     <!ELEMENT periodical-service-drivers (driver+)>
-    <!ELEMENT driver (class|name)*>
+    <!ELEMENT driver (class|description|name)*>
     <!ELEMENT name (#PCDATA)>
     <!ELEMENT class (#PCDATA)>
+    <!ELEMENT description (#PCDATA)>
 ]>
 
 <periodical-service-drivers>
@@ -20,11 +21,13 @@
     <driver>
         <name>RahanWzCzPeriodicalServiceDriver</name>
         <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.RahanWzCzPeriodicalServiceDriver</class>
+        <description>Driver for a daily service with URL: http://rahan.wz.cz/daily_sudoku.php</description>
     </driver>
     
     <driver>
         <name>DailysudokuComPeriodicalServiceDriver</name>
         <class>org.gatein.portal.examples.games.sudoku.provider.publisher.driver.DailysudokuComPeriodicalServiceDriver</class>
+        <description>Driver for a daily service with URL: http://www.dailysudoku.com/cgi-bin/sudoku/get_board.pl</description>
     </driver>
     
 </periodical-service-drivers>
