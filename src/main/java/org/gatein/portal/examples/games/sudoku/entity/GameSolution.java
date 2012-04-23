@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * In order to play a game, a game solution entity must be created. Each solution
@@ -354,6 +355,7 @@ public class GameSolution implements Serializable
      * 
      * @return          Collection
      */
+    @JsonIgnore
     @XmlTransient
     public Collection<SavedGameSolution> getSavedGameSolutionsCollection()
     {
@@ -375,6 +377,7 @@ public class GameSolution implements Serializable
      * 
      * @return              Collection
      */
+    @JsonIgnore
     @XmlTransient
     public Collection<LastPlayedGameSolution> getLastPlayedGameSolutionCollection()
     {

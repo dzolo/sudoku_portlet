@@ -27,7 +27,7 @@ public class Controller implements Serializable
     protected static final String PERSISTENCE_DEFAULT_UNIT_NAME = "sudoku_db";
 
     /**
-     * A map of instances of entity manager factories
+     * A map singleton of instances of entity manager factories
      */
     protected static Map<String, EntityManagerFactory> EMFs = 
             new HashMap<String, EntityManagerFactory>();

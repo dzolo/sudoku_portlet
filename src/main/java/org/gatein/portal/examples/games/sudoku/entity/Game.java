@@ -13,6 +13,7 @@ import java.util.Date;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameDifficulty;
 import org.gatein.portal.examples.games.sudoku.entity.datatype.GameType;
 
@@ -275,6 +276,7 @@ public class Game implements Serializable
      * 
      * @return              Collection of game solutions
      */
+    @JsonIgnore
     @XmlTransient
     public Collection<GameSolution> getGameSolutionsCollection()
     {

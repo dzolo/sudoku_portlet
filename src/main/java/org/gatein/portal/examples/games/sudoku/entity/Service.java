@@ -12,6 +12,7 @@ import java.util.Collection;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  * The service entity encases information about a periodically remote service,
@@ -191,6 +192,7 @@ public class Service implements Serializable
      * 
      * @return          Collection of games 
      */
+    @JsonIgnore
     @XmlTransient
     public Collection<Game> getGamesCollection()
     {

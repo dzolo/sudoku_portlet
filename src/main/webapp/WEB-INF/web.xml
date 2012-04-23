@@ -13,10 +13,25 @@
     
     <display-name>sudoku</display-name>
     
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/rest</param-value>
+    </context-param>
+    
+    <context-param>
+        <param-name>resteasy.use.builtin.providers</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    
     <servlet>
         <servlet-name>ServletAdaptor</servlet-name>
-        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>org.gatein.portal.examples.games.sudoku.ServerSideApplication</param-value>
+        </init-param>
     </servlet>
  
     <servlet-mapping>
