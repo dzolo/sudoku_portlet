@@ -1,7 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Project       : Bachelor Thesis - SudokuPortlet game implementation as portlet
+ * Document      : ServerSideApplication.java
+ * Author        : Ondřej Fibich <xfibic01@stud.fit.vutbr.cz>
+ * Organization: : FIT VUT <http://www.fit.vutbr.cz>
  */
+
 package org.gatein.portal.examples.games.sudoku;
 
 import java.util.HashSet;
@@ -10,8 +13,10 @@ import javax.ws.rs.core.Application;
 import org.gatein.portal.examples.games.sudoku.service.*;
 
 /**
+ * This class representes the Server side of the application.
+ * It provides singletons of REST facade classes for RESTful application.
  *
- * @author dzolo
+ * @author Ondřej Fibich
  */
 public class ServerSideApplication extends Application
 {
