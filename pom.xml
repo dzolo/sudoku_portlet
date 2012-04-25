@@ -116,6 +116,14 @@
         </dependency>
     </dependencies>
     
+    <pluginRepositories>
+        <pluginRepository>
+            <name>oss.sonatype.org</name>
+            <id>oss.sonatype.org</id>
+            <url>http://oss.sonatype.org/content/groups/public</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
     <build>
         <plugins>
             <plugin>
@@ -149,6 +157,42 @@
                             </includes>
                         </resource>
                     </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>yuicompressor-maven-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compress</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <nosuffix>true</nosuffix>
+                    <excludes>
+                        <exclude>**/*.min.js</exclude>
+                    </excludes>
+                    <aggregations>
+                        <aggregation>
+                            <removeIncluded>true</removeIncluded>
+                            <insertNewLine>true</insertNewLine>
+                            <output>${project.build.directory}/${project.build.finalName}/js/all-packed.js</output>
+                            <includes>
+                                <include>**/*.js</include>
+                            </includes>
+                        </aggregation>
+                        <aggregation>
+                            <removeIncluded>true</removeIncluded>
+                            <insertNewLine>true</insertNewLine>
+                            <output>${project.build.directory}/${project.build.finalName}/css/all-packed.css</output>
+                            <includes>
+                                <include>**/*.css</include>
+                            </includes>
+                        </aggregation>
+                    </aggregations>
                 </configuration>
             </plugin>
         </plugins>

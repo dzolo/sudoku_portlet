@@ -198,31 +198,7 @@ public class SudokuPortlet extends GenericPortlet
         Element link = response.createElement("link");
         link.setAttribute("type", "text/css");
         link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", path + "/css/style.css");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
-        
-        link = response.createElement("link");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", path + "/css/jquery-ui-1.8.18.custom.css");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
-        
-        link = response.createElement("link");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", path + "/css/data_table.css");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
-        
-        link = response.createElement("link");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", path + "/css/colorpicker.css");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
-        
-        link = response.createElement("link");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", path + "/css/jWizard.base.css");
+        link.setAttribute("href", path + "/css/all-packed.css");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
         
         link = response.createElement("style");
@@ -232,67 +208,7 @@ public class SudokuPortlet extends GenericPortlet
 
         Element script = response.createElement("script");
         script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery-1.7.1.min.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery-ui-1.8.18.custom.min.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery.raty.min.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery.dataTables.min.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-        
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery.colorpicker.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-        
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/lib/jquery.jWizard.min.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/exceptions.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/game_timer.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/game_board_field.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/game_board.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/game_toolbar.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/game.js");
-        response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
-
-        script = response.createElement("script");
-        script.setAttribute("type", "text/javascript");
-        script.setAttribute("src", path + "/js/request.js");
+        script.setAttribute("src", path + "/js/all-packed.js");
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, script);
     }
     
