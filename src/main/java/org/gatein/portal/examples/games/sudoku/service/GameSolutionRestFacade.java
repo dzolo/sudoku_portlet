@@ -96,6 +96,11 @@ public class GameSolutionRestFacade
             
             merged = gameSolutionsController.findGameSolution(gameSolution.getId());
             
+            if (merged == null)
+            {
+                return Response.notModified().build();
+            }
+            
             if (merged.isFinished())
             {
                 if (!gameSolution.isFinished())

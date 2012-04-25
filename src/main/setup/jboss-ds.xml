@@ -3,7 +3,7 @@
     
     <local-tx-datasource> 
         <jndi-name>jdbc/sudoku_db</jndi-name> 
-        <connection-url>jdbc:hsqldb:file:${jboss.server.data.dir}/gatein/db/data/sudoku</connection-url> 
+        <connection-url>jdbc:hsqldb:file:${jboss.server.data.dir}${/}gatein${/}db${/}data${/}sudoku</connection-url> 
         <driver-class>org.hsqldb.jdbcDriver</driver-class> 
         <user-name>sa</user-name>
         <password></password>

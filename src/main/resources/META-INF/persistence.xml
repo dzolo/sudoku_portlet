@@ -16,7 +16,7 @@
       
         <description>Default HSQL database stored in a file</description>
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
-        <non-jta-data-source>java:<!--comp/env/-->jdbc/sudoku_db</non-jta-data-source>
+        <non-jta-data-source>java:${sudoku_game.sudoku_db_jndi_prefix}jdbc/sudoku_db</non-jta-data-source>
         <class>org.gatein.portal.examples.games.sudoku.entity.Game</class>
         <class>org.gatein.portal.examples.games.sudoku.entity.GameSolution</class>
         <class>org.gatein.portal.examples.games.sudoku.entity.SavedGameSolution</class>
