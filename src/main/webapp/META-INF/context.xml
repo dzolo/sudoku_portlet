@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context antiJARLocking="true" path="/sudoku-game">
   <WatchedResource>WEB-INF/web.xml</WatchedResource>
-  <Resource auth="Container" driverClassName="org.hsqldb.jdbcDriver" name="jdbc/sudoku_db" password="" type="javax.sql.DataSource" url="jdbc:hsqldb:file:..${/}gatein${/}data${/}db${/}data${/}sudoku" username="sa"/>
+  <Resource auth="Container" driverClassName="org.hsqldb.jdbcDriver" name="jdbc/sudoku_db" password="" type="javax.sql.DataSource" url="jdbc:hsqldb:file:../gatein/data/db/data/sudoku" username="sa"/>
 </Context>
