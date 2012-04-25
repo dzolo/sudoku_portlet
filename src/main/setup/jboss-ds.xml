@@ -1,23 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datasources>
+    
     <local-tx-datasource> 
-        <jndi-name>sudoku_db_</jndi-name> 
-        <connection-url>jdbc:hsqldb:file:../gatein/data/db/data/sudoku;shutdown=true</connection-url> 
+        <jndi-name>jdbc/sudoku_db</jndi-name> 
+        <connection-url>jdbc:hsqldb:file:${jboss.server.data.dir}/gatein/db/data/sudoku</connection-url> 
         <driver-class>org.hsqldb.jdbcDriver</driver-class> 
-        <user-name>sa</user-name> 
+        <user-name>sa</user-name>
         <password></password>
         <metadata>
             <type-mapping>Hypersonic SQL</type-mapping>
         </metadata>
     </local-tx-datasource>
-    <local-tx-datasource> 
-        <jndi-name>sudoku_db_testing</jndi-name> 
-        <connection-url>jdbc:hsqldb:mem:sudoku_testing;shutdown=true</connection-url> 
-        <driver-class>org.hsqldb.jdbcDriver</driver-class> 
-        <user-name>sa</user-name> 
-        <password></password> 
-        <metadata>
-            <type-mapping>Hypersonic SQL</type-mapping>
-        </metadata>
-    </local-tx-datasource>
+    
 </datasources>

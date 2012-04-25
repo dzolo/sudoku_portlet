@@ -39,14 +39,15 @@ public class ControllersTest
     {
         try
         {
-            gamesController = new GamesController("sudoku_db_testing");
-            gameSolutionsController = new GameSolutionsController("sudoku_db_testing");
-            savedGamesController = new SavedGameSolutionsController("sudoku_db_testing");
-            lastPlayedGameSolutionsController = new LastPlayedGameSolutionsController("sudoku_db_testing");
-            servicesController = new ServicesController("sudoku_db_testing");
+            gamesController = new GamesController();
+            gameSolutionsController = new GameSolutionsController();
+            savedGamesController = new SavedGameSolutionsController();
+            lastPlayedGameSolutionsController = new LastPlayedGameSolutionsController();
+            servicesController = new ServicesController();
         }
         catch (Exception e)
         {
+            Logger.getAnonymousLogger().log(Level.SEVERE, null, e);
             fail("Error during initialization of controllers");
         }
     }
