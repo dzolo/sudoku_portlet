@@ -49,10 +49,13 @@
 .sudoku-game_body
 {
     padding: 2px;
+    overflow: hidden;
 }
 
 .sudoku-game_board
 {
+    max-width: 450px;
+    margin: 0 auto;
     border: 2px solid #a6a6a6;
     
     /* CSS3 - border */
@@ -63,6 +66,7 @@
 .sudoku-game_state-maximized .sudoku-game_board
 {
     width: 49%;
+    max-width: none;
     float: left;
 }
 
