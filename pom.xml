@@ -172,9 +172,6 @@
                 </executions>
                 <configuration>
                     <nosuffix>true</nosuffix>
-                    <excludes>
-                        <exclude>**/*.min.js</exclude>
-                    </excludes>
                     <aggregations>
                         <aggregation>
                             <removeIncluded>true</removeIncluded>
@@ -207,6 +204,43 @@
     <profiles>
         <profile>
             <id>jboss-as</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>jboss-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.3</version>
+                        <executions>
+                            <execution>
+                                <id>copy-datasource</id>
+                                <phase>compile</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${env.JBOSS_HOME}/server/default/deploy</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>src/main/setup</directory>
+                                            <includes>
+                                                <include>sudoku-game-jboss-ds.xml</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
             <dependencies>
                 <dependency>
                     <groupId>org.hibernate</groupId>
@@ -270,9 +304,22 @@
         </profile>
         <profile>
             <id>tomcat</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>tomcat-maven-plugin</artifactId>
+                        <version>1.1</version>
+                        <configuration>
+                            <url>${tomcat.url}</url>
+                            <path>${tomcat.path}</path>
+                            <username>${tomcat.user}</username>
+                            <password>${tomcat.password}</password>
+                            <mode>both</mode>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
             <dependencies>
                 <dependency>
                     <groupId>org.hibernate</groupId>
@@ -341,7 +388,7 @@
     </repositories>
     
     <properties>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+        <netbeans.hint.deploy.server>JBoss4</netbeans.hint.deploy.server>
     </properties>
     
 </project>

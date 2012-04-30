@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-    <context-root>/sudoku-game</context-root>
+  <context-root>/sudoku-game</context-root>
 </jboss-web>

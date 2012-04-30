@@ -1,0 +1,103 @@
+=== Sudoku game implementation as portlet ===
+
+Author:       Ondrej Fibich <xfibic01@stud.fit.vutbr.cz>
+Organization: FIT VUT <http://www.fit.vutbr.cz>
+
+This application represents a portlet implementation of the Sudoku game.
+
+== Description ==
+
+The application was developed for Red Hat company as an examplary portlet that
+demonstrates how portlets may be developed with a usage of REST and AJAX
+technologies.
+
+Details and the description may be found in bachelor's thesis of the author [1]
+and in the user manual. The user manual is attached to this app in a form
+of the PDF file on the path: `/user-manual-1.0.pdf`.
+
+== Installation ==
+
+The application may be built and deployed using the Apache Maven [2].
+The supported portals and deployment environments are:
+
+ * GateIn 3.2.0 with JBoss AS 5.1.0
+ * GateIn 3.2.0 with JBoss AS 6.0.0
+ * GateIn 3.2.0.Final with Tomcat 6
+ * GateIn 3.2.0.Final with Tomcat 7
+ * JBoss Enterprise Portal Platform 5.2.0
+
+The application may be deployed automatically using the NetBeans IDE [3] or 
+manually from the CLI as shown below:
+
+* Instruction for the JBoss AS (5.1/6) or JBoss EPP:
+
+1) Move to a directory of the application on your system.
+
+3) Build and deploy the application.
+
+ $ mvn clean package jboss:hard-deploy -P "jboss-as" \
+        -Denv.JBOSS_HOME=<path-to-your-JBoss-AS-home-dir>
+
+* Instruction for the Tomcat 5 <=:
+
+1) Move to a directory of the application on your system.
+
+3) Build and deploy the application. An account must be specified in the
+   tomcat-users.xml and the specified user must belong to the manager-gui role.
+
+ $ mvn clean package tomcat:deploy -P "tomcat" \
+        -Dtomcat.url=http://localhost:8080/manager \
+        -Dtomcat.path=/sudoku-game \
+        -Dtomcat.user=<username> \
+        -Dtomcat.password=<password>
+
+* Instruction for the Tomcat 5 >:
+
+1) Move to a directory of the application on your system.
+
+3) Build and deploy the application. An account must be specified in the
+   tomcat-users.xml and the specified user must belong to the manager-script role.
+
+ $ mvn clean package tomcat:deploy -P "tomcat" \
+        -Dtomcat.url=http://localhost:8080/manager/text \
+        -Dtomcat.path=/sudoku-game \
+        -Dtomcat.user=<username> \
+        -Dtomcat.password=<password>
+
+== Configuration ==
+
+All configuration actions have to be done before the installation.
+
+* The database connection may be configured in the `persistence.xml` file, 
+  located: `/src/main/resources/persistence.xml`. If the JBoss AS is used
+  the database resource may be changed within the `/src/main/jboss-ds-xml`
+  file. On the other hand if the Tomcat is used, the configuration is located:
+  `/src/main/webapp/META-INF/context.xml`
+
+* If the JBoss AS is used the path of the application on the application server
+  may be changed within the `/src/main/webapp/WEB-INF/jboss-web.xml` file.
+  On the other hand if the Tomcat is used, the path may be changed
+  in installation parameters.
+
+* Skins of the game board may be configured in the `sudoku-portlet-skins.xml`
+  file, located: `/src/main/webapp/WEB-INF/sudoku-portlet-skins.xml` 
+
+* Drivers of remote periodical services may be configured in the
+  `sudoku-portlet-periodical-service-drivers.xml` file, located:
+  `/src/main/webapp/WEB-INF/sudoku-portlet-periodical-service-drivers.xml`
+
+* Periodically remote services may be disabled in the remotePublishersEnabled
+  init parameter of the portlet deployment descriptor, located:
+  `/src/main/webapp/WEB-INF/portlet.xml`
+
+== Changelog ==
+
+= 1.0 =
+* The first release
+
+== References ==
+
+[1] Ondřej Fibich: Sudoku game implementation as portlet, bakalářská práce,
+    Brno, FIT VUT v Brně, 2012
+[2] http://maven.apache.org/
+[3] http://netbeans.org/
