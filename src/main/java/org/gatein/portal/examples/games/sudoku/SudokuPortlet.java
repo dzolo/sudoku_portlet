@@ -47,12 +47,16 @@ public class SudokuPortlet extends GenericPortlet
      * CSS definitions for skins
      */
     private static final String[][] SKIN_CSS_DEFINITIONS = {
-        { ".sudoku-game_board table td", "color" },
-        { ".sudoku-game_board table td", "border-color" },
-        { ".sudoku-game_board table td, .sudoku-game_board table td input", "background-color" },
-        { ".sudoku-game_board table td.sudoku-game_readonly-input, .sudoku-game"
-        + "_board table td.sudoku-game_readonly-input input", "background-color"},
-        { ".sudoku-game_board table td input", "font-family" }
+        { "td.sudoku-game_board-field-package input, "
+        + "table.sudoku-game_input-hint td span", "color" },
+        { "td.sudoku-game_board-field-package, .sudoku-game_board, "
+        + "table.sudoku-game_input-hint td span, "
+        + ".sudoku-game_input-hint-close", "border-color" },
+        { "td.sudoku-game_board-field-package, "
+        + "td.sudoku-game_board-field-package input", "background-color" },
+        { "td.sudoku-game_readonly-input, "
+        + "td.sudoku-game_readonly-input input", "background-color"},
+        { "td.sudoku-game_board-field-package input", "font-family" }
     };
     
     /**
@@ -417,7 +421,7 @@ public class SudokuPortlet extends GenericPortlet
                 buffer.append("#");
             }
 
-            buffer.append(value).append(" } ");
+            buffer.append(value).append(" ! important } ");
 
             i++;
         }

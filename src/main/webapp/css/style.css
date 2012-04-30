@@ -79,7 +79,6 @@
 .sudoku-game_board table td input
 {
     width: 95%;
-    height: 100%;
     font-size: 13px;
     border: none;
     text-align: center;
@@ -229,7 +228,7 @@ table.sudoku-game_input-hint td .sudoku-game_input-hint-close
 table.sudoku-game_input-hint td span:hover,
 table.sudoku-game_input-hint td .sudoku-game_input-hint-close:hover
 {
-    border-color: black;
+    border-color: black ! important;
 }
 
 /* <-- VIEW mode - body */

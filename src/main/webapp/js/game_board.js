@@ -167,13 +167,16 @@ function SudokuGame_GameBoard(gameParent, rootElement)
             
             $board_table.find('.sudoku-game_input-hint').css({
                 'width'  : item_width + 38,
-                'height' : item_width + 32
+                'height' : item_width + 30
             });
 
-            
             $board_table.find('.sudoku-game_input-hint-center').css({
                 'width'  : item_width + 2,
                 'height' : item_width + 2
+            });
+
+            $board_table.find('table.sudoku-game_input-hint td').css({
+                'height' : (item_width + 32) / 4 - 3
             });
 
             $board_table.find('td input').css({

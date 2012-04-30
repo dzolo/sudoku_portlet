@@ -10,17 +10,21 @@
 
 <!DOCTYPE portlet-skins SYSTEM "../META-INF/sudoku-portlet-skins.dtd">
 
+<!--
+ Colors may be inserted in hexa format without the leading sharp character (#).
+-->
+
 <portlet-skins>
     
-    <skin name="Default" default="true">
+    <skin name="GateIn" default="true">
         <game-board font-color="000000" border-color="a6a6a6">
-            <field background="ffffff" fixed-background="f2f2f2" font="Arial,Arial,Helvetica,sans-serif"/>
+            <field background="ffffff" fixed-background="f2f2f2" font="Arial,Helvetica,sans-serif"/>
         </game-board>
     </skin>
     
-    <skin name="New theme">
-        <game-board font-color="012345" border-color="678900">
-            <field background="abcdef" fixed-background="012345" font="Comic Sans MS,Comic Sans MS,cursive"/>
+    <skin name="JBoss EPP">
+        <game-board font-color="4a0102" border-color="4a0102">
+            <field background="ffffff" fixed-background="f6f6f6" font="Arial,Helvetica,sans-serif"/>
         </game-board>
     </skin>
     

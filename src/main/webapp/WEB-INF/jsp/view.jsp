@@ -601,10 +601,10 @@
                     <tr>
                         <c:forEach var="colIndex" begin="1" end="9" step="1">
                             <c:set var="borderRight" value="${((colIndex mod 3) eq 0) and (colIndex ne 1) and (colIndex ne 9)}" />
-                            <td style="<c:if test="${borderBottom}">border-bottom: 2px solid #a6a6a6;</c:if><c:if test="${borderRight}">border-right: 2px solid #a6a6a6;</c:if>">
+                            <td class="sudoku-game_board-field-package" style="<c:if test="${borderBottom}">border-bottom: 2px solid #a6a6a6;</c:if><c:if test="${borderRight}">border-right: 2px solid #a6a6a6;</c:if>">
                                 <table class="sudoku-game_input-hint">
                                     <tr><td><span>8</span></td><td><span>9</span></td><td><div class="sudoku-game_input-hint-close"></div></td></tr>
-                                    <tr><td><span>7</span></td><td rowspan="2"><div class="sudoku-game_input-hint-center"></div></td><td><span>1</span></td></tr>
+                                    <tr><td style="padding-top: 2px"><span>7</span></td><td rowspan="2"><div class="sudoku-game_input-hint-center"></div></td><td style="padding-top: 2px"><span>1</span></td></tr>
                                     <tr><td><span>6</span></td><td><span>2</span></td></tr>
                                     <tr><td><span>5</span></td><td><span>4</span></td><td><span>3</span></td></tr>
                                 </table>
