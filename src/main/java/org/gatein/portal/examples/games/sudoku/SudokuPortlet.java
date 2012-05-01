@@ -44,25 +44,9 @@ public class SudokuPortlet extends GenericPortlet
     private static final Logger logger = Logger.getLogger(SudokuPortlet.class.getName());
     
     /**
-     * CSS definitions for skins
-     */
-    private static final String[][] SKIN_CSS_DEFINITIONS = {
-        { "td.sudoku-game_board-field-package input, "
-        + "table.sudoku-game_input-hint td span", "color" },
-        { "td.sudoku-game_board-field-package, .sudoku-game_board, "
-        + "table.sudoku-game_input-hint td span, "
-        + ".sudoku-game_input-hint-close", "border-color" },
-        { "td.sudoku-game_board-field-package, "
-        + "td.sudoku-game_board-field-package input", "background-color" },
-        { "td.sudoku-game_readonly-input, "
-        + "td.sudoku-game_readonly-input input", "background-color"},
-        { "td.sudoku-game_board-field-package input", "font-family" }
-    };
-    
-    /**
      * A map of predefined skins loaded during initialization
      */
-    private Map<String, Map<String, String>> skins;
+    private Map<String, Skin> skins;
     
     /**
      * Name of a default skin name which correspondes to one in the skins Map
@@ -88,7 +72,7 @@ public class SudokuPortlet extends GenericPortlet
         remotePublishersEnabled = Boolean.valueOf(rpe);
         
         // init skins
-        skins = new LinkedHashMap<String, Map<String, String>>();
+        skins = new LinkedHashMap<String, Skin>();
         defaultSkinName = null;
         
         try
@@ -134,8 +118,12 @@ public class SudokuPortlet extends GenericPortlet
     public void doEdit(RenderRequest request, RenderResponse response)
             throws PortletException, IOException
     {
-        final String skinName = getCurrentSkinNameOfUser(request.getPreferences());
-        final Map<String, String> skin = getCurrentSkinOfUser(request.getPreferences());
+        String skinName;
+        Skin skin = new Skin();
+        
+        skin.load(request.getRemoteUser(), request.getPreferences(), skins.get(defaultSkinName));
+        skinName = getNameOf(skin);
+        
         
         request.setAttribute("skinsMap", skins);
         request.setAttribute("skinNames", skins.keySet());
@@ -174,20 +162,21 @@ public class SudokuPortlet extends GenericPortlet
     public void processChangeSkin(ActionRequest request, ActionResponse response)
             throws PortletException, PortletSecurityException, IOException
     {
-        PortletPreferences p = request.getPreferences();
+        Skin skin = new Skin(
+                request.getParameter("board-font-color"),
+                request.getParameter("board-border-color"),
+                request.getParameter("field-bg-color"),
+                request.getParameter("field-bg-fixed-color"),
+                request.getParameter("field-font")
+        );
         
         try
         {
-            p.setValue("skin-fontColor", request.getParameter("board-font-color"));
-            p.setValue("skin-borderColor", request.getParameter("board-border-color"));
-            p.setValue("skin-background", request.getParameter("field-bg-color"));
-            p.setValue("skin-fixedBackground", request.getParameter("field-bg-fixed-color"));
-            p.setValue("skin-font", request.getParameter("field-font"));
-            p.store();
+            skin.store(request.getRemoteUser(), request.getPreferences());
         }
         catch (ReadOnlyException ex)
         {
-            logger.log(Level.SEVERE, null, ex);
+            logger.log(Level.SEVERE, "read only preferences", ex);
         }
     }
     
@@ -198,6 +187,7 @@ public class SudokuPortlet extends GenericPortlet
     public void doHeaders(RenderRequest request, RenderResponse response)
     {
         final String path = request.getContextPath();
+        final String uid = request.getRemoteUser();
         
         Element link = response.createElement("link");
         link.setAttribute("type", "text/css");
@@ -207,7 +197,8 @@ public class SudokuPortlet extends GenericPortlet
         
         link = response.createElement("style");
         link.setAttribute("type", "text/css");
-        link.setTextContent(buildSkinStyleTagContent(request.getPreferences()));
+        link.setAttribute("id", "sudoku-game_skin");
+        link.setTextContent(buildSkinStyleTagContent(uid, request.getPreferences()));
         response.addProperty(MimeResponse.MARKUP_HEAD_ELEMENT, link);
 
         Element script = response.createElement("script");
@@ -241,7 +232,7 @@ public class SudokuPortlet extends GenericPortlet
         // load each skin tag
         for (int i = 0; i < skinNodes.getLength(); i++)
         {
-            Map<String, String> skin = new LinkedHashMap<String, String>();
+            Skin skin = new Skin();
             Node skinNode = skinNodes.item(i);
             NamedNodeMap attrsSkin = skinNode.getAttributes();
             String name = attrsSkin.getNamedItem("name").getTextContent();
@@ -257,8 +248,8 @@ public class SudokuPortlet extends GenericPortlet
                     Node fontColorNode = attrsChild.getNamedItem("font-color");
                     Node borderColorNode = attrsChild.getNamedItem("border-color");
 
-                    skin.put("fontColor", fontColorNode.getTextContent());
-                    skin.put("borderColor", borderColorNode.getTextContent());
+                    skin.fontColor.setValue(fontColorNode.getTextContent());
+                    skin.borderColor.setValue(borderColorNode.getTextContent());
 
                     childrensNodes = childNode.getChildNodes();
 
@@ -273,9 +264,9 @@ public class SudokuPortlet extends GenericPortlet
                             Node fixBgNode = attrsChild.getNamedItem("fixed-background");
                             Node fontNode = attrsChild.getNamedItem("font");
 
-                            skin.put("background", bgNode.getTextContent());
-                            skin.put("fixedBackground", fixBgNode.getTextContent());
-                            skin.put("font", fontNode.getTextContent());
+                            skin.background.setValue(bgNode.getTextContent());
+                            skin.fixedBackground.setValue(fixBgNode.getTextContent());
+                            skin.font.setValue(fontNode.getTextContent());
 
                             break;
                         }
@@ -329,39 +320,20 @@ public class SudokuPortlet extends GenericPortlet
     }
     
     /**
-     * Gets name of current skin of a user
+     * Gets name of given skin or null if the skin is a custom skin.
      * 
-     * @param preferences       Preferences of a user
-     * @return                  A name of the current skin of null for a custom skin
+     * @param skin              Skin
+     * @return                  Skin name
      */
-    private String getCurrentSkinNameOfUser(PortletPreferences preferences)
+    private String getNameOf(Skin skin)
     {
-        if (!skins.isEmpty())
+        if (skins.containsValue(skin))
         {
-            for (String skinName : skins.keySet())
+            for (String name : skins.keySet())
             {
-                Map<String, String> skin = skins.get(skinName);
-                boolean equals = true;
-                
-                for (String key : skin.keySet())
+                if (skins.get(name).equals(skin))
                 {
-                    final String pVal = preferences.getValue("skin-" + key, null);
-                    
-                    if (pVal == null)
-                    {
-                        return defaultSkinName;
-                    }
-                    
-                    if (!skin.get(key).equals(pVal))
-                    {
-                        equals = false;
-                        break;
-                    }
-                }
-                
-                if (equals)
-                {
-                    return skinName;
+                    return name;
                 }
             }
         }
@@ -370,63 +342,333 @@ public class SudokuPortlet extends GenericPortlet
     }
     
     /**
-     * Gets the current skin of a user
+     * Builds a skin of the portlet by prefrences or default skin
      * 
-     * @param preferences       Preferences of a user
-     * @return                  The current skin
+     * @param p                 Preferences of a user
+     * @return                  Builded content of a style element
      */
-    private Map<String, String> getCurrentSkinOfUser(PortletPreferences preferences)
+    private String buildSkinStyleTagContent(String userId, PortletPreferences p)
     {
-        String defName = getCurrentSkinNameOfUser(preferences);
-        Map<String, String> ret;
-        
-        if (defName != null)
-        {
-            ret = skins.get(defName);
-        }
-        else
-        {
-            ret = new LinkedHashMap<String, String>();
-            ret.put("fontColor", preferences.getValue("skin-fontColor", null));
-            ret.put("borderColor", preferences.getValue("skin-borderColor", null));
-            ret.put("background", preferences.getValue("skin-background", null));
-            ret.put("fixedBackground", preferences.getValue("skin-fixedBackground", null));
-            ret.put("font", preferences.getValue("skin-font", null));
-        }
-        
-        return ret;
+        Skin skin = new Skin();
+        skin.load(userId, p, skins.get(defaultSkinName));
+        return skin.toString();
     }
     
     /**
-     * Builds a skin of the portlet by prefrences or default skin
-     * 
-     * @param preferences       Preferences of a user
-     * @return                  Builded content of a style element
+     * This class represents a skin of the game board.
      */
-    private String buildSkinStyleTagContent(PortletPreferences preferences)
+    public class Skin
     {
-        StringBuilder buffer = new StringBuilder();
-        Map<String, String> skin = getCurrentSkinOfUser(preferences);
-        int i = 0;
+        // predefined teplates for skin properties
+        private static final String FONT_COLOR_CSS = "td.sudoku-game_board-field-package input, table.sudoku-game_input-hint td span { color: #%s ! important }";
+        private static final String BORDER_COLOR_CSS = "td.sudoku-game_board-field-package, .sudoku-game_board, table.sudoku-game_input-hint td span, .sudoku-game_input-hint-close { border-color: #%s ! important }";
+        private static final String BACKGROUND_COLOR_CSS = "td.sudoku-game_board-field-package, td.sudoku-game_board-field-package input { background-color: #%s ! important }";
+        private static final String FIXED_BACKGROUND_COLOR_CSS = "td.sudoku-game_readonly-input, td.sudoku-game_readonly-input input { background-color: #%s ! important } ";
+        private static final String FONT_CSS = "td.sudoku-game_board-field-package input { font-family: %s }";
         
-        for (String key : skin.keySet())
+        // skin properties
+        private SkinItem fontColor;
+        private SkinItem borderColor;
+        private SkinItem background;
+        private SkinItem fixedBackground;
+        private SkinItem font;
+
+        /**
+         * Creates an empty skin
+         */
+        public Skin()
         {
-            String value = preferences.getValue("skin-" + key, skin.get(key));
+            this(null, null, null, null, null);
+        }
 
-            buffer.append(SKIN_CSS_DEFINITIONS[i][0]).append(" { ")
-                .append(SKIN_CSS_DEFINITIONS[i][1]).append(": ");
-
-            if (!key.equals("font"))
-            {
-                buffer.append("#");
-            }
-
-            buffer.append(value).append(" ! important } ");
-
-            i++;
+        /**
+         * Creates an skin with given properites
+         * 
+         * @param fontColor
+         * @param borderColor
+         * @param background
+         * @param fixedBackground
+         * @param font 
+         */
+        public Skin(String fontColor, String borderColor, String background,
+                    String fixedBackground, String font)
+        {
+    
+            this.fontColor = new SkinItem(fontColor, FONT_COLOR_CSS);
+            this.borderColor = new SkinItem(borderColor, BORDER_COLOR_CSS);
+            this.background = new SkinItem(background, BACKGROUND_COLOR_CSS);
+            this.fixedBackground = new SkinItem(fixedBackground, FIXED_BACKGROUND_COLOR_CSS);
+            this.font = new SkinItem(font, FONT_CSS);
         }
         
-        return buffer.toString();
+        /**
+         * Loads properties from portlet preferences of the given user.
+         * If the preferences of the user are not avaivable, default skin is used.
+         * 
+         * @param userId        Identificator of user
+         * @param p             Portlet preferences
+         * @param defaultSkin   Default skin
+         */
+        public void load(String userId, PortletPreferences p, Skin defaultSkin)
+        {
+            fontColor.setValue(p.getValue(userId + ":fontColor", defaultSkin.fontColor.getValue()));
+            borderColor.setValue(p.getValue(userId + ":borderColor", defaultSkin.borderColor.getValue()));
+            background.setValue(p.getValue(userId + ":background", defaultSkin.background.getValue()));
+            fixedBackground.setValue(p.getValue(userId + ":fixedBackground", defaultSkin.fixedBackground.getValue()));
+            font.setValue(p.getValue(userId + ":font", defaultSkin.font.getValue()));
+        }
+        
+        /**
+         * Strores properties to portlet preferences of the given user.
+         * 
+         * @param userId        Identificator of user
+         * @param p             Portlet preferences
+         * @throws ReadOnlyException
+         * @throws IOException
+         * @throws ValidatorException 
+         */
+        public void store(String userId, PortletPreferences p)
+                throws ReadOnlyException, IOException, ValidatorException
+        {
+            if (userId != null && !userId.isEmpty())
+            {
+                p.setValue(userId + ":fontColor", fontColor.getValue());
+                p.setValue(userId + ":borderColor", borderColor.getValue());
+                p.setValue(userId + ":background", background.getValue());
+                p.setValue(userId + ":fixedBackground", fixedBackground.getValue());
+                p.setValue(userId + ":font", font.getValue());
+                p.store();
+            }
+        }
+
+        @Override
+        public String toString()
+        {
+            StringBuilder b = new StringBuilder();
+            b.append(fontColor.toString());
+            b.append(" ");
+            b.append(borderColor.toString());
+            b.append(" ");
+            b.append(background.toString());
+            b.append(" ");
+            b.append(fixedBackground.toString());
+            b.append(" ");
+            b.append(font.toString());
+            return b.toString();
+        }
+
+        /**
+         * Gets background of the skin
+         * 
+         * @return          Background color in hexa form without leadin sharp 
+         */
+        public SkinItem getBackground()
+        {
+            return background;
+        }
+
+
+        /**
+         * Gets background of the skin
+         * 
+         * @return          Color in hexa form without leading sharp 
+         */
+        public SkinItem getBorderColor()
+        {
+            return borderColor;
+        }
+
+        /**
+         * Gets fixed background of the skin
+         * 
+         * @return          Color in hexa form without leading sharp 
+         */
+        public SkinItem getFixedBackground()
+        {
+            return fixedBackground;
+        }
+
+        /**
+         * Gets font of the skin
+         * 
+         * @return          A list of fonts 
+         */
+        public SkinItem getFont()
+        {
+            return font;
+        }
+
+        /**
+         * Gets font color of the skin
+         * 
+         * @return          Color in hexa form without leading sharp 
+         */
+        public SkinItem getFontColor()
+        {
+            return fontColor;
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            
+            if (getClass() != obj.getClass())
+            {
+                return false;
+            }
+            
+            final Skin other = (Skin) obj;
+            
+            if (this.fontColor != other.fontColor &&
+                (this.fontColor == null || !this.fontColor.equals(other.fontColor)))
+            {
+                return false;
+            }
+            
+            if (this.borderColor != other.borderColor &&
+                (this.borderColor == null || !this.borderColor.equals(other.borderColor)))
+            {
+                return false;
+            }
+            
+            if (this.background != other.background &&
+                (this.background == null || !this.background.equals(other.background)))
+            {
+                return false;
+            }
+            
+            if (this.fixedBackground != other.fixedBackground &&
+                (this.fixedBackground == null || !this.fixedBackground.equals(other.fixedBackground)))
+            {
+                return false;
+            }
+            
+            if (this.font != other.font &&
+                (this.font == null || !this.font.equals(other.font)))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int hash = 5;
+            hash = 31 * hash + (this.fontColor != null ? this.fontColor.hashCode() : 0);
+            hash = 31 * hash + (this.borderColor != null ? this.borderColor.hashCode() : 0);
+            hash = 31 * hash + (this.background != null ? this.background.hashCode() : 0);
+            hash = 31 * hash + (this.fixedBackground != null ? this.fixedBackground.hashCode() : 0);
+            hash = 31 * hash + (this.font != null ? this.font.hashCode() : 0);
+            return hash;
+        }
+        
+    }
+    
+    /**
+     * This class representes an item of skin.
+     * 
+     * @see Skin
+     */
+    public class SkinItem
+    {
+        private String value;
+        private String template;
+
+        /**
+         * Creates a skin with a teplate
+         * 
+         * @param template  String teplate for value
+         */
+        public SkinItem(String template)
+        {
+            this(null, template);
+        }
+
+        /**
+         * Creates a skin with a teplate and its value
+         * 
+         * @param value     String value
+         * @param template  String teplate for value
+         */
+        public SkinItem(String value, String template)
+        {
+            this.template = template;
+            this.value = value;
+        }
+        
+        /**
+         * Gets value of the skin item
+         * 
+         * @return          String value 
+         */
+        public String getValue()
+        {
+            return value;
+        }
+
+        /**
+         * Sets value of the skin item
+         * 
+         * @param value     New string value
+         */
+        public void setValue(String value)
+        {
+            this.value = value;
+        }
+
+        @Override
+        public String toString()
+        {
+            if (template == null || template.isEmpty())
+            {
+                return "";
+            }
+            
+            return String.format(template, new Object[] {value});
+        }
+
+        @Override
+        public boolean equals(Object obj)
+        {
+            if (obj == null)
+            {
+                return false;
+            }
+            
+            if (getClass() != obj.getClass())
+            {
+                return false;
+            }
+            
+            final SkinItem other = (SkinItem) obj;
+            
+            if ((this.value == null) ? (other.value != null) : !this.value.equals(other.value))
+            {
+                return false;
+            }
+            
+            if ((this.template == null) ? (other.template != null) : !this.template.equals(other.template))
+            {
+                return false;
+            }
+            
+            return true;
+        }
+
+        @Override
+        public int hashCode()
+        {
+            int hash = 5;
+            hash = 13 * hash + (this.value != null ? this.value.hashCode() : 0);
+            hash = 13 * hash + (this.template != null ? this.template.hashCode() : 0);
+            return hash;
+        }
+        
     }
     
 }

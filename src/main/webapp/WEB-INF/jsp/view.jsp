@@ -23,6 +23,15 @@
     // after the document is loaded
     $(document).ready(function ()
     {
+        /* Skin ***************************************************************/
+        
+        // fix for EPP (replace the CDATA section from the style element)
+        if ($('#sudoku-game_skin').html().match(/<!\[CDATA\[.*\]\]/))
+        {
+            var r = /<!\[CDATA\[(.*)\]\]/.exec($('#sudoku-game_skin').html());
+            $('#sudoku-game_skin').html(r[1]);
+        }
+        
         /* Game ***************************************************************/
         
         if (window['<portlet:namespace/>_game'] == undefined)

@@ -47,11 +47,11 @@
         window['<portlet:namespace/>_skins'] = {
             //<c:forEach var="item" items="${skinsMap}" varStatus="status">
                 '${item.key}': [
-                    '${item.value.fontColor}',
-                    '${item.value.borderColor}',
-                    '${item.value.background}',
-                    '${item.value.fixedBackground}',
-                    '${item.value.font}'
+                    '${item.value['fontColor']['value']}',
+                    '${item.value['borderColor']['value']}',
+                    '${item.value['background']['value']}',
+                    '${item.value['fixedBackground']['value']}',
+                    '${item.value['font']['value']}'
                 ]${not status.last ? ',' : ''}
             //</c:forEach>
         };
@@ -131,11 +131,11 @@
             else
             {
                 skin = [
-                    '${currentSkin['fontColor']}',
-                    '${currentSkin['borderColor']}',
-                    '${currentSkin['background']}',
-                    '${currentSkin['fixedBackground']}',
-                    '${currentSkin['font']}'
+                    '${currentSkin['fontColor']['value']}',
+                    '${currentSkin['borderColor']['value']}',
+                    '${currentSkin['background']['value']}',
+                    '${currentSkin['fixedBackground']['value']}',
+                    '${currentSkin['font']['value']}'
                 ];
                 
                 ps.removeClass('sudoku-game_edit-colorpicker-disabled');
