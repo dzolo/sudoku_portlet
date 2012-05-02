@@ -47,6 +47,11 @@
             <role-name>administrator</role-name>
             <role-link>administrators</role-link>
         </security-role-ref>
+        
+        <container-runtime-option>
+            <name>javax.portlet.renderHeaders</name>
+            <value>true</value>
+        </container-runtime-option>
     
     </portlet>
 

@@ -29,6 +29,11 @@ import org.jsoup.select.Elements;
 public class RahanWzCzPeriodicalServiceDriver extends AbstractPeriodicalServiceDriver
 {
     /**
+     * Timeout for connection in miliseconds
+     */
+    private static final int TIMEOUT = 6000;
+    
+    /**
      * URL for which the service is capable to work with
      */
     private static final String serviceURL = "http://rahan.wz.cz/daily_sudoku.php";
@@ -62,7 +67,7 @@ public class RahanWzCzPeriodicalServiceDriver extends AbstractPeriodicalServiceD
     public Game getGame(Game lastGame) throws IOException
     {
         // download a web page        
-        Document doc = Jsoup.connect(getService().getUrl()).get();
+        Document doc = Jsoup.connect(getService().getUrl()).timeout(TIMEOUT).get();
         Elements inputs = doc.select("table tr td input");
         
         Integer[] values = new Integer[81];
