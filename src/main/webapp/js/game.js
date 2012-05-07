@@ -399,9 +399,9 @@ function SudokuGame_Game(namespace, appPath)
             // build the end dialog
             $dialog.html(
                 $('<p>').append(
-                    $('<b>').html('Congradulations! You succesfully solved this game. ')
+                    $('<b>').html('Congratulations! You have succesfully solved this game. ')
                 ).append(
-                    $('<span>').html('It tooks you ' + this.getTimer().getTimeout() + ' seconds.')
+                    $('<span>').html('It took you ' + this.getTimer().getTimeout() + ' seconds.')
                 )
             ).append($('<p>').html('Did you enjoy this game? Please, rate it.'));
             
