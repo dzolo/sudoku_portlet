@@ -65,6 +65,42 @@ var SudokuGame_Request = (function (contextPath)
     }
     
     /**
+     * Gets an error message from a state
+     */
+    this._getError = function (jqXHR, ex)
+    {
+        if (jqXHR.status === 0)
+        {
+            return 'Server is down.';
+        }
+        else if (jqXHR.status == 404)
+        {
+            return 'Requested page not found [404].';
+        }
+        else if (jqXHR.status == 500)
+        {
+            return 'Internal Server Error [500].';
+        }
+        else if (ex != undefined)
+        {
+            if (ex === 'parsererror')
+            {
+                return 'Requested JSON parse failed.';
+            }
+            else if (ex === 'timeout')
+            {
+                return 'Time out error.';
+            }
+            else if (ex === 'abort')
+            {
+                return 'Ajax request aborted.';
+            }
+        }
+        
+        return 'Uncaught Error.\n' + jqXHR.responseText;
+    }
+    
+    /**
      * Makes an GET request to a given path.
      * The path does not contains the context path of the application. 
      *
@@ -87,14 +123,18 @@ var SudokuGame_Request = (function (contextPath)
             {
                 if (jqXHR.status != 200)
                 {
-                    throw new SudokuGame_RequestFailedException(textStatus);
+                    throw new SudokuGame_RequestFailedException(
+                            self._getError(jqXHR), textStatus
+                    );
                 }
                 
                 returnObj = data;
             },
             error       : function (jqXHR, textStatus, et)
             {
-                throw new SudokuGame_RequestFailedException(textStatus, et);
+                throw new SudokuGame_RequestFailedException(
+                        self._getError(jqXHR, et), et
+                );
             }
         });
         
@@ -128,7 +168,9 @@ var SudokuGame_Request = (function (contextPath)
             {
                 if (jqXHR.status != 200 && jqXHR.status != 201)
                 {
-                    throw new SudokuGame_RequestFailedException(textStatus);
+                    throw new SudokuGame_RequestFailedException(
+                            self._getError(jqXHR), textStatus
+                    );
                 }
                 
                 if (data)
@@ -143,7 +185,7 @@ var SudokuGame_Request = (function (contextPath)
             error       : function (jqXHR, textStatus, et)
             {
                 throw new SudokuGame_RequestFailedException(
-                        textStatus + ' ' + jqXHR.status, et
+                        self._getError(jqXHR, et), et
                 );
             }
         });
@@ -177,7 +219,9 @@ var SudokuGame_Request = (function (contextPath)
             {
                 if (jqXHR.status != 200 && jqXHR.status != 201)
                 {
-                    throw new SudokuGame_RequestFailedException(textStatus);
+                    throw new SudokuGame_RequestFailedException(
+                            self._getError(jqXHR), textStatus
+                    );
                 }
                 
                 returnObj = data;
@@ -185,7 +229,7 @@ var SudokuGame_Request = (function (contextPath)
             error       : function (jqXHR, textStatus, et)
             {
                 throw new SudokuGame_RequestFailedException(
-                        textStatus + ' ' + jqXHR.status, et
+                        self._getError(jqXHR, et), et
                 );
             }
         });
@@ -219,14 +263,18 @@ var SudokuGame_Request = (function (contextPath)
             {
                 if (jqXHR.status != 200)
                 {
-                    throw new SudokuGame_RequestFailedException(textStatus);
+                    throw new SudokuGame_RequestFailedException(
+                            self._getError(jqXHR), textStatus
+                    );
                 }
                 
                 return data;
             },
             error       : function (jqXHR, textStatus, et)
             {
-                throw new SudokuGame_RequestFailedException(textStatus, et);
+                throw new SudokuGame_RequestFailedException(
+                        self._getError(jqXHR, et), et
+                );
             }
         });
         
@@ -235,6 +283,8 @@ var SudokuGame_Request = (function (contextPath)
     
     // CONSTRUCT START /////////////////////////////////////////////////////////
     this.setContextPath(contextPath);
+    
+    var self = this;
     // CONTRUCT END    /////////////////////////////////////////////////////////
     
     // returns an instance of the class

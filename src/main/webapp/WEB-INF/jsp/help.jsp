@@ -18,6 +18,7 @@
     
 --></script>
 
-<b>
-    Not implemented yet
-</b>
+<h3 style="margin-top: 5px; margin-left: 5px;">Documentation</h3>
+
+<p style="margin-left: 5px;">A user manual about the Sudoku game portlet: <a href="${pageContext.request.contextPath}/user-manual.pdf" style="color: blue; text-decoration: underline">user-manual.pdf</a>.</p>
+<p style="margin-left: 5px;">The manual is a PDF file which may be openned by <a href="http://get.adobe.com/reader/" target="_blank" style="color: blue; text-decoration: underline">Adobe Reader</a>.</p>

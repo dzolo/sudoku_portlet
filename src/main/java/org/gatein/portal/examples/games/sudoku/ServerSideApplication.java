@@ -21,19 +21,19 @@ import org.gatein.portal.examples.games.sudoku.service.*;
 public class ServerSideApplication extends Application
 {
     private Set<Object> singletons = new HashSet<Object>();
- 
-	public ServerSideApplication()
+
+    public ServerSideApplication()
     {
-		singletons.add(new GameRestFacade());
-		singletons.add(new GameSolutionRestFacade());
+        singletons.add(new GameRestFacade());
+        singletons.add(new GameSolutionRestFacade());
         singletons.add(new SavedGameSolutionRestFacade());
         singletons.add(new LastPlayedGameSolutionRestFacade());
         singletons.add(new ServicesRestFacade());
-	}
- 
-	@Override
-	public Set<Object> getSingletons()
+    }
+
+    @Override
+    public Set<Object> getSingletons()
     {
-		return singletons;
-	}
+        return singletons;
+    }
 }

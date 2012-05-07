@@ -12,35 +12,35 @@ demonstrates how portlets may be developed with a usage of REST and AJAX
 technologies.
 
 Details and the description may be found in bachelor's thesis of the author [1]
-and in the user manual. The user manual is attached to this app in a form
-of the PDF file on the path: `/user-manual-1.0.pdf`.
+and in a user manual. The user manual is attached to this application in a form
+of a PDF file, located: `/src/webapp/user-manual.pdf`.
 
 == Installation ==
 
-The application may be built and deployed using the Apache Maven [2].
-The supported portals and deployment environments are:
+The application may be built and deployed, using the Apache Maven [2].
+Supported portals and deployment environments are:
 
- * GateIn 3.2.0 with JBoss AS 5.1.0
- * GateIn 3.2.0 with JBoss AS 6.0.0
+ * GateIn 3.2.0.Final with JBoss AS 5.1.0
+ * GateIn 3.2.0.Final with JBoss AS 6.0.0
  * GateIn 3.2.0.Final with Tomcat 6
  * GateIn 3.2.0.Final with Tomcat 7
  * JBoss Enterprise Portal Platform 5.2.0
 
-The application may be deployed automatically using the NetBeans IDE [3] or 
-manually from the CLI as shown below:
+The application may be deployed automatically, using the NetBeans IDE [3], or 
+manually, using the CLI, as shown below:
 
-* Instruction for the JBoss AS (5.1/6) or JBoss EPP:
+* Instructions for JBoss AS (5.1/6) or JBoss EPP:
 
-1) Move to a directory of the application on your system.
+1) Move to the application root directory.
 
 3) Build and deploy the application.
 
  $ mvn clean package jboss:hard-deploy -P "jboss-as" \
         -Denv.JBOSS_HOME=<path-to-your-JBoss-AS-home-dir>
 
-* Instruction for the Tomcat 5 <=:
+* Instructions for Tomcat 5 <=:
 
-1) Move to a directory of the application on your system.
+1) Move to the application root directory.
 
 3) Build and deploy the application. An account must be specified in the
    tomcat-users.xml and the specified user must belong to the manager-gui role.
@@ -51,9 +51,9 @@ manually from the CLI as shown below:
         -Dtomcat.user=<username> \
         -Dtomcat.password=<password>
 
-* Instruction for the Tomcat 5 >:
+* Instructions for the Tomcat 5 >:
 
-1) Move to a directory of the application on your system.
+1) Move to the application root directory.
 
 3) Build and deploy the application. An account must be specified in the
    tomcat-users.xml and the specified user must belong to the manager-script role.
@@ -66,27 +66,27 @@ manually from the CLI as shown below:
 
 == Configuration ==
 
-All configuration actions have to be done before the installation.
+All configurational actions have to be done before the installation.
 
-* The database connection may be configured in the `persistence.xml` file, 
-  located: `/src/main/resources/persistence.xml`. If the JBoss AS is used
-  the database resource may be changed within the `/src/main/jboss-ds-xml`
-  file. On the other hand if the Tomcat is used, the configuration is located:
+* A database connection may be configurated in the `persistence.xml` file, 
+  located: `/src/main/resources/persistence.xml`. If JBoss AS is used,
+  the database resource may be changed within the `/src/main/jboss-ds.xml`
+  file. On the other hand if Tomcat is used, the configuration will be located:
   `/src/main/webapp/META-INF/context.xml`
 
-* If the JBoss AS is used the path of the application on the application server
+* If JBoss AS is used, the path of the application on the application server
   may be changed within the `/src/main/webapp/WEB-INF/jboss-web.xml` file.
-  On the other hand if the Tomcat is used, the path may be changed
+  On the other hand if Tomcat is used, the path may be changed
   in installation parameters.
 
-* Skins of the game board may be configured in the `sudoku-portlet-skins.xml`
+* Skins of the game board may be configurated in the `sudoku-portlet-skins.xml`
   file, located: `/src/main/webapp/WEB-INF/sudoku-portlet-skins.xml` 
 
-* Drivers of remote periodical services may be configured in the
+* Drivers of remote periodical services may be configurated in the
   `sudoku-portlet-periodical-service-drivers.xml` file, located:
   `/src/main/webapp/WEB-INF/sudoku-portlet-periodical-service-drivers.xml`
 
-* Periodically remote services may be disabled in the remotePublishersEnabled
+* Periodical remote services may be disabled in the remotePublishersEnabled
   init parameter of the portlet deployment descriptor, located:
   `/src/main/webapp/WEB-INF/portlet.xml`
 

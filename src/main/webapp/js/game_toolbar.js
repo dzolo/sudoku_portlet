@@ -187,7 +187,16 @@ function SudokuGame_GameToolbar(gameParent)
                 // pause the game
                 if (_parent.getTimer().isStarted())
                 {
-                    _parent.pause();
+                    try
+                    {
+                        _parent.pause();
+                    }
+                    catch (e)
+                    {
+                        alert('Can not open a dialog.\nError: ' + e.toString());
+                        return;
+                    }
+                    
                     start = true;
                 }
                 
@@ -205,7 +214,13 @@ function SudokuGame_GameToolbar(gameParent)
                         
                         if (start)
                         {
-                            _parent.start();
+                            try
+                            {
+                                _parent.start();
+                            }
+                            catch (e)
+                            {
+                            }
                         }
                     },
                     previous: function (event, ui)
@@ -283,6 +298,7 @@ function SudokuGame_GameToolbar(gameParent)
                             {
                                 alert('Can not load games. Error: ' + e.toString());
                                 $wizard.jWizard('firstStep');
+                                console.log($wizard);
                                 return;
                             }
                             
@@ -365,7 +381,15 @@ function SudokuGame_GameToolbar(gameParent)
                                     }
                                     catch (e)
                                     {
-                                        alert(e);
+                                        $this.after(
+                                            $('<tr>').addClass(className).append(
+                                                $('<td>').attr('colspan', 5)
+                                                    .css('padding', 0)
+                                                    .css('color', 'red')
+                                                    .text(e)
+                                            )
+                                        );
+                                            
                                         return;
                                     }
 
@@ -659,7 +683,13 @@ function SudokuGame_GameToolbar(gameParent)
                                 
                                 if (start)
                                 {
-                                    _parent.start();
+                                    try
+                                    {
+                                        _parent.start();
+                                    }
+                                    catch (e)
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -689,7 +719,13 @@ function SudokuGame_GameToolbar(gameParent)
                                 
                                 if (start)
                                 {
-                                    _parent.start();
+                                    try
+                                    {
+                                        _parent.start();
+                                    }
+                                    catch (e)
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -730,7 +766,13 @@ function SudokuGame_GameToolbar(gameParent)
                                 
                                 if (start)
                                 {
-                                    _parent.start();
+                                    try
+                                    {
+                                        _parent.start();
+                                    }
+                                    catch (e)
+                                    {
+                                    }
                                 }
                             }
                         }
@@ -755,7 +797,15 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : true,
             action      : function ()
             {
-                _parent.reset();
+                try
+                {
+                    _parent.reset();
+                }
+                catch (e)
+                {
+                    alert('Can not reset the game.\nError: ' + e.toString());
+                    return;
+                }
                     
                 // switch from stats?
                 if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
@@ -774,7 +824,15 @@ function SudokuGame_GameToolbar(gameParent)
             gameRelated : true,
             action      : function ()
             {
-                _parent.pause();
+                try
+                {
+                    _parent.pause();
+                }
+                catch (e)
+                {
+                    alert('Can not check a game.\nError: ' + e.toString());
+                    return false;
+                }
                 
                 var request = new SudokuGame_Request(_parent.getAppPath());
                 var game = _parent.getGameBoard().getFieldsValues();
@@ -813,11 +871,17 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not check the current game.\nError: ' + e);
+                    alert('Can not check the current game.\nError: ' + e.toString());
                 }
                 finally
                 {
-                    _parent.start();
+                    try
+                    {
+                        _parent.start();
+                    }
+                    catch (e)
+                    {
+                    }
                     
                     // switch from stats?
                     if ($('#' + _parent.getNamespace() + '_footer-show-game').is(':visible'))
@@ -844,7 +908,16 @@ function SudokuGame_GameToolbar(gameParent)
                 var $dialogInput = $dialog.find('input');
                 var m = 'The current game was successfully saved.';
                 
-                _parent.pause();
+                try
+                {
+                    _parent.pause();
+                }
+                catch (e)
+                {
+                    alert('Can not save a game.\nError: ' + e.toString());
+                    return;
+                }
+                
                 $dialogBody.show();
                 $dialogInfo.hide();
                 
@@ -905,7 +978,14 @@ function SudokuGame_GameToolbar(gameParent)
                 }).bind('dialogclose', function(e)
                 {
                     $(this).unbind('dialogclose');
-                    _parent.start();
+                    
+                    try
+                    {
+                        _parent.start();
+                    }
+                    catch (e)
+                    {
+                    }
                 });
                 
                 // submit on enter
@@ -943,7 +1023,16 @@ function SudokuGame_GameToolbar(gameParent)
                 // pause the game
                 if (_parent.getTimer().isStarted())
                 {
-                    _parent.pause();
+                    try
+                    {
+                        _parent.pause();
+                    }
+                    catch (e)
+                    {
+                        alert('Can not load a game.\nError: ' + e.toString());
+                        return;
+                    }
+                    
                     start = true;
                 }
                 
@@ -958,7 +1047,13 @@ function SudokuGame_GameToolbar(gameParent)
                     
                     if (start)
                     {
-                        _parent.start();
+                        try
+                        {
+                            _parent.start();
+                        }
+                        catch (e)
+                        {
+                        }
                     }
                     
                     return;
@@ -1079,7 +1174,13 @@ function SudokuGame_GameToolbar(gameParent)
                     
                     if (start)
                     {
-                        _parent.start();
+                        try
+                        {
+                            _parent.start();
+                        }
+                        catch (e)
+                        {
+                        }
                     }
                 }).dialog('open');
             }

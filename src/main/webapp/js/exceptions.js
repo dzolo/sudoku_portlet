@@ -16,7 +16,7 @@ function SudokuGame_RequestFailedException(message, cause)
     /** A name public property */
     this.name = 'RequestFailedException';
     /** A message public property */
-    this.message = message;
+    this.messageInfo = message;
     /** A cause public property */
     this.cause = cause;
     
@@ -27,7 +27,7 @@ function SudokuGame_RequestFailedException(message, cause)
      */
     this.toString = function ()
     {
-        return this.name + ': ' + this.message + '\nCause: ' + cause;
+        return this.messageInfo;
     }
 }
 
@@ -41,7 +41,7 @@ function SudokuGame_NullPointerException(message)
     /** A name public property */
     this.name = 'NullPointerException';
     /** A message public property */
-    this.message = message;
+    this.messageInfo = message;
     
     /**
      * Tranforms the exception object to a string
@@ -50,7 +50,7 @@ function SudokuGame_NullPointerException(message)
      */
     this.toString = function ()
     {
-        return this.name + ': ' + this.message;
+        return this.name + ': ' + this.messageInfo;
     }
 }
 
@@ -64,7 +64,7 @@ function SudokuGame_IllegalStateException(message)
     /** A name public property */
     this.name = 'IllegalStateException';
     /** A message public property */
-    this.message = message;
+    this.messageInfo = message;
     
     /**
      * Tranforms the exception object to a string
@@ -73,6 +73,6 @@ function SudokuGame_IllegalStateException(message)
      */
     this.toString = function ()
     {
-        return this.name + ': ' + this.message;
+        return this.name + ': ' + this.messageInfo;
     }
 }

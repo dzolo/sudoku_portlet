@@ -386,7 +386,7 @@
                     }
                     catch (e)
                     {
-                        alert('The publisher was not saved. Error: ' + e);
+                        alert('The publisher was not saved. Error: ' + e.toString());
                         return;
                     }
 

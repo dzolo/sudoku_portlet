@@ -121,7 +121,15 @@
                 // pause the game if started
                 if (game.getGameBoard().isGamePlayed())
                 {
-                    game.pause();
+                    try
+                    {
+                        game.pause();
+                    }
+                    catch (e)
+                    {
+                        alert('Can not switch to statistics\nError: ' + e.toString());
+                        return false;
+                    }
                 }
                 // hide button and board
                 $game_buttons.hide();

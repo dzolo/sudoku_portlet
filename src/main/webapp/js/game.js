@@ -184,7 +184,7 @@ function SudokuGame_Game(namespace, appPath)
                     {
                         if (!(e.cause && e.cause == 'Not Found'))
                         {
-                            alert('Error during loading of a previous played game. Error: ' + e);
+                            alert('Error during loading of a previous played game. Error: ' + e.toString());
                         }
                     }
                 }
@@ -255,8 +255,10 @@ function SudokuGame_Game(namespace, appPath)
     
     /**
      * Pauses the game
+     * 
+     * @param noStore       The game will not be stored during pausing if this is false
      */
-    this.pause = function ()
+    this.pause = function (noStore)
     {
         _gameBoard.setEnabled(false);
         _timer.pause();
@@ -264,7 +266,10 @@ function SudokuGame_Game(namespace, appPath)
         $('#' + _namespace + '_footer-play').show();
         $('#' + _namespace + '_footer-pause').hide();
         
-        this.store(true);
+        if (noStore == undefined || noStore == true)
+        {
+            this.store(true);
+        }
     }
     
     /**
@@ -366,7 +371,7 @@ function SudokuGame_Game(namespace, appPath)
         }
         catch (e)
         {
-            alert('Can not check the current game.\nError: ' + e);
+            alert('Can not check the current game.\nError: ' + e.toString());
             this.start();
         }
         
@@ -442,7 +447,7 @@ function SudokuGame_Game(namespace, appPath)
         }
         catch (e)
         {
-            alert('Can not end the game. Error: ' + e);
+            alert('Can not end the game. Error: ' + e.toString());
         }
     }
     
