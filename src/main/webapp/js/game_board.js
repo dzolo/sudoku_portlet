@@ -436,7 +436,7 @@ function SudokuGame_GameBoard(gameParent, rootElement)
             if (_fields[index].isFixed())
             {
                 throw new SudokuGame_IllegalStateException(
-                        'A value od a fixed field can not be changed.'
+                        'A value of a fixed field cannot be changed.'
                 );
             }
             

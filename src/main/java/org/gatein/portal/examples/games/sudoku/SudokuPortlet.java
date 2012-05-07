@@ -88,7 +88,7 @@ public class SudokuPortlet extends GenericPortlet
         }
         catch (Exception ex)
         {
-            throw new PortletException("Can not load portlet skins", ex);
+            throw new PortletException("Cannot load portlet skins", ex);
         }
     }
     

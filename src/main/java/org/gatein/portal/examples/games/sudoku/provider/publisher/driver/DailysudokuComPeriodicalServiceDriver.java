@@ -76,7 +76,7 @@ public class DailysudokuComPeriodicalServiceDriver extends AbstractPeriodicalSer
         }
         catch (Exception e)
         {
-            logger.log(Level.WARNING, "Can not obtain a game", e);
+            logger.log(Level.WARNING, "Cannot obtain a game", e);
             return null;
         }
         

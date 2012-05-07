@@ -193,7 +193,7 @@ function SudokuGame_GameToolbar(gameParent)
                     }
                     catch (e)
                     {
-                        alert('Can not open a dialog.\nError: ' + e.toString());
+                        alert('Cannot open a dialog.\nError: ' + e.toString());
                         return;
                     }
                     
@@ -296,7 +296,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not load games. Error: ' + e.toString());
+                                alert('Cannot load games. Error: ' + e.toString());
                                 $wizard.jWizard('firstStep');
                                 console.log($wizard);
                                 return;
@@ -460,7 +460,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not load games. Error: ' + e.toString());
+                                alert('Cannot load games. Error: ' + e.toString());
                                 $wizard.jWizard('firstStep');
                                 return;
                             }
@@ -562,7 +562,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not load games. Error: ' + e.toString());
+                                alert('Cannot load games. Error: ' + e.toString());
                                 $wizard.jWizard('firstStep');
                                 return;
                             }
@@ -679,7 +679,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not create a new game.\nError: ' + e.toString());
+                                alert('Cannot create a new game.\nError: ' + e.toString());
                                 
                                 if (start)
                                 {
@@ -715,7 +715,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not load a game.\nError: ' + e.toString());
+                                alert('Cannot load a game.\nError: ' + e.toString());
                                 
                                 if (start)
                                 {
@@ -762,7 +762,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not create a game solution.\nError: ' + e.toString());
+                                alert('Cannot create a game solution.\nError: ' + e.toString());
                                 
                                 if (start)
                                 {
@@ -803,7 +803,7 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not reset the game.\nError: ' + e.toString());
+                    alert('Cannot reset the game.\nError: ' + e.toString());
                     return;
                 }
                     
@@ -830,7 +830,7 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not check a game.\nError: ' + e.toString());
+                    alert('Cannot check a game.\nError: ' + e.toString());
                     return false;
                 }
                 
@@ -871,7 +871,7 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not check the current game.\nError: ' + e.toString());
+                    alert('Cannot check the current game.\nError: ' + e.toString());
                 }
                 finally
                 {
@@ -914,7 +914,7 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not save a game.\nError: ' + e.toString());
+                    alert('Cannot save a game.\nError: ' + e.toString());
                     return;
                 }
                 
@@ -1029,7 +1029,7 @@ function SudokuGame_GameToolbar(gameParent)
                     }
                     catch (e)
                     {
-                        alert('Can not load a game.\nError: ' + e.toString());
+                        alert('Cannot load a game.\nError: ' + e.toString());
                         return;
                     }
                     
@@ -1043,7 +1043,7 @@ function SudokuGame_GameToolbar(gameParent)
                 }
                 catch (e)
                 {
-                    alert('Can not load a game. Error: ' + e.toString());
+                    alert('Cannot load a game. Error: ' + e.toString());
                     
                     if (start)
                     {
@@ -1145,7 +1145,7 @@ function SudokuGame_GameToolbar(gameParent)
                             }
                             catch (e)
                             {
-                                alert('Can not load a game.\nError: ' + e.toString());
+                                alert('Cannot load a game.\nError: ' + e.toString());
                                 $(this).dialog('close');
                                 return;
                             }

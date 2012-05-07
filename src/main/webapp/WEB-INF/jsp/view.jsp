@@ -127,7 +127,7 @@
                     }
                     catch (e)
                     {
-                        alert('Can not switch to statistics\nError: ' + e.toString());
+                        alert('Cannot switch to statistics\nError: ' + e.toString());
                         return false;
                     }
                 }

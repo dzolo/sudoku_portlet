@@ -120,7 +120,7 @@ function SudokuGame_GameTimer(gameParent, rootElement)
             }
             catch (e)
             {
-                alert('Can not store the current game solution to the server.\nError: server timeout');
+                alert('Cannot store the current game solution to the server.\nError: server timeout');
                 _parent.pause(false);
             }
         }

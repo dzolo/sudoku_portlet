@@ -321,7 +321,7 @@ function SudokuGame_Game(namespace, appPath)
         }
         else
         {
-            throw new SudokuGame_IllegalStateException('Can not store game');
+            throw new SudokuGame_IllegalStateException('Cannot store game');
         }
     }
     
@@ -371,7 +371,7 @@ function SudokuGame_Game(namespace, appPath)
         }
         catch (e)
         {
-            alert('Can not check the current game.\nError: ' + e.toString());
+            alert('Cannot check the current game.\nError: ' + e.toString());
             this.start();
         }
         
@@ -447,7 +447,7 @@ function SudokuGame_Game(namespace, appPath)
         }
         catch (e)
         {
-            alert('Can not end the game. Error: ' + e.toString());
+            alert('Cannot end the game. Error: ' + e.toString());
         }
     }
     
