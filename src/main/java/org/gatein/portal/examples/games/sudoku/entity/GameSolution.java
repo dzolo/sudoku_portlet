@@ -50,12 +50,8 @@ import org.codehaus.jackson.annotate.JsonIgnore;
     ),
     @NamedQuery(
         name = "GameSolution.countSolver",
-        query = "SELECT COUNT(g2) FROM GameSolution g2 "
-              + "WHERE g2.id IN ("
-              + "   SELECT g.id FROM GameSolution g "
-              + "   WHERE g.finished > 0 "
-              + "   GROUP BY g.userId, g.id"
-              + ")"
+        query = "SELECT COUNT(DISTINCT g.userId) FROM GameSolution g "
+              + "WHERE g.finished > 0 "
     )
 })
 public class GameSolution implements Serializable
