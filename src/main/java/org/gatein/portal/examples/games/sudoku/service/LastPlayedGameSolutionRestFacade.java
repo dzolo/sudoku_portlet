@@ -86,7 +86,7 @@ public class LastPlayedGameSolutionRestFacade
     /**
      * Finds a last played game solution by its identificator
      * 
-     * @param id        An identificator of a last played game solution entity
+     * @param userId    An identificator of a last played game solution entity
      * @return          OK response with the entity on success, NOT FOUND on failiture
      */
     @GET

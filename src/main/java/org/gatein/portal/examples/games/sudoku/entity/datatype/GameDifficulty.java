@@ -69,9 +69,9 @@ public enum GameDifficulty
     }
     
     /**
+     * Gets a random count of unfilled filels in this difficulty level
      * 
-     * 
-     * @return 
+     * @return                      A random count
      */
     public int getRandomUnfilledFieldCount()
     {

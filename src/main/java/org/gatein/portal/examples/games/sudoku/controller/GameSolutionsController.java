@@ -48,7 +48,7 @@ public class GameSolutionsController extends Controller
      * Persists a game solution entity to the database.
      * Does not save saved games of the game solution.
      * 
-     * @param savedGame      A game solution to persist
+     * @param gameSolution    A game solution to persist
      * @throws RollbackFailureException
      * @throws Exception
      */

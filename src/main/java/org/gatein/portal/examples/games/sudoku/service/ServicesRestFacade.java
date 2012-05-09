@@ -51,7 +51,7 @@ public class ServicesRestFacade
     /**
      * Persists the given service.
      * 
-     * @param service   A service entity
+     * @param entity    A service entity
      * @return          OK response on success, NOT MODIFIED on failiture
      */
     @POST
@@ -73,7 +73,7 @@ public class ServicesRestFacade
     /**
      * Merges the given service.
      * 
-     * @param service       A service entity
+     * @param entity        A service entity
      * @return              OK response on success, NOT MODIFIED on failiture
      */
     @PUT

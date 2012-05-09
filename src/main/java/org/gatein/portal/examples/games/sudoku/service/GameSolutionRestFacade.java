@@ -181,7 +181,7 @@ public class GameSolutionRestFacade
      * Checks the game solution. Checking is not increasing the checked count.
      * 
      * @see GameUtil#check(java.lang.String) 
-     * @param id            An identificator of a game solution
+     * @param gameSolutionValues Values to check
      * @return              A JSON String with the return state of check and
      *                      with possible errors.
      */
