@@ -13,7 +13,7 @@
     <groupId>org.gatein.portal.examples.games</groupId>
     <artifactId>sudoku</artifactId>
     <packaging>war</packaging>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <url>https://github.com/dzolo/sudoku_portlet</url>
     <name>Sudoku portlet</name>
 
@@ -300,6 +300,106 @@
             </dependencies>
             <properties>
                 <sudoku_game.sudoku_db_jndi_prefix></sudoku_game.sudoku_db_jndi_prefix>
+                <sudoku_game.sudoku_db_dialect>org.hibernate.dialect.HSQLDialect</sudoku_game.sudoku_db_dialect>
+            </properties>
+        </profile>
+        <profile>
+            <id>jboss-as7</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.3</version>
+                        <executions>
+                            <execution>
+                                <id>install-war-and-datasource</id>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${env.JBOSS_HOME}/standalone/deployments</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>target</directory>
+                                            <includes>
+                                                <include>*.war</include>
+                                            </includes>
+                                        </resource>
+                                        <resource>
+                                            <directory>src/main/setup</directory>
+                                            <includes>
+                                                <include>sudoku-game-jboss7-ds.xml</include>
+                                            </includes>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <dependencies>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate</artifactId>
+                    <version>3.2.5.ga</version>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>asm</groupId>
+                            <artifactId>asm</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>asm</groupId>
+                            <artifactId>asm-attrs</artifactId>
+                        </exclusion>
+                        <exclusion>
+                            <groupId>cglib</groupId>
+                            <artifactId>cglib</artifactId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.hibernate</groupId>
+                    <artifactId>hibernate-entitymanager</artifactId>
+                    <version>3.3.2.GA</version>
+                    <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <artifactId>javassist</artifactId>
+                            <groupId>javassist</groupId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>org.jboss.resteasy</groupId>
+                    <artifactId>resteasy-jaxrs</artifactId>
+                    <version>2.3.2.Final</version>
+                    <exclusions>
+                        <exclusion>
+                            <artifactId>javassist</artifactId>
+                            <groupId>javassist</groupId>
+                        </exclusion>
+                    </exclusions>
+                </dependency>
+                <dependency>
+                    <groupId>hsqldb</groupId>
+                    <artifactId>hsqldb</artifactId>
+                    <version>1.8.0.7</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>javassist</groupId>
+                    <artifactId>javassist</artifactId>
+                    <version>3.12.1.GA</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
+            <properties>
+                <sudoku_game.sudoku_db_jndi_prefix>/</sudoku_game.sudoku_db_jndi_prefix>
+                <sudoku_game.sudoku_db_dialect>org.hibernate.dialect.H2Dialect</sudoku_game.sudoku_db_dialect>
             </properties>
         </profile>
         <profile>
@@ -364,6 +464,7 @@
             </dependencies>
             <properties>
                 <sudoku_game.sudoku_db_jndi_prefix>comp/env/</sudoku_game.sudoku_db_jndi_prefix>
+                <sudoku_game.sudoku_db_dialect>org.hibernate.dialect.HSQLDialect</sudoku_game.sudoku_db_dialect>
             </properties>
         </profile>
     </profiles>

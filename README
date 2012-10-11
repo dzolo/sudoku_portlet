@@ -22,6 +22,7 @@ Supported portals and deployment environments are:
 
  * GateIn 3.2.0.Final with JBoss AS 5.1.0
  * GateIn 3.2.0.Final with JBoss AS 6.0.0
+ * GateIn 3.4.0.Final with JBoss AS 7
  * GateIn 3.2.0.Final with Tomcat 6
  * GateIn 3.2.0.Final with Tomcat 7
  * JBoss Enterprise Portal Platform 5.2.0
@@ -36,6 +37,15 @@ manually, using the CLI, as shown below:
 3) Build and deploy the application.
 
  $ mvn clean package jboss:hard-deploy -P "jboss-as" \
+        -Denv.JBOSS_HOME=<path-to-your-JBoss-AS-home-dir>
+
+* Instructions for JBoss AS 7:
+
+1) Move to the application root directory.
+
+3) Build and deploy the application.
+
+ $ mvn clean install -P "jboss-as7" \
         -Denv.JBOSS_HOME=<path-to-your-JBoss-AS-home-dir>
 
 * Instructions for Tomcat 5 <=:
@@ -92,8 +102,11 @@ All configurational actions have to be done before the installation.
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.0 =
 * The first release
+
+= 1.0.1 =
+* Added support of GateIn 3.4.0 and JBoss AS 7
 
 == References ==
 
